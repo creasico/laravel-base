@@ -1,13 +1,13 @@
 <?php
 
-namespace Creasi\Laravel\Account;
+namespace Creasi\Laravel\Accounts;
 
-use Creasi\Laravel\Account;
+use Creasi\Laravel\Accounts;
 use Illuminate\Support\ServiceProvider as BaseServiceProvider;
 
 class ServiceProvider extends BaseServiceProvider
 {
-    private const LIB_PATH = __DIR__ . '/../..';
+    private const LIB_PATH = __DIR__.'/../..';
 
     public function boot()
     {
@@ -16,13 +16,13 @@ class ServiceProvider extends BaseServiceProvider
 
     public function register()
     {
-        $this->mergeConfigFrom(self::LIB_PATH . '/config/account.php', 'account');
+        $this->mergeConfigFrom(self::LIB_PATH.'/config/accounts.php', 'accounts');
 
-        $this->app->bind(Account::class, function () {
-            return new Account();
+        $this->app->bind(Accounts::class, function ($app) {
+            return new Accounts($app);
         });
 
-        $this->app->alias(Account::class, 'creasi.account');
+        $this->app->alias(Accounts::class, 'creasi.accounts');
 
         if ($this->app->runningInConsole()) {
             $this->registerPublishables();
@@ -34,14 +34,14 @@ class ServiceProvider extends BaseServiceProvider
     protected function registerPublishables()
     {
         $this->publishes([
-            self::LIB_PATH . '/config/account.php' => \config_path('account.php')
+            self::LIB_PATH.'/config/accounts.php' => \config_path('accounts.php'),
         ], 'creasi-config');
 
         $timestamp = date('Y_m_d_His', time());
-        $migrations = self::LIB_PATH . '/database/migrations';
+        $migrations = self::LIB_PATH.'/database/migrations';
 
         $this->publishes([
-            $migrations . '/create_account_table.php' => database_path('migrations/' . $timestamp . '_create_account_table.php'),
+            $migrations.'/create_accounts_tables.php' => database_path('migrations/'.$timestamp.'_create_accounts_tables.php'),
         ], 'creasi-migrations');
 
         $this->loadMigrationsFrom($migrations);

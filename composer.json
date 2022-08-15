@@ -48,7 +48,7 @@
     "extra": {
         "laravel": {
             "providers": [
-                "Creasi\\Laravel\\AccountServiceProvider"
+                "Creasi\\Laravel\\Account\\ServiceProvider"
             ],
             "aliases": {
                 "Account": "Creasi\\Laravel\\Facades\\Account"

@@ -2,7 +2,7 @@
 
 namespace Creasi\Laravel;
 
-class Package
+class Account
 {
     public function lorem(): string
     {

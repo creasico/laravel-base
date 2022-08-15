@@ -3,7 +3,6 @@
     "private": true,
     "packageManager": "pnpm@7.5.0",
     "author": "Creasi Developers <developers@creasi.co>",
-    "repository": "github:creasico/laravel-package",
     "scripts": {
         "prepare": "husky install scripts/husky",
         "release": "standard-version -s"

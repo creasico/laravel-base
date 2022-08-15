@@ -1,9 +1,9 @@
 {
-    "name": "creasi/laravel-package",
-    "description": "Laravel Package Template",
-    "keywords": ["laravel", "package", "template"],
+    "name": "creasi/laravel-account",
+    "description": "Account Management Package",
+    "keywords": ["laravel", "account", "package"],
     "license": "MIT",
-    "type": "project",
+    "type": "library",
     "authors": [
         {
             "name": "Creasi Developers",
@@ -11,7 +11,7 @@
         }
     ],
     "support": {
-        "source": "https://github.com/creasico/laravel-package"
+        "source": "https://github.com/creasico/laravel-account"
     },
     "scripts": {
         "fix": [
@@ -48,10 +48,10 @@
     "extra": {
         "laravel": {
             "providers": [
-                "Creasi\\Laravel\\PackageServiceProvider"
+                "Creasi\\Laravel\\AccountServiceProvider"
             ],
             "aliases": {
-                "Package": "Creasi\\Laravel\\Facades\\Package"
+                "Account": "Creasi\\Laravel\\Facades\\Account"
             }
         }
     },

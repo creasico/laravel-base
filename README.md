@@ -1,17 +1,17 @@
-[![Version](https://img.shields.io/packagist/v/creasi/laravel-package?style=flat-square)](https://packagist.org/packages/creasi/laravel-package)
-[![License](https://img.shields.io/packagist/l/creasi/laravel-package?style=flat-square)](https://github.com/creasico/laravel-package/blob/master/LICENSE)
-[![Actions Status](https://img.shields.io/github/workflow/status/creasico/laravel-package/Tests/master?style=flat-square&logo=github-actions)](https://github.com/creasico/laravel-package/actions)
+[![Version](https://img.shields.io/packagist/v/creasi/laravel-account?style=flat-square)](https://packagist.org/packages/creasi/laravel-account)
+[![License](https://img.shields.io/packagist/l/creasi/laravel-account?style=flat-square)](https://github.com/creasico/laravel-account/blob/master/LICENSE)
+[![Actions Status](https://img.shields.io/github/workflow/status/creasico/laravel-account/Tests/master?style=flat-square&logo=github-actions)](https://github.com/creasico/laravel-account/actions)
 
-# Laravel Package Template
+# Laravel Account
 
-Our Laravel Package Template
+Account Management Package for All of Our Projects
 
 ## Installation
 
 Use [Composer](https://getcomposer.org/)
 
 ```bash
-$ composer create-project creasi/laravel-package --prefer-dist
+$ composer require creasi/laravel-account --prefer-dist
 ```
 
 ## Usage

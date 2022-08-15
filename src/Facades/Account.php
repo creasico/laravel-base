@@ -4,10 +4,10 @@ namespace Creasi\Laravel\Facades;
 
 use Illuminate\Support\Facades\Facade;
 
-class Package extends Facade
+class Account extends Facade
 {
     protected static function getFacadeAccessor()
     {
-        return 'package';
+        return 'creasi.account';
     }
 }

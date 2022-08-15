@@ -2,8 +2,8 @@
 
 namespace Creasi\Tests;
 
-use Creasi\Laravel\Facades\Package;
-use Creasi\Laravel\PackageServiceProvider;
+use Creasi\Laravel\Facades\Account;
+use Creasi\Laravel\AccountServiceProvider;
 use Orchestra\Testbench\TestCase as Orchestra;
 
 class TestCase extends Orchestra
@@ -11,14 +11,14 @@ class TestCase extends Orchestra
     protected function getPackageProviders($app)
     {
         return [
-            PackageServiceProvider::class,
+            AccountServiceProvider::class,
         ];
     }
 
     protected function getPackageAliases($app)
     {
         return [
-            'package' => Package::class,
+            'creasi.account' => Account::class,
         ];
     }
 }

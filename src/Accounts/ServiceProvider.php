@@ -2,7 +2,6 @@
 
 namespace Creasi\Laravel\Accounts;
 
-use Creasi\Laravel\Accounts;
 use Illuminate\Support\ServiceProvider as BaseServiceProvider;
 
 class ServiceProvider extends BaseServiceProvider
@@ -18,11 +17,9 @@ class ServiceProvider extends BaseServiceProvider
     {
         $this->mergeConfigFrom(self::LIB_PATH.'/config/accounts.php', 'accounts');
 
-        $this->app->bind(Accounts::class, function ($app) {
-            return new Accounts($app);
+        $this->app->bind(Repository::class, function ($app) {
+            return new Repository($app);
         });
-
-        $this->app->alias(Accounts::class, 'creasi.accounts');
 
         if ($this->app->runningInConsole()) {
             $this->registerPublishables();

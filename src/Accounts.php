@@ -2,18 +2,12 @@
 
 namespace Creasi\Laravel;
 
-use Illuminate\Contracts\Container\Container;
+use Illuminate\Support\Facades\Facade;
 
-class Accounts
+class Accounts extends Facade
 {
-    public function __construct(
-        protected Container $app
-    ) {
-        // .
-    }
-
-    public function lorem(): string
+    protected static function getFacadeAccessor()
     {
-        return 'Lorem ipsum';
+        return Accounts\Repository::class;
     }
 }

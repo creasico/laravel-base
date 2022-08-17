@@ -2,17 +2,15 @@
 
 namespace Creasi\Tests;
 
-use Creasi\Laravel\Accounts;
+use Creasi\Laravel\Accounts\Repository;
 
 class AccountsTest extends TestCase
 {
     /** @test */
     public function it_should_be_true()
     {
-        $account = $this->app->get('creasi.accounts');
+        $account = $this->app->get(Repository::class);
 
-        $this->assertInstanceOf(Accounts::class, $account);
-
-        $this->assertEquals('Lorem ipsum', $account->lorem());
+        $this->assertInstanceOf(Repository::class, $account);
     }
 }

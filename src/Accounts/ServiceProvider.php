@@ -29,6 +29,8 @@ class ServiceProvider extends BaseServiceProvider
 
             $this->registerCommands();
         }
+
+        $this->registerTranslations();
     }
 
     protected function registerPublishables()
@@ -45,6 +47,14 @@ class ServiceProvider extends BaseServiceProvider
         ], 'creasi-migrations');
 
         $this->loadMigrationsFrom($migrations);
+    }
+
+    protected function registerTranslations()
+    {
+        $translations = self::LIB_PATH.'/resources/lang';
+
+        $this->loadTranslationsFrom($translations, 'accounts');
+        $this->loadJsonTranslationsFrom($translations);
     }
 
     protected function registerCommands()

@@ -51,7 +51,7 @@
                 "Creasi\\Laravel\\Accounts\\ServiceProvider"
             ],
             "aliases": {
-                "Accounts": "Creasi\\Laravel\\Facades\\Accounts"
+                "Accounts": "Creasi\\Laravel\\Accounts"
             }
         }
     },

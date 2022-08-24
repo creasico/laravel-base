@@ -1,0 +1,66 @@
+<?php
+
+namespace Creasi\Laravel\Http\Controllers;
+
+use Creasi\Laravel\Accounts\Account;
+use Creasi\Laravel\Http\Requests\Account\StoreRequest;
+use Creasi\Laravel\Http\Requests\Account\UpdateRequest;
+use Illuminate\Routing\Controller;
+
+class AccountController extends Controller
+{
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index()
+    {
+        //
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  StoreRequest  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(StoreRequest $request)
+    {
+        //
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  Account  $account
+     * @return \Illuminate\Http\Response
+     */
+    public function show(Account $account)
+    {
+        //
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  UpdateRequest  $request
+     * @param  Account  $account
+     * @return \Illuminate\Http\Response
+     */
+    public function update(UpdateRequest $request, Account $account)
+    {
+        //
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  Account  $account
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy(Account $account)
+    {
+        //
+    }
+}

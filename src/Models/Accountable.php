@@ -1,18 +1,17 @@
 <?php
 
-namespace Creasi\Laravel\Accounts;
+namespace Creasi\Laravel\Models;
 
 use Illuminate\Database\Eloquent\Casts\AsArrayObject;
 use Illuminate\Database\Eloquent\Relations\MorphPivot;
 
 /**
  * @property-read int $id
- * @property bool $is_primary
- * @property null|\ArrayObject $payload
+ * @property-read int $account_id
  */
 class Accountable extends MorphPivot
 {
-    protected $fillable = ['is_primary', 'payload'];
+    protected $fillable = ['account_id'];
 
     protected $casts = [
         'is_primary' => 'boolean',
@@ -22,10 +21,5 @@ class Accountable extends MorphPivot
     public function account()
     {
         return $this->belongsTo(Account::class);
-    }
-
-    public function markAsPrimary(bool $primary = true): bool
-    {
-        return $this->update(['is_primary' => $primary]);
     }
 }

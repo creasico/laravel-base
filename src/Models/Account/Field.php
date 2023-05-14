@@ -1,9 +1,7 @@
 <?php
 
-namespace Creasi\Laravel\Accounts;
+namespace Creasi\Laravel\Models\Account;
 
-use Creasi\Laravel\Factories\FieldFactory;
-use Illuminate\Database\Eloquent\Casts\AsArrayObject;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -17,8 +15,6 @@ use Illuminate\Database\Eloquent\Model;
  * @property-read string $cast
  * @property null|\ArrayObject $payload
  * @property-read \Creasi\Laravel\Accounts\Accountable $defined
- *
- * @method static FieldFactory<Field> factory()
  */
 class Field extends Model
 {
@@ -35,11 +31,6 @@ class Field extends Model
         'cast' => Field\Cast::class,
         'payload' => Field\CustomObject::class,
     ];
-
-    protected static function newFactory()
-    {
-        return new FieldFactory();
-    }
 
     public function getLabelAttribute()
     {

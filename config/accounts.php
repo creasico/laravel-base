@@ -1,9 +1,7 @@
 <?php
 
-use Creasi\Laravel\Accounts;
-
 return [
 
-    'types' => Accounts\Type::class,
+    'types' => \Creasi\Laravel\Models\Account\Field\Type::class,
 
 ];

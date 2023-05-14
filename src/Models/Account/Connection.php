@@ -1,35 +1,27 @@
 <?php
 
-namespace Creasi\Laravel\Accounts;
+namespace Creasi\Laravel\Models\Account;
 
-use Creasi\Laravel\Factories\RelationFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\Pivot;
 
 /**
  * @property-read int $id
  * @property-read int $account_id
  * @property-read Account $account
- * @property-read int $related_id
+ * @property-read int $connected_id
  * @property-read Account $related
  * @property string $notes
- *
- * @method static RelationFactory<Relation> factory()
  */
-class Relation extends Model
+class Connection extends Pivot
 {
     use HasFactory;
 
     public $timestamps = false;
 
-    protected $table = 'account_relations';
+    protected $table = 'account_connections';
 
     protected $fillable = ['notes'];
-
-    protected static function newFactory()
-    {
-        return new RelationFactory();
-    }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo|Account
@@ -42,8 +34,8 @@ class Relation extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo|Account
      */
-    public function related()
+    public function connected()
     {
-        return $this->belongsTo(Account::class, 'related_id');
+        return $this->belongsTo(Account::class, 'connected_id');
     }
 }

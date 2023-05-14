@@ -1,6 +1,6 @@
 <?php
 
-namespace Creasi\Laravel\Accounts\Field;
+namespace Creasi\Laravel\Models\Account\Field;
 
 enum Type: string
 {

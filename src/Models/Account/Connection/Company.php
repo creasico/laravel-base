@@ -1,8 +1,8 @@
 <?php
 
-namespace Creasi\Laravel\Accounts\Relation;
+namespace Creasi\Laravel\Models\Account\Connection;
 
-use Creasi\Laravel\Accounts\Type;
+use Creasi\Laravel\Models\Account\Type;
 
 enum Company: string
 {

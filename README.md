@@ -1,6 +1,6 @@
-[![Version](https://img.shields.io/packagist/v/creasi/laravel-accounts?style=flat-square)](https://packagist.org/packages/creasi/laravel-accounts)
-[![License](https://img.shields.io/packagist/l/creasi/laravel-accounts?style=flat-square)](https://github.com/creasico/laravel-accounts/blob/master/LICENSE)
-[![Actions Status](https://img.shields.io/github/workflow/status/creasico/laravel-accounts/Tests/master?style=flat-square&logo=github-actions)](https://github.com/creasico/laravel-accounts/actions)
+[![Version](https://img.shields.io/packagist/v/creasi/laravel-base?style=flat-square)](https://packagist.org/packages/creasi/laravel-base)
+[![License](https://img.shields.io/github/license/creasico/laravel-base?style=flat-square)](https://github.com/creasico/laravel-base/blob/main/LICENSE)
+[![Actions Status](https://img.shields.io/github/actions/workflow/status/creasico/laravel-base/test.yml?branch=main&style=flat-square)](https://github.com/creasico/laravel-base/actions)
 
 # Laravel Account
 
@@ -11,7 +11,7 @@ Account Management Package for All of Our Projects
 Use [Composer](https://getcomposer.org/)
 
 ```bash
-$ composer require creasi/laravel-accounts --prefer-dist
+$ composer require creasi/laravel-base --prefer-dist
 ```
 
 ## Usage

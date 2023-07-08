@@ -1,5 +1,5 @@
 {
-    "name": "creasi/laravel-accounts",
+    "name": "creasi/laravel-base",
     "description": "Accounts Management Package",
     "keywords": ["laravel", "accounts", "package"],
     "license": "MIT",
@@ -11,35 +11,40 @@
         }
     ],
     "support": {
-        "source": "https://github.com/creasico/laravel-accounts"
+        "source": "https://github.com/creasico/laravel-base"
     },
     "scripts": {
         "fix": [
             "pint --preset laravel"
         ],
         "test": [
-            "vendor/bin/phpunit --colors=always"
+            "vendor/bin/phpunit --colors=always --coverage-text"
         ]
     },
     "autoload": {
         "psr-4": {
-            "Creasi\\Laravel\\": "src"
+            "Creasi\\Base\\": "src"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Creasi\\Tests\\": "tests"
+            "Creasi\\Tests\\": "tests",
+            "Database\\Factories\\": "database/factories/"
         }
     },
     "require": {
-        "php": "^8.0",
-        "illuminate/contracts": "^8.0|^9.0"
+        "php": "^8.1",
+        "creasi/laravel-nusa": "^0.0.5",
+        "illuminate/contracts": "^10.0",
+        "illuminate/database": "^10.0",
+        "illuminate/support": "^10.0"
     },
     "require-dev": {
+        "composer-runtime-api": "*",
         "laravel/pint": "^1.1",
-        "mockery/mockery": "^1.4",
-        "orchestra/testbench": "^7.5",
-        "phpunit/phpunit": "^9.5"
+        "mockery/mockery": "^1.5",
+        "orchestra/testbench": "^8.5",
+        "phpunit/phpunit": "^10.1"
     },
     "config": {
         "preferred-install": "dist",

@@ -35,19 +35,22 @@ class TestCase extends Orchestra
         tap($app->make('config'), function (Repository $config) {
             $config->set('app.locale', 'id');
             $config->set('app.faker_locale', 'id_ID');
-            $config->set('database.default', 'testing');
 
-            $database = __DIR__.'/base.sqlite';
+            if (! env('DB_CONNECTION')) {
+                $config->set('database.default', 'testing');
 
-            if (! file_exists($database)) {
-                touch($database);
+                $database = __DIR__.'/base.sqlite';
+
+                if (! file_exists($database)) {
+                    touch($database);
+                }
+
+                $config->set('database.connections.testing', [
+                    'driver' => 'sqlite',
+                    'database' => $database,
+                    'foreign_key_constraints' => true,
+                ]);
             }
-
-            $config->set('database.connections.testing', [
-                'driver' => 'sqlite',
-                'database' => $database,
-                'foreign_key_constraints' => true,
-            ]);
         });
     }
 }

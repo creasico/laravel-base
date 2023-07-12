@@ -51,9 +51,9 @@ return new class extends Migration
             $table->softDeletes();
         });
 
-        Schema::create('documents', function (Blueprint $table) {
+        Schema::create('files', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->foreignUuid('revision_id')->nullable()->constrained('documents')->nullOnDelete();
+            $table->uuid('revision_id')->nullable();
 
             $table->string('title')->nullable();
             $table->string('name');
@@ -65,8 +65,12 @@ return new class extends Migration
             $table->softDeletes();
         });
 
-        Schema::create('attachments', function (Blueprint $table) {
-            $table->foreignUuid('document_id')->constrained()->cascadeOnDelete();
+        Schema::table('files', function (Blueprint $table) {
+            $table->foreign('revision_id')->references('id')->on('files')->nullOnDelete();
+        });
+
+        Schema::create('file_attached', function (Blueprint $table) {
+            $table->foreignUuid('file_id')->constrained()->cascadeOnDelete();
             $table->nullableMorphs('attached_to');
         });
     }
@@ -76,8 +80,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('attachments');
-        Schema::dropIfExists('documents');
+        Schema::dropIfExists('file_attached');
+        Schema::dropIfExists('files');
         Schema::dropIfExists('addresses');
         Schema::dropIfExists('profiles');
     }

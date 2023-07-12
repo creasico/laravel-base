@@ -53,11 +53,8 @@
     "extra": {
         "laravel": {
             "providers": [
-                "Creasi\\Laravel\\Accounts\\ServiceProvider"
-            ],
-            "aliases": {
-                "Accounts": "Creasi\\Laravel\\Accounts"
-            }
+                "Creasi\\Base\\ServiceProvider"
+            ]
         }
     },
     "minimum-stability": "dev",

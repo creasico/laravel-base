@@ -72,12 +72,12 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists(config('queue.connections.database.table'));
+        Schema::dropIfExists(config('queue.failed.table'));
         Schema::dropIfExists('notifications');
 
         if (config('queue.default') !== 'database') {
             Schema::dropIfExists('job_batches');
-            Schema::dropIfExists(config('queue.failed.table'));
+            Schema::dropIfExists(config('queue.connections.database.table'));
         }
 
         if (config('session.driver') === 'database') {

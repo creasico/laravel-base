@@ -83,6 +83,6 @@ return new class extends Migration
         Schema::dropIfExists('file_attached');
         Schema::dropIfExists('files');
         Schema::dropIfExists('addresses');
-        Schema::dropIfExists('profiles');
+        Schema::dropIfExists('identities');
     }
 };

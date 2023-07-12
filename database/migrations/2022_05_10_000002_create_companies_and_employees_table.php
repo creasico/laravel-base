@@ -77,7 +77,8 @@ return new class extends Migration
     {
         Schema::dropIfExists('employments');
         Schema::dropIfExists('personnel_relatives');
-        Schema::dropIfExists('employees');
+        Schema::dropIfExists('personnels');
+        Schema::dropIfExists('company_relatives');
         Schema::dropIfExists('companies');
     }
 };

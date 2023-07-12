@@ -4,7 +4,7 @@ namespace Creasi\Tests\Models;
 
 use Creasi\Base\Models\Address;
 use Creasi\Base\Models\Company;
-use Creasi\Base\Models\Document;
+use Creasi\Base\Models\File;
 use Creasi\Base\Models\Enums\CompanyRelativeType;
 use Creasi\Base\Models\Enums\EmploymentStatus;
 use Creasi\Base\Models\Enums\EmploymentType;
@@ -37,12 +37,12 @@ class CompanyTest extends TestCase
     public function should_have_documents()
     {
         $company = Company::factory()->createOne();
-        $document = Document::factory()->createOne();
+        $file = File::factory()->createOne();
 
-        $company->documents()->save($document);
+        $company->files()->save($file);
 
-        $this->assertCount(1, $company->documents);
-        $this->assertCount(1, $document->ownedByCompanies);
+        $this->assertCount(1, $company->files);
+        $this->assertCount(1, $file->ownedByCompanies);
     }
 
     #[Test]

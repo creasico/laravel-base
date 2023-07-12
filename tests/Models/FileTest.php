@@ -2,18 +2,18 @@
 
 namespace Creasi\Tests\Models;
 
-use Creasi\Base\Models\Document;
+use Creasi\Base\Models\File;
 use Creasi\Tests\TestCase;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Test;
 
 #[Group('document')]
-class DocumentTest extends TestCase
+class FileTest extends TestCase
 {
     #[Test]
     public function should_be_exists()
     {
-        $model = Document::factory()->createOne();
+        $model = File::factory()->createOne();
 
         $this->assertModelExists($model);
 
@@ -24,7 +24,7 @@ class DocumentTest extends TestCase
     public function should_have_revisions()
     {
 
-        $original = Document::factory()->createOne([
+        $original = File::factory()->createOne([
             'path' => 'some/place/elsewhere.pdf',
         ]);
 

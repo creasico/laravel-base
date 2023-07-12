@@ -17,9 +17,9 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property-read \Illuminate\Database\Eloquent\Collection<int, Company> $ownedByCompanies
  * @property-read \Illuminate\Database\Eloquent\Collection<int, Personnel> $ownedByPersonnels
  *
- * @method static \Database\Factories\DocumentFactory<static> factory()
+ * @method static \Database\Factories\FileFactory<static> factory()
  */
-class Document extends Model
+class File extends Model
 {
     use HasUuids;
     use SoftDeletes;
@@ -39,7 +39,7 @@ class Document extends Model
 
     protected function attachedTo(string $owner)
     {
-        return $this->morphedByMany($owner, 'attached_to', 'attachments', 'document_id')
+        return $this->morphedByMany($owner, 'attached_to', 'file_attached', 'file_id')
             ->as('attachments');
     }
 

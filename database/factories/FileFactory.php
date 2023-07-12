@@ -2,16 +2,16 @@
 
 namespace Database\Factories;
 
-use Creasi\Base\Models\Document;
+use Creasi\Base\Models\File;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 
 /**
- * @extends Factory<Document>
+ * @extends Factory<File>
  */
-class DocumentFactory extends Factory
+class FileFactory extends Factory
 {
-    protected $model = Document::class;
+    protected $model = File::class;
 
     /**
      * @return array<string, mixed>
@@ -28,7 +28,7 @@ class DocumentFactory extends Factory
         ];
     }
 
-    public function asRevisionOf(Document $document): static
+    public function asRevisionOf(File $document): static
     {
         return $this->state(fn () => [
             'revision_id' => $document->getKey(),

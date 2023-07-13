@@ -67,6 +67,10 @@ class ServiceProvider extends IlluminateServiceProvider
         ], ['creasi-config', 'creasi-base-config']);
 
         $this->publishes([
+            self::LIB_PATH.'/resources/assets' => \public_path('vendor/creasico'),
+        ], ['creasi-assets', 'creasi-base-assets', 'laravel-assets']);
+
+        $this->publishes([
             self::LIB_PATH.'/resources/lang' => \resource_path('lang/vendor/creasico'),
         ], ['creasi-lang']);
 

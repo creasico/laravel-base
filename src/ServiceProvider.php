@@ -4,7 +4,9 @@ namespace Creasi\Base;
 
 use Creasi\Base\Models\Address;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\ServiceProvider as IlluminateServiceProvider;
+use Laravel\Dusk\Browser;
 
 class ServiceProvider extends IlluminateServiceProvider
 {
@@ -12,15 +14,26 @@ class ServiceProvider extends IlluminateServiceProvider
 
     public function boot()
     {
+        /**
+         * While not in production, send all email tho the following address instead.
+         *
+         * @see https://laravel.com/docs/9.x/mail#using-a-global-to-address
+         */
+        if (! app()->environment('production') && $devMail = env('MAIL_DEVELOPMENT')) {
+            Mail::alwaysTo($devMail);
+        }
+
         if (app()->runningInConsole()) {
             $this->registerPublishables();
 
             $this->registerCommands();
         }
 
+        $this->loadMigrationsFrom(self::LIB_PATH.'/database/migrations');
+
         $this->loadTranslationsFrom(self::LIB_PATH.'/resources/lang', 'creasico');
 
-        $this->loadMigrationsFrom(self::LIB_PATH.'/database/migrations');
+        $this->loadViewsFrom(self::LIB_PATH.'/resources/views', 'creasico');
     }
 
     public function register()
@@ -39,7 +52,12 @@ class ServiceProvider extends IlluminateServiceProvider
             Factory::guessFactoryNamesUsing(function (string $modelName) {
                 return Factory::$namespace.\class_basename($modelName).'Factory';
             });
+
+            if (\class_exists(Browser::class)) {
+                $this->registerDuskMacroForInertia();
+            }
         }
+
     }
 
     protected function registerPublishables()
@@ -49,8 +67,12 @@ class ServiceProvider extends IlluminateServiceProvider
         ], ['creasi-config', 'creasi-base-config']);
 
         $this->publishes([
-            self::LIB_PATH.'/resources/lang' => \resource_path('vendor/creasico'),
-        ], 'creasi-lang');
+            self::LIB_PATH.'/resources/lang' => \resource_path('lang/vendor/creasico'),
+        ], ['creasi-lang']);
+
+        $this->publishes([
+            self::LIB_PATH.'/resources/views' => \resource_path('views/vendor/creasico'),
+        ], ['creasi-views']);
     }
 
     protected function registerCommands()
@@ -58,5 +80,24 @@ class ServiceProvider extends IlluminateServiceProvider
         $this->commands([
             // .
         ]);
+    }
+
+    /**
+     * Register inertia.js helper for dusk testing
+     *
+     * @see https://github.com/protonemedia/inertiajs-events-laravel-dusk
+     */
+    private function registerDuskMacroForInertia(): void
+    {
+        Browser::macro('waitForInertia', function (?int $seconds = null): Browser {
+            /** @var Browser $this */
+            $driver = $this->driver;
+
+            $currentCount = $driver->executeScript('return window.__inertiaNavigatedCount;');
+
+            return $this->waitUsing($seconds, 100, fn () => $driver->executeScript(
+                "return window.__inertiaNavigatedCount > {$currentCount};"
+            ), 'Waited %s seconds for Inertia.js to increase the navigate count.');
+        });
     }
 }

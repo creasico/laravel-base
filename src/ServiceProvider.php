@@ -3,8 +3,10 @@
 namespace Creasi\Base;
 
 use Creasi\Base\Models\Address;
+use Creasi\Base\View\Composers\TranslationsComposer;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider as IlluminateServiceProvider;
 use Laravel\Dusk\Browser;
 
@@ -27,13 +29,15 @@ class ServiceProvider extends IlluminateServiceProvider
             $this->registerPublishables();
 
             $this->registerCommands();
-        }
 
-        $this->loadMigrationsFrom(self::LIB_PATH.'/database/migrations');
+            $this->loadMigrationsFrom(self::LIB_PATH.'/database/migrations');
+        }
 
         $this->loadTranslationsFrom(self::LIB_PATH.'/resources/lang', 'creasico');
 
         $this->loadViewsFrom(self::LIB_PATH.'/resources/views', 'creasico');
+
+        $this->bootViewComposers();
     }
 
     public function register()
@@ -103,5 +107,10 @@ class ServiceProvider extends IlluminateServiceProvider
                 "return window.__inertiaNavigatedCount > {$currentCount};"
             ), 'Waited %s seconds for Inertia.js to increase the navigate count.');
         });
+    }
+
+    private function bootViewComposers(): void
+    {
+        View::composer('*', TranslationsComposer::class);
     }
 }

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f864ab80f6a3ccc1b225068d3df29db3",
+    "content-hash": "9f0e1ae07b067c4286611391ac606ad1",
     "packages": [
         {
             "name": "brick/math",
@@ -63,16 +63,16 @@
         },
         {
             "name": "creasi/laravel-nusa",
-            "version": "v0.0.5",
+            "version": "v0.0.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/creasico/laravel-nusa.git",
-                "reference": "dc0c560441c4bd0e5e4d904472d320fb81c0a4b9"
+                "reference": "f05df2495fd98d4677a92fd16f9fc0afe5f2d7d5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/creasico/laravel-nusa/zipball/dc0c560441c4bd0e5e4d904472d320fb81c0a4b9",
-                "reference": "dc0c560441c4bd0e5e4d904472d320fb81c0a4b9",
+                "url": "https://api.github.com/repos/creasico/laravel-nusa/zipball/f05df2495fd98d4677a92fd16f9fc0afe5f2d7d5",
+                "reference": "f05df2495fd98d4677a92fd16f9fc0afe5f2d7d5",
                 "shasum": ""
             },
             "require": {
@@ -128,7 +128,7 @@
                 "issues": "https://github.com/creasico/laravel-nusa/issues",
                 "source": "https://github.com/creasico/laravel-nusa"
             },
-            "time": "2023-07-07T06:00:45+00:00"
+            "time": "2023-07-14T22:53:04+00:00"
         },
         {
             "name": "dflydev/dot-access-data",

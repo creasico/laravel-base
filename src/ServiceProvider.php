@@ -35,8 +35,6 @@ class ServiceProvider extends IlluminateServiceProvider
 
         $this->loadTranslationsFrom(self::LIB_PATH.'/resources/lang', 'creasico');
 
-        $this->loadViewsFrom(self::LIB_PATH.'/resources/views', 'creasico');
-
         $this->bootViewComposers();
     }
 
@@ -77,10 +75,6 @@ class ServiceProvider extends IlluminateServiceProvider
         $this->publishes([
             self::LIB_PATH.'/resources/lang' => \resource_path('lang/vendor/creasico'),
         ], ['creasi-lang']);
-
-        $this->publishes([
-            self::LIB_PATH.'/resources/views' => \resource_path('views/vendor/creasico'),
-        ], ['creasi-views']);
     }
 
     protected function registerCommands()

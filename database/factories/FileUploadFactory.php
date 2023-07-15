@@ -2,16 +2,17 @@
 
 namespace Database\Factories;
 
-use Creasi\Base\Models\File;
+use Creasi\Base\Models\FileUpload;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Http\Testing\File;
 use Illuminate\Support\Str;
 
 /**
- * @extends Factory<File>
+ * @extends Factory<FileUpload>
  */
-class FileFactory extends Factory
+class FileUploadFactory extends Factory
 {
-    protected $model = File::class;
+    protected $model = FileUpload::class;
 
     /**
      * @return array<string, mixed>
@@ -21,17 +22,17 @@ class FileFactory extends Factory
         return [
             'revision_id' => null,
             'title' => $title = $this->faker->word(),
-            'name' => Str::slug($title),
-            'path' => null,
+            'name' => $name = Str::slug($title),
+            'path' => File::fake()->create($name)->path(),
             'drive' => null,
             'summary' => $this->faker->sentence(4),
         ];
     }
 
-    public function asRevisionOf(File $document): static
+    public function asRevisionOf(FileUpload $file): static
     {
         return $this->state(fn () => [
-            'revision_id' => $document->getKey(),
+            'revision_id' => $file->getKey(),
         ]);
     }
 }

@@ -2,8 +2,9 @@
 
 namespace Creasi\Base\Models;
 
+use Creasi\Base\Contracts\HasFileUploads;
 use Creasi\Base\Contracts\Contactable;
-use Creasi\Base\Models\Concerns\HasDocuments;
+use Creasi\Base\Models\Concerns\WithFileUploads;
 use Creasi\Base\Models\Enums\CompanyRelativeType;
 use Creasi\Nusa\Contracts\Addressable;
 use Creasi\Nusa\Support\HasAddresses;
@@ -20,10 +21,10 @@ use Creasi\Nusa\Support\HasAddresses;
  *
  * @method static \Database\Factories\CompanyFactory<static> factory()
  */
-class Company extends Model implements Addressable, Contactable
+class Company extends Model implements Addressable, Contactable, HasFileUploads
 {
     use HasAddresses;
-    use HasDocuments;
+    use WithFileUploads;
 
     protected $fillable = [
         'code',

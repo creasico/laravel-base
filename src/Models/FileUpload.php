@@ -13,13 +13,14 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property null|string $drive
  * @property null|string $summary
  * @property-read \Illuminate\Database\Eloquent\Collection<int, static> $revisions
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, FileAttached> $attaches
  * @property-read null|static $revisionOf
  * @property-read \Illuminate\Database\Eloquent\Collection<int, Company> $ownedByCompanies
  * @property-read \Illuminate\Database\Eloquent\Collection<int, Personnel> $ownedByPersonnels
  *
- * @method static \Database\Factories\FileFactory<static> factory()
+ * @method static \Database\Factories\FileUploadFactory<static> factory()
  */
-class File extends Model
+class FileUpload extends Model
 {
     use HasUuids;
     use SoftDeletes;
@@ -39,7 +40,7 @@ class File extends Model
 
     protected function attachedTo(string $owner)
     {
-        return $this->morphedByMany($owner, 'attached_to', 'file_attached', 'file_id')
+        return $this->morphedByMany($owner, 'attached_to', 'file_attached', 'file_upload_id')
             ->as('attachments');
     }
 
@@ -62,6 +63,14 @@ class File extends Model
     }
 
     /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany|FileAttached
+     */
+    public function attaches()
+    {
+        return $this->hasMany(FileAttached::class);
+    }
+
+    /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo|static
      */
     public function revisionOf()
@@ -71,12 +80,21 @@ class File extends Model
 
     public function addRevision(string $filePath, ?string $name = null, ?string $summary = null): static
     {
-        return $this->revisions()->create([
+        /** @var static */
+        $revision = $this->revisions()->create([
             'title' => $this->title,
             'drive' => $this->drive,
             'name' => $name ?: $this->name,
             'path' => $filePath,
             'summary' => $summary,
         ]);
+
+        foreach ($this->attaches as $model) {
+            $model->attachedTo->files()->sync($revision);
+        }
+
+        $this->refresh();
+
+        return $revision;
     }
 }

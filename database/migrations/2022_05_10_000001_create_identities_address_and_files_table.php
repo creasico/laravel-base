@@ -51,13 +51,13 @@ return new class extends Migration
             $table->softDeletes();
         });
 
-        Schema::create('files', function (Blueprint $table) {
+        Schema::create('file_uploads', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->uuid('revision_id')->nullable();
 
             $table->string('title')->nullable();
-            $table->string('name');
-            $table->string('path')->nullable();
+            $table->string('name')->nullable();
+            $table->string('path');
             $table->string('drive')->nullable();
             $table->string('summary')->nullable();
 
@@ -65,12 +65,12 @@ return new class extends Migration
             $table->softDeletes();
         });
 
-        Schema::table('files', function (Blueprint $table) {
-            $table->foreign('revision_id')->references('id')->on('files')->nullOnDelete();
+        Schema::table('file_uploads', function (Blueprint $table) {
+            $table->foreign('revision_id')->references('id')->on('file_uploads')->nullOnDelete();
         });
 
         Schema::create('file_attached', function (Blueprint $table) {
-            $table->foreignUuid('file_id')->constrained()->cascadeOnDelete();
+            $table->foreignUuid('file_upload_id')->constrained('file_uploads')->cascadeOnDelete();
             $table->nullableMorphs('attached_to');
         });
     }
@@ -81,7 +81,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::dropIfExists('file_attached');
-        Schema::dropIfExists('files');
+        Schema::dropIfExists('file_uploads');
         Schema::dropIfExists('addresses');
         Schema::dropIfExists('identities');
     }

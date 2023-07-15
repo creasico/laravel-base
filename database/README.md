@@ -56,9 +56,9 @@ erDiagram
         text remark
     }
 
-    files ||--|| file_attached : attachments
-    files ||--o{ files : revisions
-    files {
+    file_uploads ||--|| file_attached : attachments
+    file_uploads ||--o{ file_uploads : revisions
+    file_uploads {
         unsignedBigInt id PK
         unsignedBigInt revision_id FK
         string title
@@ -70,7 +70,7 @@ erDiagram
     companies }o..|| file_attached : uploadedFiles
     personnels }o..|| file_attached : uploadedFiles
     file_attached {
-        unsignedBigInt file_id FK
+        unsignedBigInt file_upload_id FK
         morph attached_to
     }
 
@@ -367,7 +367,7 @@ classDiagram
     }
 ```
 
-### `files`
+### `file_uploads`
 
 | Field | Attribute | Key | Description |
 | --- | --- | :---: | --- |
@@ -384,14 +384,14 @@ classDiagram
 - `softDeletes`
 
 **Relation Properties**
-- `revision_id` : reference `files`
+- `revision_id` : reference `file_uploads`
 
 ### `file_attached` (pivot)
 
 | Field | Attribute | Key | Description |
 | --- | --- | :---: | --- |
-| `file_id` | `uuid` | `foreign` | - |
+| `file_upload_id` | `uuid` | `foreign` | - |
 | `attached_to` | `morphs`, `nullable` | | - |
 
 **Relation Properties**
-- `file_id` : reference `files`
+- `file_upload_id` : reference `file_uploads`

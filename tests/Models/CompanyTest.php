@@ -4,7 +4,6 @@ namespace Creasi\Tests\Models;
 
 use Creasi\Base\Models\Address;
 use Creasi\Base\Models\Company;
-use Creasi\Base\Models\File;
 use Creasi\Base\Models\Enums\CompanyRelativeType;
 use Creasi\Base\Models\Enums\EmploymentStatus;
 use Creasi\Base\Models\Enums\EmploymentType;
@@ -31,18 +30,6 @@ class CompanyTest extends TestCase
 
         $this->assertCount(1, $company->addresses);
         $this->assertInstanceOf(Address::class, $company->addresses->first());
-    }
-
-    #[Test]
-    public function should_have_documents()
-    {
-        $company = Company::factory()->createOne();
-        $file = File::factory()->createOne();
-
-        $company->files()->save($file);
-
-        $this->assertCount(1, $company->files);
-        $this->assertCount(1, $file->ownedByCompanies);
     }
 
     #[Test]

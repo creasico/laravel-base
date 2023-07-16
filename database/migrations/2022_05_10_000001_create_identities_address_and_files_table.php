@@ -25,7 +25,6 @@ return new class extends Migration
             $table->string('education', 3)->nullable();
             $table->unsignedTinyInteger('religion')->nullable();
             $table->string('phone_number', 20)->nullable();
-            $table->string('photo_path')->nullable();
             $table->text('summary')->nullable();
 
             $table->timestamps();
@@ -58,7 +57,8 @@ return new class extends Migration
             $table->string('title')->nullable();
             $table->string('name')->nullable();
             $table->string('path');
-            $table->string('drive')->nullable();
+            $table->unsignedSmallInteger('type')->nullable();
+            $table->string('disk')->nullable();
             $table->string('summary')->nullable();
 
             $table->timestamps();

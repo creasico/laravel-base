@@ -4,6 +4,7 @@ namespace Creasi\Base\Models;
 
 use Creasi\Base\Contracts\HasFileUploads;
 use Creasi\Base\Contracts\Contactable;
+use Creasi\Base\Models\Concerns\HasAvatar;
 use Creasi\Base\Models\Concerns\WithFileUploads;
 use Creasi\Base\Models\Enums\CompanyRelativeType;
 use Creasi\Nusa\Contracts\Addressable;
@@ -24,6 +25,7 @@ use Creasi\Nusa\Support\HasAddresses;
 class Company extends Model implements Addressable, Contactable, HasFileUploads
 {
     use HasAddresses;
+    use HasAvatar;
     use WithFileUploads;
 
     protected $fillable = [
@@ -31,7 +33,6 @@ class Company extends Model implements Addressable, Contactable, HasFileUploads
         'name',
         'email',
         'phone_number',
-        'logo_path',
         'summary',
     ];
 

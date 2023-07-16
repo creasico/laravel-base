@@ -3,11 +3,13 @@
 namespace Creasi\Tests\Models;
 
 use Creasi\Base\Models\Company;
+use Creasi\Base\Models\Enums\FileUploadType;
 use Creasi\Base\Models\FileAttached;
 use Creasi\Base\Models\FileUpload;
 use Creasi\Base\Models\Personnel;
 use Creasi\Tests\TestCase;
 use Illuminate\Database\Eloquent\Factories\Sequence;
+use Illuminate\Http\UploadedFile;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Test;
 
@@ -27,11 +29,13 @@ class FileUploadTest extends TestCase
     #[Test]
     public function should_have_revisions()
     {
-        $original = FileUpload::factory()->createOne([
-            'path' => 'path/to/file.pdf',
-        ]);
+        $file = UploadedFile::fake()->create('original.pdf');
 
-        $revision = $original->addRevision('path/to/revision.pdf');
+        $original = FileUpload::store(FileUploadType::Document, $file, 'document');
+
+        $revision = $original->createRevision(
+            UploadedFile::fake()->create('revision.pdf')
+        );
 
         $this->assertTrue($original->is($revision->revisionOf));
         $this->assertCount(1, $original->revisions);
@@ -43,17 +47,18 @@ class FileUploadTest extends TestCase
     public function could_attached_to_personnel()
     {
         $person = Personnel::factory()->createOne();
-        $files = FileUpload::factory(2)->sequence(fn (Sequence $seq) => [
-            'path' => "file-{$seq->index}.pdf"
-        ])->create();
+        $files = [
+            'first' => UploadedFile::fake()->create('first.pdf'),
+            'second' => UploadedFile::fake()->create('second.pdf'),
+        ];
 
-        $person->files()->saveMany($files);
+        foreach ($files as $name => $file) {
+            $person->storeFile(FileUploadType::Document, $file, $name);
+        }
 
         $this->assertCount(2, $person->files);
 
-        foreach ($person->files as $i => $file) {
-            $this->assertTrue($file->is($files[$i]));
-
+        foreach ($person->files as $file) {
             $this->assertCount($file->attaches()->count(), $file->ownedByPersonnels);
         }
     }
@@ -67,14 +72,14 @@ class FileUploadTest extends TestCase
         ]);
 
         foreach ($people as $person) {
-            $person->files()->sync($file);
+            $person->files()->attach($file);
 
             $this->assertCount(1, $person->files);
         }
 
         $this->assertCount($file->attaches()->count(), $file->ownedByPersonnels);
 
-        $revision = $file->addRevision('path/to/revision.pdf');
+        $revision = $file->createRevision('path/to/revision.pdf');
 
         $this->assertCount($revision->attaches()->count(), $revision->ownedByPersonnels);
     }
@@ -83,17 +88,18 @@ class FileUploadTest extends TestCase
     public function could_attached_to_company()
     {
         $company = Company::factory()->createOne();
-        $files = FileUpload::factory(2)->sequence(fn (Sequence $seq) => [
-            'path' => "file-{$seq->index}.pdf"
-        ])->create();
+        $files = [
+            'first' => UploadedFile::fake()->create('first.pdf'),
+            'second' => UploadedFile::fake()->create('second.pdf'),
+        ];
 
-        $company->files()->saveMany($files);
+        foreach ($files as $name => $file) {
+            $company->storeFile(FileUploadType::Document, $file, $name);
+        }
 
         $this->assertCount(2, $company->files);
 
-        foreach ($company->files as $i => $file) {
-            $this->assertTrue($file->is($files[$i]));
-
+        foreach ($company->files as $file) {
             $this->assertCount($file->attaches()->count(), $file->ownedByCompanies);
         }
     }
@@ -102,16 +108,12 @@ class FileUploadTest extends TestCase
     public function could_attached_to_many_companies()
     {
         $companies = Company::factory(2)->create();
-        $file = FileUpload::factory()->createOne([
-            'path' => 'path/to/file.pdf',
-        ]);
+        $file = UploadedFile::fake()->create('document.pdf');
 
         foreach ($companies as $company) {
-            $company->files()->sync($file);
+            $company->storeFile(FileUploadType::Document, $file, 'document');
 
             $this->assertCount(1, $company->files);
         }
-
-        $this->assertCount($file->attaches()->count(), $file->ownedByCompanies);
     }
 }

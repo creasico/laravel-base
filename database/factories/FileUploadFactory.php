@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use Creasi\Base\Models\Enums\FileUploadType;
 use Creasi\Base\Models\FileUpload;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Http\Testing\File;
@@ -24,7 +25,8 @@ class FileUploadFactory extends Factory
             'title' => $title = $this->faker->word(),
             'name' => $name = Str::slug($title),
             'path' => File::fake()->create($name)->path(),
-            'drive' => null,
+            'type' => $this->faker->randomElement(FileUploadType::cases()),
+            'disk' => null,
             'summary' => $this->faker->sentence(4),
         ];
     }

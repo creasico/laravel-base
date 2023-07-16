@@ -25,7 +25,6 @@ class PersonnelFactory extends Factory
             'name' => $this->faker->firstName(),
             'email' => $this->faker->safeEmail(),
             'phone_number' => '08'.$this->faker->numerify('##########'),
-            'photo_path' => null,
             'summary' => $this->faker->sentence(4),
         ];
     }

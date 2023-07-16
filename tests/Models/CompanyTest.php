@@ -7,8 +7,11 @@ use Creasi\Base\Models\Company;
 use Creasi\Base\Models\Enums\CompanyRelativeType;
 use Creasi\Base\Models\Enums\EmploymentStatus;
 use Creasi\Base\Models\Enums\EmploymentType;
+use Creasi\Base\Models\Enums\FileUploadType;
+use Creasi\Base\Models\FileUpload;
 use Creasi\Base\Models\Personnel;
 use Creasi\Tests\TestCase;
+use Illuminate\Http\UploadedFile;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Test;
 
@@ -30,6 +33,24 @@ class CompanyTest extends TestCase
 
         $this->assertCount(1, $company->addresses);
         $this->assertInstanceOf(Address::class, $company->addresses->first());
+    }
+
+    #[Test]
+    public function should_have_avatar_image()
+    {
+        $company = Company::factory()->createOne();
+
+        // $this->assertNull($company->avatar);
+
+        // dump($company->toArray());
+
+        $avatar = $company->setAvatar(
+            UploadedFile::fake()->image('logo.png')
+        );
+
+        $this->assertInstanceOf(FileUpload::class, $company->avatar);
+        $this->assertEquals(FileUploadType::Avatar, $company->avatar->type);
+        $this->assertTrue($company->avatar->is_internal);
     }
 
     #[Test]

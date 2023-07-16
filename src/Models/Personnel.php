@@ -4,6 +4,7 @@ namespace Creasi\Base\Models;
 
 use Creasi\Base\Contracts\HasFileUploads;
 use Creasi\Base\Contracts\Contactable;
+use Creasi\Base\Models\Concerns\HasAvatar;
 use Creasi\Base\Models\Concerns\WithFileUploads;
 use Creasi\Base\Models\Concerns\HasIdentity;
 use Creasi\Base\Models\Enums\PersonnelRelativeStatus;
@@ -21,6 +22,7 @@ use Creasi\Nusa\Support\HasAddresses;
 class Personnel extends Model implements Addressable, Contactable, HasFileUploads
 {
     use HasAddresses;
+    use HasAvatar;
     use HasIdentity;
     use WithFileUploads;
 
@@ -29,7 +31,6 @@ class Personnel extends Model implements Addressable, Contactable, HasFileUpload
         'name',
         'email',
         'phone_number',
-        'photo_path',
         'summary',
     ];
 

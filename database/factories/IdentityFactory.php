@@ -39,7 +39,6 @@ class IdentityFactory extends Factory
             'education' => $this->faker->randomElement(Education::cases()),
             'gender' => $gender,
             'religion' => $this->faker->randomElement(Religion::cases()),
-            'photo_path' => null,
             'summary' => $this->faker->sentence(4),
         ];
     }

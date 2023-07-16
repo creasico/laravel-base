@@ -23,7 +23,6 @@ class CompanyFactory extends Factory
             'name' => $this->faker->company(),
             'email' => $this->faker->safeEmail(),
             'phone_number' => '08'.$this->faker->numerify('##########'),
-            'logo_path' => null,
             'summary' => $this->faker->sentence(4),
         ];
     }

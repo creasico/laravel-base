@@ -18,7 +18,6 @@ return new class extends Migration
             $table->string('name');
             $table->string('email')->unique()->nullable();
             $table->string('phone_number', 20)->nullable();
-            $table->string('logo_path')->nullable();
             $table->text('summary')->nullable();
 
             $table->timestamps();
@@ -42,7 +41,6 @@ return new class extends Migration
             $table->string('name');
             $table->string('email')->unique()->nullable();
             $table->string('phone_number', 20)->nullable();
-            $table->string('photo_path')->nullable();
             $table->text('summary')->nullable();
 
             $table->timestamps();

@@ -7,8 +7,8 @@ use Creasi\Base\Contracts\Contactable;
 use Creasi\Base\Models\Concerns\HasAvatar;
 use Creasi\Base\Models\Concerns\WithFileUploads;
 use Creasi\Base\Models\Enums\CompanyRelativeType;
-use Creasi\Nusa\Contracts\Addressable;
-use Creasi\Nusa\Support\HasAddresses;
+use Creasi\Nusa\Contracts\HasAddresses;
+use Creasi\Nusa\Models\Concerns\WithAddresses;
 
 /**
  * @property null|bool $is_internal
@@ -22,10 +22,10 @@ use Creasi\Nusa\Support\HasAddresses;
  *
  * @method static \Database\Factories\CompanyFactory<static> factory()
  */
-class Company extends Model implements Addressable, Contactable, HasFileUploads
+class Company extends Model implements HasAddresses, Contactable, HasFileUploads
 {
-    use HasAddresses;
     use HasAvatar;
+    use WithAddresses;
     use WithFileUploads;
 
     protected $fillable = [

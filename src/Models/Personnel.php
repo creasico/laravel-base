@@ -8,8 +8,8 @@ use Creasi\Base\Models\Concerns\HasAvatar;
 use Creasi\Base\Models\Concerns\WithFileUploads;
 use Creasi\Base\Models\Concerns\HasIdentity;
 use Creasi\Base\Models\Enums\PersonnelRelativeStatus;
-use Creasi\Nusa\Contracts\Addressable;
-use Creasi\Nusa\Support\HasAddresses;
+use Creasi\Nusa\Contracts\HasAddresses;
+use Creasi\Nusa\Models\Concerns\WithAddresses;
 
 /**
  * @property ?string $photo_path
@@ -19,11 +19,11 @@ use Creasi\Nusa\Support\HasAddresses;
  *
  * @method static \Database\Factories\PersonnelFactory<static> factory()
  */
-class Personnel extends Model implements Addressable, Contactable, HasFileUploads
+class Personnel extends Model implements HasAddresses, Contactable, HasFileUploads
 {
-    use HasAddresses;
     use HasAvatar;
     use HasIdentity;
+    use WithAddresses;
     use WithFileUploads;
 
     protected $fillable = [

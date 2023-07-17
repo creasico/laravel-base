@@ -1,6 +1,7 @@
 <?php
 
 use Creasi\Base\Http\Controllers;
+use Creasi\Base\Models\Enums\CompanyRelativeType;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,17 +16,33 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::middleware('auth:sanctum')->group(function () {
-    Route::apiResource('companies', Controllers\CompanyController::class);
+    Route::apiResource('companies', Controllers\CompanyController::class)->withTrashed();
+    Route::apiResource('employees', Controllers\EmployeeController::class);
 
-    Route::controller(Controllers\Account\HomeController::class)->group(function () {
-        Route::get('account', 'show')->name('account.home');
-        Route::put('account', 'update');
-    });
-
-    Route::controller(Controllers\Account\SettingController::class)->group(function () {
-        Route::get('account/settings', 'show')->name('account.settings');
-        Route::put('account/settings', 'update');
-    });
+    Route::apiSingleton('profile', Controllers\ProfileController::class);
+    Route::apiSingleton('setting', Controllers\SettingController::class);
 
     Route::get('supports', Controllers\SupportController::class)->name('supports.home');
+
+    foreach (['companies', 'employees'] as $entity) {
+        Route::apiResources([
+            "{$entity}.addresses" => Controllers\AddressController::class,
+            "{$entity}.files" => Controllers\FileUploadController::class,
+        ], [
+            'parameters' => [$entity => 'entity'],
+            'shallow' => true,
+        ]);
+    }
+
+    foreach (CompanyRelativeType::cases() as $stakeholder) {
+        if ($stakeholder->isInternal()) {
+            continue;
+        }
+
+        $route = $stakeholder->key()->plural();
+
+        Route::apiResource($route, Controllers\StakeholderController::class)->parameters([
+            (string) $route => 'stakeholder'
+        ]);
+    }
 });

@@ -1,6 +1,6 @@
 <?php
 
-namespace Creasi\Base\Http\Requests\Company;
+namespace Creasi\Base\Http\Requests\Stakeholder;
 
 use Creasi\Base\Http\Requests\FormRequest;
 

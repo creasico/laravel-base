@@ -7,7 +7,7 @@ use Illuminate\Foundation\Http\FormRequest as IlluminateFormRequest;
 /**
  * @method \Creasi\Base\Models\User|null user()
  */
-class FormRequest extends IlluminateFormRequest
+abstract class FormRequest extends IlluminateFormRequest
 {
     // .
 }

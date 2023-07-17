@@ -1,16 +1,16 @@
 <?php
 
-namespace Creasi\Base\Http\Requests\Company;
+namespace Creasi\Base\Http\Requests;
 
-use Creasi\Base\Http\Requests\FormRequest;
-
-class StoreRequest extends FormRequest
+class SettingRequest extends FormRequest
 {
     /**
      * @return array<string, array>
      */
     public function rules(): array
     {
+        $user = $this->user();
+
         return [
             // .
         ];

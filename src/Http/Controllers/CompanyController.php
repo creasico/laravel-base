@@ -4,7 +4,8 @@ namespace Creasi\Base\Http\Controllers;
 
 use Creasi\Base\Http\Requests\Company\StoreRequest;
 use Creasi\Base\Http\Requests\Company\UpdateRequest;
-use Creasi\Base\Http\Resources\CompanyResource;
+use Creasi\Base\Http\Resources\Company\CompanyCollection;
+use Creasi\Base\Http\Resources\Company\CompanyResource;
 use Creasi\Base\Models\Company;
 use Illuminate\Http\Request;
 
@@ -24,7 +25,7 @@ class CompanyController extends Controller
             ->where('id', '<>', $request->user()->id)
             ->latest();
 
-        return CompanyResource::collection($users->paginate());
+        return new CompanyCollection($users->paginate());
     }
 
     /**

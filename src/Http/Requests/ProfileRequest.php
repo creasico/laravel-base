@@ -1,10 +1,8 @@
 <?php
 
-namespace Creasi\Base\Http\Requests\Company;
+namespace Creasi\Base\Http\Requests;
 
-use Creasi\Base\Http\Requests\FormRequest;
-
-class StoreRequest extends FormRequest
+class ProfileRequest extends FormRequest
 {
     /**
      * @return array<string, array>

@@ -1,6 +1,6 @@
 <?php
 
-namespace Creasi\Base\Http\Requests\Company;
+namespace Creasi\Base\Http\Requests\Employee;
 
 use Creasi\Base\Http\Requests\FormRequest;
 

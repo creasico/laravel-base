@@ -2,11 +2,13 @@
 
 namespace Creasi\Tests;
 
+use Creasi\Base\Models\User;
 use Creasi\Base\ServiceProvider;
 use Creasi\Nusa\ServiceProvider as NusaServiceProvider;
 use Illuminate\Contracts\Config\Repository;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Laravel\Sanctum\SanctumServiceProvider;
 use Orchestra\Testbench\TestCase as Orchestra;
 
 class TestCase extends Orchestra
@@ -22,6 +24,7 @@ class TestCase extends Orchestra
         return [
             ServiceProvider::class,
             NusaServiceProvider::class,
+            SanctumServiceProvider::class,
         ];
     }
 
@@ -35,6 +38,10 @@ class TestCase extends Orchestra
         tap($app->make('config'), function (Repository $config) {
             $config->set('app.locale', 'id');
             $config->set('app.faker_locale', 'id_ID');
+
+            $this->mergeConfig($config, 'auth.providers.users', [
+                'model' => User::class,
+            ]);
 
             $conn = env('DB_CONNECTION', 'sqlite');
 

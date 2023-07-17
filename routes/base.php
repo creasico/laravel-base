@@ -1,6 +1,6 @@
 <?php
 
-use Creasi\Base\Http\Controllers\CompanyController;
+use Creasi\Base\Http\Controllers;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,4 +14,18 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::apiResource('companies', CompanyController::class);
+Route::middleware('auth:sanctum')->group(function () {
+    Route::apiResource('companies', Controllers\CompanyController::class);
+
+    Route::controller(Controllers\Account\HomeController::class)->group(function () {
+        Route::get('account', 'show')->name('account.home');
+        Route::put('account', 'update');
+    });
+
+    Route::controller(Controllers\Account\SettingController::class)->group(function () {
+        Route::get('account/settings', 'show')->name('account.settings');
+        Route::put('account/settings', 'update');
+    });
+
+    Route::get('supports', Controllers\SupportController::class)->name('supports.home');
+});

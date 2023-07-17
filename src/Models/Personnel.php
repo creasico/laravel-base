@@ -6,7 +6,7 @@ use Creasi\Base\Contracts\HasFileUploads;
 use Creasi\Base\Contracts\Contactable;
 use Creasi\Base\Models\Concerns\HasAvatar;
 use Creasi\Base\Models\Concerns\WithFileUploads;
-use Creasi\Base\Models\Concerns\HasIdentity;
+use Creasi\Base\Models\Concerns\WithIdentity;
 use Creasi\Base\Models\Enums\PersonnelRelativeStatus;
 use Creasi\Nusa\Contracts\HasAddresses;
 use Creasi\Nusa\Models\Concerns\WithAddresses;
@@ -22,9 +22,9 @@ use Creasi\Nusa\Models\Concerns\WithAddresses;
 class Personnel extends Model implements HasAddresses, Contactable, HasFileUploads
 {
     use HasAvatar;
-    use HasIdentity;
     use WithAddresses;
     use WithFileUploads;
+    use WithIdentity;
 
     protected $fillable = [
         'code',

@@ -7,9 +7,9 @@ use Creasi\Base\Models\Identity;
 /**
  * @property-read ?Identity $identity
  *
- * @mixin \Illuminate\Database\Eloquent\Model
+ * @mixin \Creasi\Base\Contracts\HasIdentity
  */
-trait HasIdentity
+trait WithIdentity
 {
     /**
      * @return \Illuminate\Database\Eloquent\Relations\MorphOne|Identity

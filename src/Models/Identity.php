@@ -2,6 +2,7 @@
 
 namespace Creasi\Base\Models;
 
+use Creasi\Base\Contracts\Identity as IdentityContract;
 use Creasi\Base\Models\Enums\Education;
 use Creasi\Base\Models\Enums\Gender;
 use Creasi\Base\Models\Enums\Religion;
@@ -19,13 +20,12 @@ use Creasi\Nusa\Models\Regency;
  * @property null|Religion $religion
  * @property null|string $photo_path
  * @property null|string $summary
- * @property-read null|Model|\Creasi\Base\Contracts\Contactable $profile
  * @property-read null|User $user
  * @property-read null|Regency $birthPlace
  *
  * @method static \Database\Factories\IdentityFactory<static> factory()
  */
-class Identity extends Model
+class Identity extends Model implements IdentityContract
 {
     protected $fillable = [
         'nik',

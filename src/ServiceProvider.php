@@ -80,7 +80,6 @@ class ServiceProvider extends IlluminateServiceProvider
             /** @var \Illuminate\Routing\Router */
             $router = $app->make('router');
 
-            dd($router->is('companies.addresses.*'));
             return $app->make(Employee::class);
         });
 

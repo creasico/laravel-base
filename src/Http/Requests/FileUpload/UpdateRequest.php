@@ -11,10 +11,12 @@ class UpdateRequest extends FormRequest
      */
     public function rules(): array
     {
-        $user = $this->user();
-
         return [
-            // .
+            'title' => ['required', 'string'],
+            'name' => ['required', 'string'],
+            'path' => ['required', 'string'],
+            'upload' => ['nullable', 'file'],
+            'summary' => ['nullable', 'string'],
         ];
     }
 }

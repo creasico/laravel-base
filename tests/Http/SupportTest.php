@@ -2,7 +2,6 @@
 
 namespace Creasi\Tests\Http;
 
-use Creasi\Base\Models\User;
 use Creasi\Tests\TestCase;
 use Laravel\Sanctum\Sanctum;
 use PHPUnit\Framework\Attributes\Group;
@@ -13,9 +12,9 @@ use PHPUnit\Framework\Attributes\Test;
 class SupportTest extends TestCase
 {
     #[Test]
-    public function should_be_exists(): void
+    public function should_able_to_retrieve_supports_data(): void
     {
-        Sanctum::actingAs(User::factory()->createOne());
+        Sanctum::actingAs($this->user());
 
         $response = $this->getJson('base/supports');
 

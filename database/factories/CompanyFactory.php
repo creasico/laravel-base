@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use Creasi\Base\Models\Address;
 use Creasi\Base\Models\Company;
+use Creasi\Base\Models\FileUpload;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -30,5 +31,10 @@ class CompanyFactory extends Factory
     public function withAddress(): static
     {
         return $this->has(Address::factory());
+    }
+
+    public function withFileUpload(): static
+    {
+        return $this->has(FileUpload::factory(), 'files');
     }
 }

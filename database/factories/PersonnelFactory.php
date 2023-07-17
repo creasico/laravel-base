@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use Creasi\Base\Models\Address;
 use Creasi\Base\Models\Enums\Gender;
+use Creasi\Base\Models\FileUpload;
 use Creasi\Base\Models\Identity;
 use Creasi\Base\Models\Personnel;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -39,5 +40,10 @@ class PersonnelFactory extends Factory
     public function withAddress(): static
     {
         return $this->has(Address::factory());
+    }
+
+    public function withFileUpload(): static
+    {
+        return $this->has(FileUpload::factory(), 'files');
     }
 }

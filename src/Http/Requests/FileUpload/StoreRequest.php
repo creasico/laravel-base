@@ -5,6 +5,7 @@ namespace Creasi\Base\Http\Requests\FileUpload;
 use Creasi\Base\Contracts\HasFileUploads;
 use Creasi\Base\Http\Requests\FormRequest;
 use Creasi\Base\Models\Enums\FileUploadType;
+use Illuminate\Validation\Rule;
 
 class StoreRequest extends FormRequest
 {
@@ -14,18 +15,25 @@ class StoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            // .
+            'title' => ['required', 'string'],
+            'name' => ['required', 'string'],
+            'type' => ['required', Rule::enum(FileUploadType::class)],
+            'upload' => ['nullable', 'file'],
+            'summary' => ['nullable', 'string'],
         ];
     }
 
     public function storeFor(HasFileUploads $entity)
     {
+        /** @var FileUploadType */
+        $type = $this->enum('type', FileUploadType::class);
+
         return $entity->storeFile(
-            FileUploadType::Document,
+            $type,
             $this->file('upload'),
-            $this->input('name'),
-            $this->input('title'),
-            $this->input('summary'),
+            $this->name,
+            $this->title,
+            $this->summary,
         );
     }
 }

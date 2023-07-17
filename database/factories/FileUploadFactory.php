@@ -37,4 +37,11 @@ class FileUploadFactory extends Factory
             'revision_id' => $file->getKey(),
         ]);
     }
+
+    public function withoutFile(): static
+    {
+        return $this->state(fn () => [
+            'path' => null,
+        ]);
+    }
 }

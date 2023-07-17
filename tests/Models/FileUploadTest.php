@@ -4,11 +4,9 @@ namespace Creasi\Tests\Models;
 
 use Creasi\Base\Models\Company;
 use Creasi\Base\Models\Enums\FileUploadType;
-use Creasi\Base\Models\FileAttached;
 use Creasi\Base\Models\FileUpload;
 use Creasi\Base\Models\Personnel;
 use Creasi\Tests\TestCase;
-use Illuminate\Database\Eloquent\Factories\Sequence;
 use Illuminate\Http\UploadedFile;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Test;

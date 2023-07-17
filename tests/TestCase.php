@@ -2,6 +2,9 @@
 
 namespace Creasi\Tests;
 
+use Closure;
+use Creasi\Base\Models\Company;
+use Creasi\Base\Models\Personnel;
 use Creasi\Base\Models\User;
 use Creasi\Base\ServiceProvider;
 use Creasi\Nusa\ServiceProvider as NusaServiceProvider;
@@ -16,6 +19,16 @@ class TestCase extends Orchestra
     use RefreshDatabase;
     use DatabaseMigrations;
 
+    private ?User $currentUser = null;
+
+    final public static function entities()
+    {
+        return [
+            'company' => ['companies', Company::class],
+            'employee' => ['employees', Personnel::class],
+        ];
+    }
+
     /**
      * @param  \Illuminate\Foundation\Application  $app
      */
@@ -26,6 +39,15 @@ class TestCase extends Orchestra
             NusaServiceProvider::class,
             SanctumServiceProvider::class,
         ];
+    }
+
+    final protected function user(array|Closure $attrs = []): User
+    {
+        if (! $this->currentUser?->exists) {
+            $this->currentUser = User::factory()->createOne($attrs);
+        }
+
+        return $this->currentUser;
     }
 
     /**

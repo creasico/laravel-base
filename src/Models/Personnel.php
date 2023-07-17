@@ -3,7 +3,9 @@
 namespace Creasi\Base\Models;
 
 use Creasi\Base\Contracts\HasFileUploads;
-use Creasi\Base\Contracts\Contactable;
+use Creasi\Base\Contracts\Entity;
+use Creasi\Base\Contracts\Employee;
+use Creasi\Base\Contracts\Stakeholder;
 use Creasi\Base\Models\Concerns\HasAvatar;
 use Creasi\Base\Models\Concerns\WithFileUploads;
 use Creasi\Base\Models\Concerns\WithIdentity;
@@ -19,7 +21,7 @@ use Creasi\Nusa\Models\Concerns\WithAddresses;
  *
  * @method static \Database\Factories\PersonnelFactory<static> factory()
  */
-class Personnel extends Model implements HasAddresses, Contactable, HasFileUploads
+class Personnel extends Model implements Employee, Entity, HasAddresses, HasFileUploads, Stakeholder
 {
     use HasAvatar;
     use WithAddresses;

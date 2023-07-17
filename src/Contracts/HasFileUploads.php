@@ -3,6 +3,7 @@
 namespace Creasi\Base\Contracts;
 
 use Creasi\Base\Models\Enums\FileUploadType;
+use Creasi\Base\Models\FileUpload;
 use Illuminate\Http\UploadedFile;
 
 /**
@@ -24,5 +25,5 @@ interface HasFileUploads
         ?string $title = null,
         ?string $summary = null,
         ?string $disk = null,
-    );
+    ): FileUpload;
 }

@@ -9,7 +9,7 @@ namespace Creasi\Base\Contracts;
  * @property null|string $phone_number
  * @property null|string $summary
  */
-interface Contactable
+interface Entity
 {
     //
 }

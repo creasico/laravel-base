@@ -3,7 +3,8 @@
 namespace Creasi\Base\Models;
 
 use Creasi\Base\Contracts\HasFileUploads;
-use Creasi\Base\Contracts\Contactable;
+use Creasi\Base\Contracts\Entity;
+use Creasi\Base\Contracts\Stakeholder;
 use Creasi\Base\Models\Concerns\HasAvatar;
 use Creasi\Base\Models\Concerns\WithFileUploads;
 use Creasi\Base\Models\Enums\CompanyRelativeType;
@@ -22,7 +23,7 @@ use Creasi\Nusa\Models\Concerns\WithAddresses;
  *
  * @method static \Database\Factories\CompanyFactory<static> factory()
  */
-class Company extends Model implements HasAddresses, Contactable, HasFileUploads
+class Company extends Model implements Entity, HasAddresses, HasFileUploads, Stakeholder
 {
     use HasAvatar;
     use WithAddresses;
@@ -80,7 +81,7 @@ class Company extends Model implements HasAddresses, Contactable, HasFileUploads
 
     public function addStakeholder(
         CompanyRelativeType $type,
-        Contactable $stakeholder,
+        Entity $stakeholder,
         ?bool $internal = null,
         ?string $remark = null,
     ): static {

@@ -3,7 +3,7 @@
 namespace Creasi\Base\Contracts;
 
 /**
- * @property-read null|\Illuminate\Database\Eloquent\Model|Contactable $profile
+ * @property-read null|\Illuminate\Database\Eloquent\Model|Entity $profile
  *
  * @mixin \Illuminate\Database\Eloquent\Model
  */

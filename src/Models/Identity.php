@@ -9,6 +9,7 @@ use Creasi\Base\Models\Enums\Religion;
 use Creasi\Nusa\Models\Regency;
 
 /**
+ * @property null|int $user_id
  * @property null|string $nik
  * @property null|string $prefix
  * @property string $fullname
@@ -28,6 +29,7 @@ use Creasi\Nusa\Models\Regency;
 class Identity extends Model implements IdentityContract
 {
     protected $fillable = [
+        'user_id',
         'nik',
         'prefix',
         'fullname',
@@ -42,12 +44,21 @@ class Identity extends Model implements IdentityContract
     ];
 
     protected $casts = [
+        'user_id' => 'int',
         'birth_date' => 'immutable_date',
         'birth_place_code' => 'int',
         'education' => Education::class,
         'gender' => Gender::class,
         'religion' => Religion::class,
     ];
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo|User
+     */
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\MorphTo

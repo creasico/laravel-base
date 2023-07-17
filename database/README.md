@@ -94,6 +94,7 @@ erDiagram
     personnels ||..|| identities : profile
     identities {
         unsignedBigInt id PK
+        unsignedBigInt user_id FK
         morphs identity
         char(16) nik
         string prefix
@@ -276,6 +277,7 @@ classDiagram
 | Field | Attribute | Key | Description |
 | --- | --- | :---: | --- |
 | `id` | `unsignedBigInt`, `incrementing` | `primary` | - |
+| `user_id` | `unsignedBigInt`, `nullable` | `foreign` | - |
 | `identity` | `morphs`, `nullable` | | - |
 | `nik` | `char(16)`, `nullable` | | - |
 | `prefix` | `varchar(10)`, `nullable` | | - |
@@ -293,6 +295,9 @@ classDiagram
 **Model Attributes**
 - `timestamps`
 - `softDeletes`
+
+**Relation Properties**
+- `user_id` : reference `users`
 
 ## Addresses
 

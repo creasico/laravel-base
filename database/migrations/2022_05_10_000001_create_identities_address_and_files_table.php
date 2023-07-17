@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('identities', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('user_id')->nullable()->constrained()->nullOnDelete();
             $table->nullableMorphs('identity');
 
             $table->char('nik', 16)->unique()->nullable();

@@ -38,4 +38,9 @@ class User extends Authenticatable
     {
         return Attribute::set(fn (string $value) => \bcrypt($value));
     }
+
+    public function profile()
+    {
+        return $this->hasOne(Identity::class);
+    }
 }

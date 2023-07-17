@@ -2,6 +2,7 @@
 
 namespace Creasi\Tests\Models;
 
+use Creasi\Base\Models\Identity;
 use Creasi\Base\Models\User;
 use Creasi\Tests\TestCase;
 use PHPUnit\Framework\Attributes\Group;
@@ -16,5 +17,16 @@ class UserTest extends TestCase
         $model = User::factory()->createOne();
 
         $this->assertModelExists($model);
+    }
+
+    #[Test]
+    public function it_could_have_profile()
+    {
+        $user = User::factory()->createOne();
+        $identity = Identity::factory()->createOne();
+
+        $user->profile()->save($identity);
+
+        $this->assertTrue($identity->user->is($user));
     }
 }

@@ -5,6 +5,7 @@ namespace Creasi\Base;
 use Creasi\Base\Models\Address;
 use Creasi\Base\View\Composers\TranslationsComposer;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider as IlluminateServiceProvider;
@@ -14,7 +15,7 @@ class ServiceProvider extends IlluminateServiceProvider
 {
     private const LIB_PATH = __DIR__.'/..';
 
-    public function boot()
+    public function boot(): void
     {
         /**
          * While not in production, send all email tho the following address instead.
@@ -36,9 +37,11 @@ class ServiceProvider extends IlluminateServiceProvider
         $this->loadTranslationsFrom(self::LIB_PATH.'/resources/lang', 'creasico');
 
         $this->bootViewComposers();
+
+        $this->defineRoutes();
     }
 
-    public function register()
+    public function register(): void
     {
         config([
             'creasi.nusa' => array_merge([
@@ -62,7 +65,7 @@ class ServiceProvider extends IlluminateServiceProvider
 
     }
 
-    protected function registerPublishables()
+    protected function registerPublishables(): void
     {
         $this->publishes([
             self::LIB_PATH.'/config/creasico.php' => \config_path('creasi/base.php'),
@@ -77,11 +80,21 @@ class ServiceProvider extends IlluminateServiceProvider
         ], ['creasi-lang']);
     }
 
-    protected function registerCommands()
+    protected function registerCommands(): void
     {
         $this->commands([
             // .
         ]);
+    }
+
+    protected function defineRoutes(): void
+    {
+        if (app()->routesAreCached() && config('creasi.base.routes_enable') === false) {
+            return;
+        }
+
+        Route::prefix(config('creasi.base.routes_prefix', 'base'))
+            ->group(self::LIB_PATH.'/routes/base.php');
     }
 
     /**

@@ -2,11 +2,11 @@
 
 namespace Creasi\Base\Http\Controllers;
 
-use Creasi\Base\Contracts\HasFileUploads;
 use Creasi\Base\Http\Requests\FileUpload\StoreRequest;
 use Creasi\Base\Http\Requests\FileUpload\UpdateRequest;
 use Creasi\Base\Http\Resources\FileUpload\FileUploadCollection;
 use Creasi\Base\Http\Resources\FileUpload\FileUploadResource;
+use Creasi\Base\Models\Entity;
 use Creasi\Base\Models\FileUpload;
 use Illuminate\Http\Request;
 
@@ -18,17 +18,19 @@ class FileUploadController extends Controller
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Collection<int, FileUpload>
+     * @return FileUploadCollection
      */
-    public function index(HasFileUploads $entity)
+    public function index(Entity $entity)
     {
-        return new FileUploadCollection($entity->files()->paginate());
+        $items = $entity->files()->latest();
+
+        return new FileUploadCollection($items->paginate());
     }
 
     /**
-     * @return \Illuminate\Http\JsonResponse
+     * @return FileUploadResource
      */
-    public function store(StoreRequest $request, HasFileUploads $entity)
+    public function store(StoreRequest $request, Entity $entity)
     {
         $item = $request->storeFor($entity);
 
@@ -36,7 +38,7 @@ class FileUploadController extends Controller
     }
 
     /**
-     * @return \Illuminate\Http\JsonResponse
+     * @return FileUploadResource
      */
     public function show(FileUpload $file, Request $request)
     {
@@ -44,7 +46,7 @@ class FileUploadController extends Controller
     }
 
     /**
-     * @return \Illuminate\Http\JsonResponse
+     * @return FileUploadResource
      */
     public function update(UpdateRequest $request, FileUpload $file)
     {
@@ -54,7 +56,7 @@ class FileUploadController extends Controller
     }
 
     /**
-     * @return \Illuminate\Http\JsonResponse
+     * @return \Illuminate\Http\Response
      */
     public function destroy(FileUpload $file)
     {

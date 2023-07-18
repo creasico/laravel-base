@@ -12,6 +12,7 @@ abstract class Collection extends ResourceCollection
     {
         if ($this->collection->isEmpty()) {
             $response->setStatusCode(404);
+
             return;
         }
     }

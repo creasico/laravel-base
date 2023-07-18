@@ -17,19 +17,17 @@ class EmployeeController extends Controller
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Collection<int, Employee>
+     * @return EmployeeCollection
      */
-    public function index(Request $request, Employee $employee)
+    public function index(Employee $employee)
     {
-        $users = $employee->newInstance()
-            ->where('id', '<>', $request->user()->id)
-            ->latest();
+        $items = $employee->newInstance()->latest();
 
-        return new EmployeeCollection($users->paginate());
+        return new EmployeeCollection($items->paginate());
     }
 
     /**
-     * @return \Illuminate\Http\JsonResponse
+     * @return EmployeeResource
      */
     public function store(StoreRequest $request, Employee $employee)
     {
@@ -40,7 +38,7 @@ class EmployeeController extends Controller
     }
 
     /**
-     * @return \Illuminate\Http\JsonResponse
+     * @return EmployeeResource
      */
     public function show(Employee $employee, Request $request)
     {
@@ -48,7 +46,7 @@ class EmployeeController extends Controller
     }
 
     /**
-     * @return \Illuminate\Http\JsonResponse
+     * @return EmployeeResource
      */
     public function update(UpdateRequest $request, Employee $employee)
     {
@@ -58,7 +56,7 @@ class EmployeeController extends Controller
     }
 
     /**
-     * @return \Illuminate\Http\JsonResponse
+     * @return \Illuminate\Http\Response
      */
     public function destroy(Employee $employee)
     {

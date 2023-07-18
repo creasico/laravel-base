@@ -7,7 +7,7 @@ use Creasi\Base\Http\Requests\Address\UpdateRequest;
 use Creasi\Base\Http\Resources\Address\AddressCollection;
 use Creasi\Base\Http\Resources\Address\AddressResource;
 use Creasi\Base\Models\Address;
-use Creasi\Nusa\Contracts\HasAddresses;
+use Creasi\Base\Models\Entity;
 use Illuminate\Http\Request;
 
 class AddressController extends Controller
@@ -18,17 +18,19 @@ class AddressController extends Controller
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Collection<int, Address>
+     * @return AddressCollection
      */
-    public function index(HasAddresses $entity)
+    public function index(Entity $entity)
     {
-        return new AddressCollection($entity->addresses()->paginate());
+        $items = $entity->addresses()->latest();
+
+        return new AddressCollection($items->paginate());
     }
 
     /**
-     * @return \Illuminate\Http\JsonResponse
+     * @return AddressResource
      */
-    public function store(StoreRequest $request, HasAddresses $entity)
+    public function store(StoreRequest $request, Entity $entity)
     {
         $item = $request->storeFor($entity);
 
@@ -36,7 +38,7 @@ class AddressController extends Controller
     }
 
     /**
-     * @return \Illuminate\Http\JsonResponse
+     * @return AddressResource
      */
     public function show(Address $address, Request $request)
     {
@@ -44,7 +46,7 @@ class AddressController extends Controller
     }
 
     /**
-     * @return \Illuminate\Http\JsonResponse
+     * @return AddressResource
      */
     public function update(UpdateRequest $request, Address $address)
     {
@@ -54,7 +56,7 @@ class AddressController extends Controller
     }
 
     /**
-     * @return \Illuminate\Http\JsonResponse
+     * @return \Illuminate\Http\Response
      */
     public function destroy(Address $address)
     {

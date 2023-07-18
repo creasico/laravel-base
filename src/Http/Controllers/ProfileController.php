@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 class ProfileController extends Controller
 {
     /**
-     * @return \Inertia\Response
+     * @return ProfileResource
      */
     public function show(Request $request)
     {
@@ -19,7 +19,7 @@ class ProfileController extends Controller
     }
 
     /**
-     * @return \Inertia\Response
+     * @return ProfileResource
      */
     public function update(ProfileRequest $request)
     {

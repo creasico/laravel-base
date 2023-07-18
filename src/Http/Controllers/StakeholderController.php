@@ -17,30 +17,28 @@ class StakeholderController extends Controller
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Collection<int, Stakeholder>
+     * @return StakeholderCollection
      */
-    public function index(Request $request, Stakeholder $stakeholder)
+    public function index(Stakeholder $stakeholder)
     {
-        $model = $stakeholder->newQuery()
-            ->where('id', '<>', $request->user()->id)
-            ->latest();
+        $items = $stakeholder->newQuery()->latest();
 
-        return new StakeholderCollection($model->paginate());
+        return new StakeholderCollection($items->paginate());
     }
 
     /**
-     * @return \Illuminate\Http\JsonResponse
+     * @return StakeholderResource
      */
     public function store(StoreRequest $request, Stakeholder $stakeholder)
     {
         /** @var Stakeholder */
-        $model = $stakeholder->create($request->validated());
+        $item = $stakeholder->create($request->validated());
 
-        return $this->show($model, $request)->setStatusCode(201);
+        return $this->show($item, $request)->setStatusCode(201);
     }
 
     /**
-     * @return \Illuminate\Http\JsonResponse
+     * @return StakeholderResource
      */
     public function show(Stakeholder $stakeholder, Request $request)
     {
@@ -48,7 +46,7 @@ class StakeholderController extends Controller
     }
 
     /**
-     * @return \Illuminate\Http\JsonResponse
+     * @return StakeholderResource
      */
     public function update(UpdateRequest $request, Stakeholder $stakeholder)
     {
@@ -58,7 +56,7 @@ class StakeholderController extends Controller
     }
 
     /**
-     * @return \Illuminate\Http\JsonResponse
+     * @return \Illuminate\Http\Response
      */
     public function destroy(Stakeholder $stakeholder)
     {

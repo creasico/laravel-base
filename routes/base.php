@@ -16,7 +16,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::middleware('auth:sanctum')->group(function () {
-    Route::apiResource('companies', Controllers\CompanyController::class)->withTrashed();
+    Route::apiResource('companies', Controllers\CompanyController::class);
     Route::apiResource('employees', Controllers\EmployeeController::class);
 
     Route::apiSingleton('profile', Controllers\ProfileController::class);

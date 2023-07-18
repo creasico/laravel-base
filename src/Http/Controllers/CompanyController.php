@@ -17,19 +17,17 @@ class CompanyController extends Controller
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Collection<int, Company>
+     * @return CompanyCollection
      */
     public function index(Request $request)
     {
-        $users = Company::query()
-            ->where('id', '<>', $request->user()->id)
-            ->latest();
+        $items = Company::query()->latest();
 
-        return new CompanyCollection($users->paginate());
+        return new CompanyCollection($items->paginate());
     }
 
     /**
-     * @return \Illuminate\Http\JsonResponse
+     * @return CompanyResource
      */
     public function store(StoreRequest $request)
     {
@@ -40,7 +38,7 @@ class CompanyController extends Controller
     }
 
     /**
-     * @return \Illuminate\Http\JsonResponse
+     * @return CompanyResource
      */
     public function show(Company $company, Request $request)
     {
@@ -48,7 +46,7 @@ class CompanyController extends Controller
     }
 
     /**
-     * @return \Illuminate\Http\JsonResponse
+     * @return CompanyResource
      */
     public function update(UpdateRequest $request, Company $company)
     {
@@ -58,7 +56,7 @@ class CompanyController extends Controller
     }
 
     /**
-     * @return \Illuminate\Http\JsonResponse
+     * @return \Illuminate\Http\Response
      */
     public function destroy(Company $company)
     {

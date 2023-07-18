@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 class SettingController extends Controller
 {
     /**
-     * @return \Inertia\Response
+     * @return SettingResource
      */
     public function show(Request $request)
     {
@@ -19,7 +19,7 @@ class SettingController extends Controller
     }
 
     /**
-     * @return \Inertia\Response
+     * @return SettingResource
      */
     public function update(SettingRequest $request)
     {

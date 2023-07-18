@@ -26,7 +26,7 @@ class ServiceProvider extends IlluminateServiceProvider
          * @see https://laravel.com/docs/9.x/mail#using-a-global-to-address
          */
         if (! app()->environment('production') && $devMail = env('MAIL_DEVELOPMENT')) {
-            Mail::alwaysTo($devMail);
+            Mail::alwaysTo($devMail); // @codeCoverageIgnore
         }
 
         if (app()->runningInConsole()) {
@@ -93,7 +93,7 @@ class ServiceProvider extends IlluminateServiceProvider
 
     protected function defineRoutes(): void
     {
-        if (app()->routesAreCached() && config('creasi.base.routes_enable') === false) {
+        if (app()->routesAreCached() || config('creasi.base.routes_enable') === false) {
             return;
         }
 

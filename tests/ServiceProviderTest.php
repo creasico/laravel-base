@@ -6,22 +6,48 @@ namespace Creasi\Tests;
 
 use Facebook\WebDriver\Exception\TimeoutException;
 use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Support\Facades\Route;
 use Laravel\Dusk\Browser;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Test;
 use SebastianBergmann\CodeCoverage\Driver\Driver;
 
+#[Group('serviceProvider')]
 class ServiceProviderTest extends TestCase
 {
     use WithFaker;
 
+    /**
+     * @param  \Illuminate\Foundation\Application  $app
+     */
+    protected function disableRoute($app)
+    {
+        $app->config->set('creasi.base.routes_enable', false);
+    }
+
+    /**
+     * @define-env disableRoute
+     */
     #[Test]
-    public function it_adds_dusk_macros()
+    #[Group('routes')]
+    public function should_able_to_disable_routes()
+    {
+        /** @var \Countable */
+        $routes = Route::getRoutes();
+
+        $this->assertCount(4, $routes);
+    }
+
+    #[Test]
+    #[Group('dusk')]
+    public function should_adds_dusk_macros()
     {
         $this->assertTrue(Browser::hasMacro('waitForInertia'));
     }
 
     #[Test]
-    public function it_throws_an_exception_if_the_count_doesnt_increase()
+    #[Group('dusk')]
+    public function should_throws_an_exception_if_the_count_doesnt_increase()
     {
         $driver = $this->mock(Driver::class);
 
@@ -46,7 +72,8 @@ class ServiceProviderTest extends TestCase
     }
 
     #[Test]
-    public function it_passes_when_the_count_increases()
+    #[Group('dusk')]
+    public function should_passes_when_the_count_increases()
     {
         $driver = $this->mock(Driver::class);
 

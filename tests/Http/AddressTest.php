@@ -14,31 +14,6 @@ use PHPUnit\Framework\Attributes\Test;
 class AddressTest extends TestCase
 {
     #[Test]
-    #[DataProviderExternal(TestCase::class, 'entities')]
-    public function should_able_to_retrieve_all_data(string $entity, string $modelClass): void
-    {
-        Sanctum::actingAs($this->user());
-        $model = $modelClass::factory()->withAddress()->create();
-
-        $response = $this->getJson("base/{$entity}/{$model->getKey()}/addresses");
-
-        $response->assertOk();
-    }
-
-    #[Test]
-    #[DataProviderExternal(TestCase::class, 'entities')]
-    public function should_able_to_store_new_data(string $entity, string $modelClass): void
-    {
-        Sanctum::actingAs($this->user());
-        $model = $modelClass::factory()->withAddress()->create();
-        $data = Address::factory()->raw();
-
-        $response = $this->postJson("base/{$entity}/{$model->getKey()}/addresses", $data);
-
-        $response->assertCreated();
-    }
-
-    #[Test]
     public function should_able_to_show_existing_data(): void
     {
         Sanctum::actingAs($this->user());

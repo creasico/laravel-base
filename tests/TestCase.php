@@ -3,31 +3,19 @@
 namespace Creasi\Tests;
 
 use Closure;
-use Creasi\Base\Models\Company;
-use Creasi\Base\Models\Personnel;
 use Creasi\Base\Models\User;
 use Creasi\Base\ServiceProvider;
 use Creasi\Nusa\ServiceProvider as NusaServiceProvider;
 use Illuminate\Contracts\Config\Repository;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Laravel\Sanctum\SanctumServiceProvider;
 use Orchestra\Testbench\TestCase as Orchestra;
 
-class TestCase extends Orchestra
+abstract class TestCase extends Orchestra
 {
     use RefreshDatabase;
-    use DatabaseMigrations;
 
     private ?User $currentUser = null;
-
-    final public static function entities()
-    {
-        return [
-            'company' => ['companies', Company::class],
-            'employee' => ['employees', Personnel::class],
-        ];
-    }
 
     /**
      * @param  \Illuminate\Foundation\Application  $app

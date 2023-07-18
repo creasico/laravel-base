@@ -10,7 +10,7 @@ use Laravel\Dusk\Browser;
 use PHPUnit\Framework\Attributes\Test;
 use SebastianBergmann\CodeCoverage\Driver\Driver;
 
-class BaseTest extends TestCase
+class ServiceProviderTest extends TestCase
 {
     use WithFaker;
 

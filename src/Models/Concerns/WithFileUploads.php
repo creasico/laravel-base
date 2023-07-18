@@ -3,8 +3,8 @@
 namespace Creasi\Base\Models\Concerns;
 
 use Creasi\Base\Models\Enums\FileUploadType;
-use Creasi\Base\Models\FileUpload;
 use Creasi\Base\Models\FileAttached;
+use Creasi\Base\Models\FileUpload;
 use Illuminate\Http\UploadedFile;
 
 /**
@@ -25,9 +25,9 @@ trait WithFileUploads
         FileUploadType $type,
         string|UploadedFile $path,
         string $name,
-        ?string $title = null,
-        ?string $summary = null,
-        ?string $disk = null,
+        string $title = null,
+        string $summary = null,
+        string $disk = null,
     ): FileUpload {
         $file = FileUpload::store($type, $path, $name, $title, $summary, $disk);
 

@@ -24,12 +24,9 @@ class TranslationsComposer
     }
 
     /**
-     * @param Loader $loader
-     * @param string $path
-     * @param null|string $namespace
      * @return array<string, \Illuminate\Support\Collection<string, string>>
      */
-    private function loadMessages(Loader $loader, string $path, ?string $namespace = null)
+    private function loadMessages(Loader $loader, string $path, string $namespace = null)
     {
         $messages = [];
 
@@ -44,7 +41,7 @@ class TranslationsComposer
                 $trans[$key] = $loader->load($locale, $group, $namespace);
             }
 
-            $messages[$locale] = $trans->dot()->filter(fn ($i) => !empty($i))->toArray();
+            $messages[$locale] = $trans->dot()->filter(fn ($i) => ! empty($i))->toArray();
         }
 
         return $messages;

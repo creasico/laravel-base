@@ -12,7 +12,7 @@ use Illuminate\Http\UploadedFile;
  *
  * @mixin \Creasi\Base\Contracts\HasFileUploads
  */
-trait HasAvatar
+trait WithAvatar
 {
     /**
      * @return \Illuminate\Database\Eloquent\Relations\MorphOne|Identity

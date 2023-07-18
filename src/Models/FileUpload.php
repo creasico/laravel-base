@@ -33,7 +33,6 @@ use Illuminate\Support\Str;
 class FileUpload extends Model
 {
     use HasUuids;
-    use SoftDeletes;
 
     protected $fillable = [
         'revision_id',
@@ -46,7 +45,7 @@ class FileUpload extends Model
     ];
 
     protected $casts = [
-        'type' => FileUploadType::class
+        'type' => FileUploadType::class,
     ];
 
     public function url(): Attribute
@@ -58,7 +57,7 @@ class FileUpload extends Model
 
     public function isInternal(): Attribute
     {
-        return Attribute::get(fn ($_, array $attrs) => !\str_contains($attrs['path'], '://'));
+        return Attribute::get(fn ($_, array $attrs) => ! \str_contains($attrs['path'], '://'));
     }
 
     protected function attachedTo(string $owner)
@@ -106,9 +105,9 @@ class FileUpload extends Model
         FileUploadType $type,
         string|UploadedFile $path,
         string $name,
-        ?string $title = null,
-        ?string $summary = null,
-        ?string $disk = null
+        string $title = null,
+        string $summary = null,
+        string $disk = null
     ): static {
         $name = Str::slug($name);
 
@@ -130,7 +129,7 @@ class FileUpload extends Model
         return $instance;
     }
 
-    public function createRevision(string|UploadedFile $path, ?string $summary = null): static
+    public function createRevision(string|UploadedFile $path, string $summary = null): static
     {
         $revision = static::store($this->type, $path, $this->name, $this->title, $summary, $this->disk);
 

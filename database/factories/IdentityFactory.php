@@ -50,7 +50,7 @@ class IdentityFactory extends Factory
         ]);
     }
 
-    public function withGender(?Gender $gender = null, mixed $start = '-30 years', mixed $until = 'now'): static
+    public function withGender(Gender $gender = null, mixed $start = '-30 years', mixed $until = 'now'): static
     {
         $gender = $gender ?: $this->faker->randomElement(Gender::cases());
 

@@ -30,7 +30,7 @@ class PersonnelFactory extends Factory
         ];
     }
 
-    public function withIdentity(?Gender $gender = null): static
+    public function withIdentity(Gender $gender = null): static
     {
         return $this->has(Identity::factory()->withGender($gender), 'identity')->state(fn () => [
             'name' => $this->faker->firstName($gender?->toFaker()),

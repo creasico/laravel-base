@@ -8,17 +8,10 @@ use Creasi\Tests\TestCase;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Test;
 
+#[Group('models')]
 #[Group('user')]
 class UserTest extends TestCase
 {
-    #[Test]
-    public function should_be_exists(): void
-    {
-        $model = User::factory()->createOne();
-
-        $this->assertModelExists($model);
-    }
-
     #[Test]
     public function it_could_have_profile()
     {

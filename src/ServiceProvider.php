@@ -10,8 +10,8 @@ use Creasi\Base\Models\Personnel;
 use Creasi\Base\View\Composers\TranslationsComposer;
 use Creasi\Nusa\Contracts\HasAddresses;
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider as IlluminateServiceProvider;
 use Laravel\Dusk\Browser;
@@ -127,7 +127,7 @@ class ServiceProvider extends IlluminateServiceProvider
      */
     private function registerDuskMacroForInertia(): void
     {
-        Browser::macro('waitForInertia', function (?int $seconds = null): Browser {
+        Browser::macro('waitForInertia', function (int $seconds = null): Browser {
             /** @var Browser $this */
             $driver = $this->driver;
 

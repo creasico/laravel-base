@@ -2,7 +2,6 @@
 
 namespace Creasi\Base\Http\Controllers;
 
-use Creasi\Base\Http\Controllers\Controller;
 use Creasi\Base\Http\Requests\SettingRequest;
 use Creasi\Base\Http\Resources\SettingResource;
 use Illuminate\Http\Request;

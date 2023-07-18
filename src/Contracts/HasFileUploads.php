@@ -22,8 +22,8 @@ interface HasFileUploads
         FileUploadType $type,
         string|UploadedFile $path,
         string $name,
-        ?string $title = null,
-        ?string $summary = null,
-        ?string $disk = null,
+        string $title = null,
+        string $summary = null,
+        string $disk = null,
     ): FileUpload;
 }

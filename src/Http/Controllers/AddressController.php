@@ -7,7 +7,6 @@ use Creasi\Base\Http\Requests\Address\UpdateRequest;
 use Creasi\Base\Http\Resources\Address\AddressCollection;
 use Creasi\Base\Http\Resources\Address\AddressResource;
 use Creasi\Base\Models\Address;
-use Creasi\Base\Models\Company;
 use Creasi\Nusa\Contracts\HasAddresses;
 use Illuminate\Http\Request;
 

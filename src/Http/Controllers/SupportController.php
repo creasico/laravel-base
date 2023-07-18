@@ -2,8 +2,6 @@
 
 namespace Creasi\Base\Http\Controllers;
 
-use Inertia\Inertia;
-
 class SupportController extends Controller
 {
     /**

@@ -2,16 +2,9 @@
 
 namespace Creasi\Base\Models;
 
-use Creasi\Base\Contracts\HasFileUploads;
-use Creasi\Base\Contracts\Entity;
 use Creasi\Base\Contracts\Employee;
-use Creasi\Base\Contracts\Stakeholder;
-use Creasi\Base\Models\Concerns\HasAvatar;
-use Creasi\Base\Models\Concerns\WithFileUploads;
 use Creasi\Base\Models\Concerns\WithIdentity;
 use Creasi\Base\Models\Enums\PersonnelRelativeStatus;
-use Creasi\Nusa\Contracts\HasAddresses;
-use Creasi\Nusa\Models\Concerns\WithAddresses;
 
 /**
  * @property ?string $photo_path
@@ -21,20 +14,9 @@ use Creasi\Nusa\Models\Concerns\WithAddresses;
  *
  * @method static \Database\Factories\PersonnelFactory<static> factory()
  */
-class Personnel extends Model implements Employee, Entity, HasAddresses, HasFileUploads, Stakeholder
+class Personnel extends Entity implements Employee
 {
-    use HasAvatar;
-    use WithAddresses;
-    use WithFileUploads;
     use WithIdentity;
-
-    protected $fillable = [
-        'code',
-        'name',
-        'email',
-        'phone_number',
-        'summary',
-    ];
 
     protected $casts = [
         // .
@@ -51,7 +33,7 @@ class Personnel extends Model implements Employee, Entity, HasAddresses, HasFile
             ->as('relative');
     }
 
-    public function addRelative(Personnel $relative, PersonnelRelativeStatus $status, ?string $remark = null)
+    public function addRelative(Personnel $relative, PersonnelRelativeStatus $status, string $remark = null)
     {
         $this->relatives()->attach($relative, [
             'status' => $status,

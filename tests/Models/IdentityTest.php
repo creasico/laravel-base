@@ -13,11 +13,12 @@ use Creasi\Tests\TestCase;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Test;
 
+#[Group('models')]
 #[Group('identity')]
 class IdentityTest extends TestCase
 {
     #[Test]
-    public function should_be_exists()
+    public function should_have_correct_attributes_cast()
     {
         $model = Identity::factory()->createOne();
 

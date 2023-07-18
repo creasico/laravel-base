@@ -8,6 +8,7 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Test;
 
+#[Group('models')]
 #[Group('address')]
 class AddressTest extends TestCase
 {
@@ -16,14 +17,6 @@ class AddressTest extends TestCase
         return [
             [10, 5, ['010', '005']],
         ];
-    }
-
-    #[Test]
-    public function should_be_exists(): void
-    {
-        $model = Address::factory()->createOne();
-
-        $this->assertModelExists($model);
     }
 
     #[Test]

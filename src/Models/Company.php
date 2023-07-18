@@ -2,14 +2,7 @@
 
 namespace Creasi\Base\Models;
 
-use Creasi\Base\Contracts\HasFileUploads;
-use Creasi\Base\Contracts\Entity;
-use Creasi\Base\Contracts\Stakeholder;
-use Creasi\Base\Models\Concerns\HasAvatar;
-use Creasi\Base\Models\Concerns\WithFileUploads;
 use Creasi\Base\Models\Enums\CompanyRelativeType;
-use Creasi\Nusa\Contracts\HasAddresses;
-use Creasi\Nusa\Models\Concerns\WithAddresses;
 
 /**
  * @property null|bool $is_internal
@@ -23,20 +16,8 @@ use Creasi\Nusa\Models\Concerns\WithAddresses;
  *
  * @method static \Database\Factories\CompanyFactory<static> factory()
  */
-class Company extends Model implements Entity, HasAddresses, HasFileUploads, Stakeholder
+class Company extends Entity
 {
-    use HasAvatar;
-    use WithAddresses;
-    use WithFileUploads;
-
-    protected $fillable = [
-        'code',
-        'name',
-        'email',
-        'phone_number',
-        'summary',
-    ];
-
     protected $casts = [
         // .
     ];
@@ -82,8 +63,8 @@ class Company extends Model implements Entity, HasAddresses, HasFileUploads, Sta
     public function addStakeholder(
         CompanyRelativeType $type,
         Entity $stakeholder,
-        ?bool $internal = null,
-        ?string $remark = null,
+        bool $internal = null,
+        string $remark = null,
     ): static {
         $this->businessRelative(\get_class($stakeholder))->attach($stakeholder, [
             'type' => $type,

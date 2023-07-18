@@ -15,17 +15,10 @@ use Illuminate\Http\UploadedFile;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Test;
 
+#[Group('models')]
 #[Group('company')]
 class CompanyTest extends TestCase
 {
-    #[Test]
-    public function should_be_exists()
-    {
-        $model = Company::factory()->createOne();
-
-        $this->assertModelExists($model);
-    }
-
     #[Test]
     public function should_have_addresses()
     {

@@ -3,12 +3,10 @@
 namespace Creasi\Base;
 
 use Creasi\Base\Contracts\Employee;
-use Creasi\Base\Contracts\HasFileUploads;
 use Creasi\Base\Contracts\Stakeholder;
 use Creasi\Base\Models\Address;
-use Creasi\Base\Models\Personnel;
+use Creasi\Base\Models\Entity;
 use Creasi\Base\View\Composers\TranslationsComposer;
-use Creasi\Nusa\Contracts\HasAddresses;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
@@ -68,24 +66,7 @@ class ServiceProvider extends IlluminateServiceProvider
             }
         }
 
-        $this->app->bind(Employee::class, function ($app) {
-            return new Personnel();
-        });
-
-        $this->app->bind(Stakeholder::class, function ($app) {
-            return new Personnel();
-        });
-
-        $this->app->bind(HasAddresses::class, function ($app) {
-            /** @var \Illuminate\Routing\Router */
-            $router = $app->make('router');
-
-            return $app->make(Employee::class);
-        });
-
-        $this->app->bind(HasFileUploads::class, function ($app) {
-            return $app->make(Employee::class);
-        });
+        $this->registerBindings();
     }
 
     protected function registerPublishables(): void
@@ -118,6 +99,21 @@ class ServiceProvider extends IlluminateServiceProvider
 
         Route::prefix(config('creasi.base.routes_prefix', 'base'))
             ->group(self::LIB_PATH.'/routes/base.php');
+    }
+
+    protected function registerBindings()
+    {
+        $this->app->bind(Entity::class, function ($app) {
+            return $app->make(Repository::class)->resolveEntity();
+        });
+
+        $this->app->bind(Employee::class, function ($app) {
+            return $app->make(Repository::class)->resolveEmployee();
+        });
+
+        $this->app->bind(Stakeholder::class, function ($app) {
+            return $app->make(Repository::class)->resolveStakeholder();
+        });
     }
 
     /**

@@ -2,10 +2,10 @@
 
 namespace Creasi\Base\Http\Resources\Company;
 
+use Creasi\Base\Http\Resources\Collection;
 use Illuminate\Http\Request;
-use Illuminate\Http\Resources\Json\ResourceCollection;
 
-class CompanyCollection extends ResourceCollection
+class CompanyCollection extends Collection
 {
     /**
      * Transform the resource collection into an array.

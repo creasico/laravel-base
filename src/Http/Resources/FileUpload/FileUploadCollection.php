@@ -2,10 +2,10 @@
 
 namespace Creasi\Base\Http\Resources\FileUpload;
 
+use Creasi\Base\Http\Resources\Collection;
 use Illuminate\Http\Request;
-use Illuminate\Http\Resources\Json\ResourceCollection;
 
-class FileUploadCollection extends ResourceCollection
+class FileUploadCollection extends Collection
 {
     /**
      * Transform the resource collection into an array.

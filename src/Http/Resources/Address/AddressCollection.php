@@ -2,10 +2,10 @@
 
 namespace Creasi\Base\Http\Resources\Address;
 
+use Creasi\Base\Http\Resources\Collection;
 use Illuminate\Http\Request;
-use Illuminate\Http\Resources\Json\ResourceCollection;
 
-class AddressCollection extends ResourceCollection
+class AddressCollection extends Collection
 {
     /**
      * Transform the resource collection into an array.

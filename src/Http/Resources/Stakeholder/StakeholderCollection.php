@@ -2,10 +2,10 @@
 
 namespace Creasi\Base\Http\Resources\Stakeholder;
 
+use Creasi\Base\Http\Resources\Collection;
 use Illuminate\Http\Request;
-use Illuminate\Http\Resources\Json\ResourceCollection;
 
-class StakeholderCollection extends ResourceCollection
+class StakeholderCollection extends Collection
 {
     /**
      * Transform the resource collection into an array.

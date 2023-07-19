@@ -15,7 +15,7 @@ return [
         'confucianism' => 'Konghuchu',
     ],
 
-    'employment_type' => [
+    'employment-type' => [
         'unemployeed' => 'Tidak Dipekerjakan',
         'fulltime' => 'Full-time',
         'parttime' => 'Part-time',
@@ -23,19 +23,34 @@ return [
         'freelance' => 'Freelance',
     ],
 
-    'employment_status' => [
+    'employment-status' => [
         'permanent' => 'Permanent',
         'contract' => 'Contract',
         'probation' => 'Probation',
     ],
 
-    'personnel_relative' => [
+    'tax-status' => [
+        'tk0' => 'TK/0',
+        'tk1' => 'TK/1',
+        'tk2' => 'TK/2',
+        'tk3' => 'TK/3',
+        'k0' => 'K/0',
+        'k1' => 'K/1',
+        'k2' => 'K/2',
+        'k3' => 'K/3',
+        'ki0' => 'K/I/0',
+        'ki1' => 'K/I/1',
+        'ki2' => 'K/I/2',
+        'ki3' => 'K/I/3',
+    ],
+
+    'personnel-relative' => [
         'child' => 'Anak',
         'spouse' => 'Pasangan',
         'sibling' => 'Saudara Kandung',
-        'siblings_child' => 'Keponakan',
+        'siblings-child' => 'Keponakan',
         'parent' => 'Orang Tua',
-        'parents_sibling' => 'Saudara Kandung dari Orang Tua',
+        'parents-sibling' => 'Saudara Kandung dari Orang Tua',
         'grandparent' => 'Kakek / Nenek',
         'grandchild' => 'Cucu',
         'cousin' => 'Sepupu',

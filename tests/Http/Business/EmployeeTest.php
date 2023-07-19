@@ -28,16 +28,14 @@ class EmployeeTest extends TestCase
     }
 
     #[Test]
-    public function should_able_to_retrieve_all_data(): Personnel
+    public function should_able_to_retrieve_all_data(): void
     {
         Sanctum::actingAs($this->user());
-        $models = Personnel::factory(2)->create();
+        Personnel::factory(2)->create();
 
         $response = $this->getJson('base/employees');
 
         $response->assertOk();
-
-        return $models->first();
     }
 
     #[Test]
@@ -52,10 +50,11 @@ class EmployeeTest extends TestCase
     }
 
     #[Test]
-    #[Depends('should_able_to_retrieve_all_data')]
-    public function should_able_to_show_existing_data(Personnel $model): void
+    public function should_able_to_show_existing_data(): void
     {
         Sanctum::actingAs($this->user());
+
+        $model = Personnel::factory()->createOne();
 
         $response = $this->getJson("base/employees/{$model->getRouteKey()}");
 
@@ -63,10 +62,11 @@ class EmployeeTest extends TestCase
     }
 
     #[Test]
-    #[Depends('should_able_to_retrieve_all_data')]
-    public function should_receive_404_when_no_addresses_available(Personnel $model): void
+    public function should_receive_404_when_no_addresses_available(): void
     {
         Sanctum::actingAs($this->user());
+
+        $model = Personnel::factory()->createOne();
 
         $response = $this->getJson("base/employees/{$model->getRouteKey()}/addresses");
 
@@ -74,11 +74,11 @@ class EmployeeTest extends TestCase
     }
 
     #[Test]
-    #[Depends('should_able_to_retrieve_all_data')]
-    public function should_able_to_create_new_address(Personnel $model): void
+    public function should_able_to_create_new_address(): void
     {
         Sanctum::actingAs($this->user());
 
+        $model = Personnel::factory()->createOne();
         $data = Address::factory()->raw();
 
         $response = $this->postJson("base/employees/{$model->getRouteKey()}/addresses", $data);
@@ -87,10 +87,11 @@ class EmployeeTest extends TestCase
     }
 
     #[Test]
-    #[Depends('should_able_to_retrieve_all_data')]
-    public function should_able_to_retrieve_all_addresses(Personnel $model): void
+    public function should_able_to_retrieve_all_addresses(): void
     {
         Sanctum::actingAs($this->user());
+
+        $model = Personnel::factory()->createOne();
 
         $model->addresses()->saveMany(Address::factory(2)->create());
 
@@ -100,10 +101,11 @@ class EmployeeTest extends TestCase
     }
 
     #[Test]
-    #[Depends('should_able_to_retrieve_all_data')]
-    public function should_receive_404_when_no_files_available(Personnel $model): void
+    public function should_receive_404_when_no_files_available(): void
     {
         Sanctum::actingAs($this->user());
+
+        $model = Personnel::factory()->createOne();
 
         $response = $this->getJson("base/employees/{$model->getRouteKey()}/files");
 
@@ -111,12 +113,12 @@ class EmployeeTest extends TestCase
     }
 
     #[Test]
-    #[Depends('should_able_to_retrieve_all_data')]
-    public function should_able_to_upload_and_store_new_file(Personnel $model): void
+    public function should_able_to_upload_and_store_new_file(): void
     {
         Storage::fake();
         Sanctum::actingAs($this->user());
 
+        $model = Personnel::factory()->createOne();
         $data = FileUpload::factory()->withoutFile()->raw();
         $data['upload'] = UploadedFile::fake()->create('file.pdf');
 
@@ -126,10 +128,11 @@ class EmployeeTest extends TestCase
     }
 
     #[Test]
-    #[Depends('should_able_to_retrieve_all_data')]
-    public function should_able_to_retrieve_all_uploaded_files(Personnel $model): void
+    public function should_able_to_retrieve_all_uploaded_files(): void
     {
         Sanctum::actingAs($this->user());
+
+        $model = Personnel::factory()->createOne();
 
         $model->files()->saveMany(FileUpload::factory(2)->create());
 
@@ -139,10 +142,11 @@ class EmployeeTest extends TestCase
     }
 
     #[Test]
-    #[Depends('should_able_to_retrieve_all_data')]
-    public function should_able_to_update_existing_data(Personnel $model): void
+    public function should_able_to_update_existing_data(): void
     {
         Sanctum::actingAs($this->user());
+
+        $model = Personnel::factory()->createOne();
 
         $response = $this->putJson("base/employees/{$model->getRouteKey()}", $model->toArray());
 
@@ -150,10 +154,11 @@ class EmployeeTest extends TestCase
     }
 
     #[Test]
-    #[Depends('should_able_to_retrieve_all_data')]
-    public function should_able_to_delete_existing_data(Personnel $model): void
+    public function should_able_to_delete_existing_data(): void
     {
         Sanctum::actingAs($this->user());
+
+        $model = Personnel::factory()->createOne();
 
         $response = $this->deleteJson("base/employees/{$model->getRouteKey()}");
 

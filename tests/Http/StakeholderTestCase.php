@@ -41,22 +41,21 @@ abstract class StakeholderTestCase extends TestCase
     }
 
     #[Test]
-    public function should_able_to_retrieve_all_data(): Entity
+    public function should_able_to_retrieve_all_data(): void
     {
         Sanctum::actingAs($this->user());
-        $models = Company::factory(2)->create();
+        Company::factory(2)->create();
 
         $response = $this->getJson($this->getRoutePath());
 
         $response->assertOk();
-
-        return $models->first();
     }
 
     #[Test]
     public function should_able_to_store_new_data(): void
     {
         Sanctum::actingAs($this->user());
+
         $data = Company::factory()->raw();
 
         $response = $this->postJson($this->getRoutePath(), $data);
@@ -65,10 +64,11 @@ abstract class StakeholderTestCase extends TestCase
     }
 
     #[Test]
-    #[Depends('should_able_to_retrieve_all_data')]
-    public function should_able_to_show_existing_data(Entity $model): void
+    public function should_able_to_show_existing_data(): void
     {
         Sanctum::actingAs($this->user());
+
+        $model = Company::factory()->createOne();
 
         $response = $this->getJson($this->getRoutePath($model));
 
@@ -76,10 +76,11 @@ abstract class StakeholderTestCase extends TestCase
     }
 
     #[Test]
-    #[Depends('should_able_to_retrieve_all_data')]
-    public function should_able_to_update_existing_data(Entity $model): void
+    public function should_able_to_update_existing_data(): void
     {
         Sanctum::actingAs($this->user());
+
+        $model = Company::factory()->createOne();
 
         $response = $this->putJson($this->getRoutePath($model), $model->toArray());
 
@@ -87,10 +88,11 @@ abstract class StakeholderTestCase extends TestCase
     }
 
     #[Test]
-    #[Depends('should_able_to_retrieve_all_data')]
-    public function should_able_to_delete_existing_data(Entity $model): void
+    public function should_able_to_delete_existing_data(): void
     {
         Sanctum::actingAs($this->user());
+
+        $model = Company::factory()->createOne();
 
         $response = $this->deleteJson($this->getRoutePath($model));
 

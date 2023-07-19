@@ -28,16 +28,14 @@ class CompanyTest extends TestCase
     }
 
     #[Test]
-    public function should_able_to_retrieve_all_data(): Company
+    public function should_able_to_retrieve_all_data(): void
     {
         Sanctum::actingAs($this->user());
+        Company::factory(2)->create();
 
-        $models = Company::factory(2)->create();
         $response = $this->getJson('base/companies');
 
         $response->assertOk();
-
-        return $models->first();
     }
 
     #[Test]
@@ -53,10 +51,11 @@ class CompanyTest extends TestCase
     }
 
     #[Test]
-    #[Depends('should_able_to_retrieve_all_data')]
-    public function should_able_to_show_existing_data(Company $model): void
+    public function should_able_to_show_existing_data(): void
     {
         Sanctum::actingAs($this->user());
+
+        $model = Company::factory()->createOne();
 
         $response = $this->getJson("base/companies/{$model->getRouteKey()}");
 
@@ -64,10 +63,11 @@ class CompanyTest extends TestCase
     }
 
     #[Test]
-    #[Depends('should_able_to_retrieve_all_data')]
-    public function should_receive_404_when_no_addresses_available(Company $model): void
+    public function should_receive_404_when_no_addresses_available(): void
     {
         Sanctum::actingAs($this->user());
+
+        $model = Company::factory()->createOne();
 
         $response = $this->getJson("base/companies/{$model->getRouteKey()}/addresses");
 
@@ -75,12 +75,12 @@ class CompanyTest extends TestCase
     }
 
     #[Test]
-    #[Depends('should_able_to_retrieve_all_data')]
-    public function should_able_to_create_new_address(Company $model): void
+    public function should_able_to_create_new_address(): void
     {
         Sanctum::actingAs($this->user());
 
         $data = Address::factory()->raw();
+        $model = Company::factory()->createOne();
 
         $response = $this->postJson("base/companies/{$model->getRouteKey()}/addresses", $data);
 
@@ -88,10 +88,11 @@ class CompanyTest extends TestCase
     }
 
     #[Test]
-    #[Depends('should_able_to_retrieve_all_data')]
-    public function should_able_to_retrieve_all_addresses(Company $model): void
+    public function should_able_to_retrieve_all_addresses(): void
     {
         Sanctum::actingAs($this->user());
+
+        $model = Company::factory()->withAddress()->createOne();
 
         $response = $this->getJson("base/companies/{$model->getRouteKey()}/addresses");
 
@@ -99,10 +100,11 @@ class CompanyTest extends TestCase
     }
 
     #[Test]
-    #[Depends('should_able_to_retrieve_all_data')]
-    public function should_receive_404_when_no_files_available(Company $model): void
+    public function should_receive_404_when_no_files_available(): void
     {
         Sanctum::actingAs($this->user());
+
+        $model = Company::factory()->createOne();
 
         $response = $this->getJson("base/companies/{$model->getRouteKey()}/files");
 
@@ -110,12 +112,12 @@ class CompanyTest extends TestCase
     }
 
     #[Test]
-    #[Depends('should_able_to_retrieve_all_data')]
-    public function should_able_to_upload_and_store_new_file(Company $model): void
+    public function should_able_to_upload_and_store_new_file(): void
     {
         Storage::fake();
         Sanctum::actingAs($this->user());
 
+        $model = Company::factory()->createOne();
         $data = FileUpload::factory()->withoutFile()->raw();
         $data['upload'] = UploadedFile::fake()->create('file.pdf');
 
@@ -125,10 +127,11 @@ class CompanyTest extends TestCase
     }
 
     #[Test]
-    #[Depends('should_able_to_retrieve_all_data')]
-    public function should_able_to_retrieve_all_uploaded_files(Company $model): void
+    public function should_able_to_retrieve_all_uploaded_files(): void
     {
         Sanctum::actingAs($this->user());
+
+        $model = Company::factory()->withFileUpload()->createOne();
 
         $response = $this->getJson("base/companies/{$model->getRouteKey()}/files");
 
@@ -136,10 +139,11 @@ class CompanyTest extends TestCase
     }
 
     #[Test]
-    #[Depends('should_able_to_retrieve_all_data')]
-    public function should_able_to_update_existing_data(Company $model): void
+    public function should_able_to_update_existing_data(): void
     {
         Sanctum::actingAs($this->user());
+
+        $model = Company::factory()->createOne();
 
         $response = $this->putJson("base/companies/{$model->getRouteKey()}", $model->toArray());
 
@@ -147,10 +151,11 @@ class CompanyTest extends TestCase
     }
 
     #[Test]
-    #[Depends('should_able_to_retrieve_all_data')]
-    public function should_able_to_delete_existing_data(Company $model): void
+    public function should_able_to_delete_existing_data(): void
     {
         Sanctum::actingAs($this->user());
+
+        $model = Company::factory()->createOne();
 
         $response = $this->deleteJson("base/companies/{$model->getRouteKey()}");
 

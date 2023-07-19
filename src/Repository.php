@@ -19,7 +19,12 @@ class Repository
 
     public function resolveEntity(): Entity
     {
-        return app($this->router->is('companies.*') ? Company::class : Personnel::class);
+        /** @var Entity */
+        $entity = app($this->router->is('companies.*') ? Company::class : Personnel::class);
+
+        // For some reason we do need to resolve the binding ourselves
+        // see: https://stackoverflow.com/a/76717314/881743
+        return $entity->resolveRouteBinding($this->router->input('entity')) ?: $entity;
     }
 
     public function resolveEmployee(): Employee

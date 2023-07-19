@@ -41,8 +41,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
         $route = $stakeholder->key()->plural();
 
-        Route::apiResource($route, Controllers\StakeholderController::class)->parameters([
-            (string) $route => 'stakeholder'
-        ]);
+        Route::apiResource($route, Controllers\StakeholderController::class)
+            ->parameter((string) $route, 'stakeholder');
     }
 });

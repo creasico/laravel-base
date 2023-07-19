@@ -5,7 +5,6 @@ namespace Creasi\Tests\Http;
 use Creasi\Base\Models\Address;
 use Creasi\Tests\TestCase;
 use Laravel\Sanctum\Sanctum;
-use PHPUnit\Framework\Attributes\DataProviderExternal;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Test;
 

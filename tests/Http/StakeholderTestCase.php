@@ -3,12 +3,10 @@
 namespace Creasi\Tests\Http;
 
 use Creasi\Base\Models\Company;
-use Creasi\Base\Models\Entity;
 use Creasi\Base\Models\Enums\CompanyRelativeType;
 use Creasi\Tests\TestCase;
 use Illuminate\Contracts\Routing\UrlRoutable;
 use Laravel\Sanctum\Sanctum;
-use PHPUnit\Framework\Attributes\Depends;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Test;
 

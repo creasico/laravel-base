@@ -5,8 +5,6 @@ namespace Creasi\Base\Models;
 use Creasi\Base\Models\Enums\CompanyRelativeType;
 
 /**
- * @property null|bool $is_internal
- * @property-read null|Personnel $owner
  * @property-read \Illuminate\Database\Eloquent\Collection<int, Personnel> $employees
  * @property-read \Illuminate\Database\Eloquent\Collection<int, Personnel> $individualRelatives
  * @property-read \Illuminate\Database\Eloquent\Collection<int, static> $companyRelatives

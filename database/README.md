@@ -115,7 +115,6 @@ erDiagram
         unsignedBigInt file_upload_id FK
         morph attached_to
     }
-
 ```
 ---
 ## Entities
@@ -255,7 +254,7 @@ classDiagram
     }
     class Personnel {
         unsignedBigInt id
-        employer() Business
+        employers() Business[]
     }
     class Employments {
         unsignedBigInt id

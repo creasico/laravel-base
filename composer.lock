@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f864ab80f6a3ccc1b225068d3df29db3",
+    "content-hash": "bd39789ec216ac0d872de4455330011e",
     "packages": [
         {
             "name": "brick/math",
@@ -63,31 +63,28 @@
         },
         {
             "name": "creasi/laravel-nusa",
-            "version": "v0.0.5",
+            "version": "v0.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/creasico/laravel-nusa.git",
-                "reference": "dc0c560441c4bd0e5e4d904472d320fb81c0a4b9"
+                "reference": "c83be1333e57fdfa0a12e79f7f1f6568c7edb01b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/creasico/laravel-nusa/zipball/dc0c560441c4bd0e5e4d904472d320fb81c0a4b9",
-                "reference": "dc0c560441c4bd0e5e4d904472d320fb81c0a4b9",
+                "url": "https://api.github.com/repos/creasico/laravel-nusa/zipball/c83be1333e57fdfa0a12e79f7f1f6568c7edb01b",
+                "reference": "c83be1333e57fdfa0a12e79f7f1f6568c7edb01b",
                 "shasum": ""
             },
             "require": {
                 "ext-sqlite3": "*",
-                "illuminate/contracts": "^10.0",
-                "illuminate/database": "^10.0",
-                "illuminate/support": "^10.0",
+                "laravel/framework": "^9.0|^10.0",
                 "php": "^8.1"
             },
             "require-dev": {
                 "composer-runtime-api": "*",
                 "laravel/pint": "^1.1",
-                "mockery/mockery": "^1.5",
-                "orchestra/testbench": "^8.5",
-                "phpunit/phpunit": "^10.1"
+                "nunomaduro/collision": "^7.4",
+                "orchestra/testbench": "^8.5"
             },
             "type": "library",
             "extra": {
@@ -128,7 +125,7 @@
                 "issues": "https://github.com/creasico/laravel-nusa/issues",
                 "source": "https://github.com/creasico/laravel-nusa"
             },
-            "time": "2023-07-07T06:00:45+00:00"
+            "time": "2023-07-20T02:04:36+00:00"
         },
         {
             "name": "dflydev/dot-access-data",

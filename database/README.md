@@ -212,14 +212,14 @@ classDiagram
 
 | Field | Attribute | Key | Description |
 | --- | --- | :---: | --- |
-| `id` | `unsignedBigInt`, `incrementing` | `primary` | - |
-| `name` | `varchar(150)` | | - |
-| `alias` | `varchar(50)`, `nullable` | | - |
-| `email` | `varchar`, `nullable` | `unique` | - |
-| `phone` | `varchar(20)`, `nullable` | | - |
-| `tax_status` | `unsignedSmallInt`, `nullable` | | - |
-| `tax_id` | `varchar(16)`, `nullable` | | - |
-| `summary` | `text`, `nullable` | | - |
+| `id` | `unsignedBigInt`, `incrementing` | `primary` | |
+| `name` | `varchar(150)` | | |
+| `alias` | `varchar(50)`, `nullable` | | |
+| `email` | `varchar`, `nullable` | `unique` | |
+| `phone` | `varchar(20)`, `nullable` | | |
+| `tax_status` | `unsignedSmallInt`, `nullable` | | |
+| `tax_id` | `varchar(16)`, `nullable` | | |
+| `summary` | `text`, `nullable` | | |
 
 **Model Attributes**
 - `timestamps`
@@ -229,12 +229,12 @@ classDiagram
 
 | Field | Attribute | Key | Description |
 | --- | --- | :---: | --- |
-| `id` | `unsignedBigInt`, `incrementing` | `primary` | - |
-| `business_id` | `unsignedBigInt` | `foreign` | - |
-| `stakeholder` | `morphs`, `nullable` | | - |
-| `is_internal` | `boolean`, `default: false` | | - |
-| `code` | `varchar(100)`, `nullable` | `unique` | - |
-| `type` | `unsignedSmallInt`, `nullable` | | - |
+| `id` | `unsignedBigInt`, `incrementing` | `primary` | |
+| `business_id` | `unsignedBigInt` | `foreign` | |
+| `stakeholder` | `morphs`, `nullable` | | |
+| `is_internal` | `boolean`, `default: false` | | |
+| `code` | `varchar(100)`, `nullable` | `unique` | |
+| `type` | `unsignedSmallInt`, `nullable` | | |
 
 **Relation Properties**
 - `business_id` : reference `businesses`
@@ -274,15 +274,15 @@ classDiagram
 
 | Field | Attribute | Key | Description |
 | --- | --- | :---: | --- |
-| `id` | `unsignedBigInt`, `incrementing` | `primary` | - |
-| `employer_id` | `unsignedBigInt` | `foreign` | - |
-| `employee_id` | `unsignedBigInt` | `foreign` | - |
-| `is_primary` | `boolean`, `default: false` | | - |
-| `code` | `varchar(100)`, `nullable` | `unique` | - |
-| `type` | `unsignedSmallInt`, `nullable` | | - |
-| `status` | `unsignedSmallInt`, `nullable` | | - |
-| `start_date` | `date`, `nullable` | | - |
-| `finish_date` | `date`, `nullable` | | - |
+| `id` | `unsignedBigInt`, `incrementing` | `primary` | |
+| `employer_id` | `unsignedBigInt` | `foreign` | |
+| `employee_id` | `unsignedBigInt` | `foreign` | |
+| `is_primary` | `boolean`, `default: false` | | |
+| `code` | `varchar(100)`, `nullable` | `unique` | |
+| `type` | `unsignedSmallInt`, `nullable` | | |
+| `status` | `unsignedSmallInt`, `nullable` | | |
+| `start_date` | `date`, `nullable` | | |
+| `finish_date` | `date`, `nullable` | | |
 
 **Relation Properties**
 - `employer_id` : reference `businesses`
@@ -331,14 +331,14 @@ classDiagram
 
 | Field | Attribute | Key | Description |
 | --- | --- | :---: | --- |
-| `id` | `unsignedBigInt`, `incrementing` | `primary` | - |
-| `user_id` | `unsignedBigInt`, `nullable` | `foreign` | - |
-| `name` | `varchar(150)` | | - |
-| `alias` | `varchar(50)`, `nullable` | | - |
-| `email` | `varchar`, `nullable` | `unique` | - |
-| `phone` | `varchar(20)`, `nullable` | | - |
-| `gender` | `char(1)` | | - |
-| `summary` | `text`, `nullable` | | - |
+| `id` | `unsignedBigInt`, `incrementing` | `primary` | |
+| `user_id` | `unsignedBigInt`, `nullable` | `foreign` | |
+| `name` | `varchar(150)` | | |
+| `alias` | `varchar(50)`, `nullable` | | |
+| `email` | `varchar`, `nullable` | `unique` | |
+| `phone` | `varchar(20)`, `nullable` | | |
+| `gender` | `char(1)` | | |
+| `summary` | `text`, `nullable` | | |
 
 **Model Attributes**
 - `timestamps`
@@ -351,10 +351,10 @@ classDiagram
 
 | Field | Attribute | Key | Description |
 | --- | --- | :---: | --- |
-| `personnel_id` | `unsignedBigInt` | `foreign` | - |
-| `relative_id` | `unsignedBigInt` | `foreign` | - |
-| `status` | `unsignedSmallInt`, `nullable` | | - |
-| `remark` | `text`, `nullable` | | - |
+| `personnel_id` | `unsignedBigInt` | `foreign` | |
+| `relative_id` | `unsignedBigInt` | `foreign` | |
+| `status` | `unsignedSmallInt`, `nullable` | | |
+| `remark` | `text`, `nullable` | | |
 
 **Relation Properties**
 - `personnel_id` : reference `personnels`
@@ -375,22 +375,22 @@ classDiagram
 
 | Field | Attribute | Key | Description |
 | --- | --- | :---: | --- |
-| `id` | `unsignedBigInt`, `incrementing` | `primary` | - |
-| `identity` | `morphs`, `nullable` | | - |
-| `nik` | `char(16)`, `nullable` | | - |
-| `prefix` | `varchar(10)`, `nullable` | | - |
-| `suffix` | `varchar(10)`, `nullable` | | - |
-| `birth_date` | `date`, `nullable` | | - |
-| `birth_place_code` | `char(4)`, `nullable` | | - |
-| `education` | `varchar(3)`, `nullable` | | - |
-| `religion` | `unsignedTinyInt`, `nullable` | | - |
-| `tax_status` | `unsignedSmallInt`, `nullable` | | - |
-| `tax_id` | `varchar(16)`, `nullable` | | - |
+| `id` | `unsignedBigInt`, `incrementing` | `primary` | |
+| `identity` | `morphs`, `nullable` | | |
+| `nik` | `char(16)`, `nullable` | | |
+| `prefix` | `varchar(10)`, `nullable` | | |
+| `suffix` | `varchar(10)`, `nullable` | | |
+| `birth_date` | `date`, `nullable` | | |
+| `birth_place_code` | `char(4)`, `nullable` | | |
+| `education` | `varchar(3)`, `nullable` | | |
+| `religion` | `unsignedTinyInt`, `nullable` | | |
+| `tax_status` | `unsignedSmallInt`, `nullable` | | |
+| `tax_id` | `varchar(16)`, `nullable` | | |
 
 **Model Attributes**
 - `timestamps`
 - `softDeletes`
-- 
+
 **Profile Educations**
 - Uneducated
 - SD
@@ -441,18 +441,18 @@ classDiagram
 
 | Field | Attribute | Key | Description |
 | --- | --- | :---: | --- |
-| `id` | `unsignedBigInt`, `incrementing` | `primary` | - |
-| `addressable` | `morphs`, `nullable` | | - |
-| `is_resident` | `boolean` | | - |
-| `line` | `varchar` | | - |
-| `rt` | `char(3)`, `nullable` | | - |
-| `rw` | `char(3)`, `nullable` | | - |
-| `village_code` | `char(10)`, `nullable` | | - |
-| `district_code` | `char(6)`, `nullable` | | - |
-| `regency_code` | `char(4)`, `nullable` | | - |
-| `province_code` | `char(2)`, `nullable` | | - |
-| `postal_code` | `char(5)`, `nullable` | | - |
-| `summary` | `varchar`, `nullable` | | - |
+| `id` | `unsignedBigInt`, `incrementing` | `primary` | |
+| `addressable` | `morphs`, `nullable` | | |
+| `is_resident` | `boolean` | | |
+| `line` | `varchar` | | |
+| `rt` | `char(3)`, `nullable` | | |
+| `rw` | `char(3)`, `nullable` | | |
+| `village_code` | `char(10)`, `nullable` | | |
+| `district_code` | `char(6)`, `nullable` | | |
+| `regency_code` | `char(4)`, `nullable` | | |
+| `province_code` | `char(2)`, `nullable` | | |
+| `postal_code` | `char(5)`, `nullable` | | |
+| `summary` | `varchar`, `nullable` | | |
 
 **Model Attributes**
 - `timestamps`
@@ -488,13 +488,13 @@ classDiagram
 
 | Field | Attribute | Key | Description |
 | --- | --- | :---: | --- |
-| `id` | `uuid` | `primary` | - |
+| `id` | `uuid` | `primary` | |
 | `revision_id` | `uuid`, `nullable` | `foreign` | Indicates that this row is actually a revision of parent `id` |
-| `title` | `varchar`, `nullable` | | - |
-| `name` | `varchar` | | - |
-| `path` | `varchar`, `nullable` | | - |
-| `drive` | `varchar`, `nullable` | | - |
-| `summary` | `varchar`, `nullable` | | - |
+| `title` | `varchar`, `nullable` | | |
+| `name` | `varchar` | | |
+| `path` | `varchar`, `nullable` | | |
+| `drive` | `varchar`, `nullable` | | |
+| `summary` | `varchar`, `nullable` | | |
 
 **Model Attributes**
 - `timestamps`
@@ -507,8 +507,8 @@ classDiagram
 
 | Field | Attribute | Key | Description |
 | --- | --- | :---: | --- |
-| `file_upload_id` | `uuid` | `foreign` | - |
-| `attached_to` | `morphs`, `nullable` | | - |
+| `file_upload_id` | `uuid` | `foreign` | |
+| `attached_to` | `morphs`, `nullable` | | |
 
 **Relation Properties**
 - `file_upload_id` : reference `file_uploads`

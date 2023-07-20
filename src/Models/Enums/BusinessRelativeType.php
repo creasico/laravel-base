@@ -5,7 +5,7 @@ namespace Creasi\Base\Models\Enums;
 /**
  * Typically a stakeholder that has some interests in the company.
  */
-enum CompanyRelativeType: int
+enum BusinessRelativeType: int
 {
     use KeyableEnum;
 

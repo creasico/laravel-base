@@ -7,7 +7,6 @@ use Illuminate\Database\Eloquent\Relations\Pivot;
 
 /**
  * @property null|PersonnelRelativeStatus $status
- * @property null|string $remark
  */
 class PersonnelRelative extends Pivot
 {

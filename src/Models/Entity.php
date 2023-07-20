@@ -10,10 +10,10 @@ use Creasi\Nusa\Contracts\HasAddresses;
 use Creasi\Nusa\Models\Concerns\WithAddresses;
 
 /**
- * @property null|string $code
  * @property string $name
+ * @property null|string $alias
  * @property null|string $email
- * @property null|string $phone_number
+ * @property null|string $phone
  * @property null|string $summary
  */
 abstract class Entity extends Model implements HasAddresses, HasFileUploads, Stakeholder
@@ -25,10 +25,10 @@ abstract class Entity extends Model implements HasAddresses, HasFileUploads, Sta
     public function getFillable()
     {
         return \array_merge($this->fillable, [
-            'code',
             'name',
+            'alias',
             'email',
-            'phone_number',
+            'phone',
             'summary',
         ]);
     }

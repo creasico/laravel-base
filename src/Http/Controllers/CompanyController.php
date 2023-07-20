@@ -6,7 +6,7 @@ use Creasi\Base\Http\Requests\Company\StoreRequest;
 use Creasi\Base\Http\Requests\Company\UpdateRequest;
 use Creasi\Base\Http\Resources\Company\CompanyCollection;
 use Creasi\Base\Http\Resources\Company\CompanyResource;
-use Creasi\Base\Models\Company;
+use Creasi\Base\Models\Business;
 use Illuminate\Http\Request;
 
 class CompanyController extends Controller
@@ -19,9 +19,9 @@ class CompanyController extends Controller
     /**
      * @return CompanyCollection
      */
-    public function index(Request $request)
+    public function index()
     {
-        $items = Company::query()->latest();
+        $items = Business::query()->latest();
 
         return new CompanyCollection($items->paginate());
     }
@@ -31,8 +31,8 @@ class CompanyController extends Controller
      */
     public function store(StoreRequest $request)
     {
-        /** @var Company $item */
-        $item = Company::create($request->validated());
+        /** @var Business $item */
+        $item = Business::create($request->validated());
 
         return $this->show($item, $request)->setStatusCode(201);
     }
@@ -40,7 +40,7 @@ class CompanyController extends Controller
     /**
      * @return CompanyResource
      */
-    public function show(Company $company, Request $request)
+    public function show(Business $company, Request $request)
     {
         return CompanyResource::make($company)->toResponse($request);
     }
@@ -48,7 +48,7 @@ class CompanyController extends Controller
     /**
      * @return CompanyResource
      */
-    public function update(UpdateRequest $request, Company $company)
+    public function update(UpdateRequest $request, Business $company)
     {
         $company->update($request->validated());
 
@@ -58,7 +58,7 @@ class CompanyController extends Controller
     /**
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Company $company)
+    public function destroy(Business $company)
     {
         $company->delete();
 

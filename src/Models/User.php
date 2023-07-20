@@ -2,6 +2,7 @@
 
 namespace Creasi\Base\Models;
 
+use Creasi\Base\Contracts\HasIdentity;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -18,7 +19,7 @@ use Laravel\Sanctum\HasApiTokens;
  *
  * @method static \Database\Factories\UserFactory<static> factory()
  */
-class User extends Authenticatable
+class User extends Authenticatable implements HasIdentity
 {
     use HasFactory;
     use Notifiable;
@@ -39,8 +40,11 @@ class User extends Authenticatable
         return Attribute::set(fn (string $value) => \bcrypt($value));
     }
 
-    public function profile()
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne|Personnel
+     */
+    public function identity()
     {
-        return $this->hasOne(Identity::class);
+        return $this->hasOne(Personnel::class);
     }
 }

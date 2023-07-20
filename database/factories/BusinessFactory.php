@@ -3,16 +3,16 @@
 namespace Database\Factories;
 
 use Creasi\Base\Models\Address;
-use Creasi\Base\Models\Company;
+use Creasi\Base\Models\Business;
 use Creasi\Base\Models\FileUpload;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends Factory<Company>
+ * @extends Factory<Business>
  */
-class CompanyFactory extends Factory
+class BusinessFactory extends Factory
 {
-    protected $model = Company::class;
+    protected $model = Business::class;
 
     /**
      * @return array<string, mixed>
@@ -20,10 +20,9 @@ class CompanyFactory extends Factory
     public function definition(): array
     {
         return [
-            'code' => $this->faker->numerify('######'),
             'name' => $this->faker->company(),
             'email' => $this->faker->safeEmail(),
-            'phone_number' => '08'.$this->faker->numerify('##########'),
+            'phone' => '08'.$this->faker->numerify('##########'),
             'summary' => $this->faker->sentence(4),
         ];
     }

@@ -2,8 +2,8 @@
 
 namespace Creasi\Tests\Http;
 
-use Creasi\Base\Models\Company;
-use Creasi\Base\Models\Enums\CompanyRelativeType;
+use Creasi\Base\Models\Business;
+use Creasi\Base\Models\Enums\BusinessRelativeType;
 use Creasi\Tests\TestCase;
 use Illuminate\Contracts\Routing\UrlRoutable;
 use Laravel\Sanctum\Sanctum;
@@ -14,7 +14,7 @@ use PHPUnit\Framework\Attributes\Test;
 #[Group('stakeholder')]
 abstract class StakeholderTestCase extends TestCase
 {
-    abstract protected function getRelativeType(): CompanyRelativeType;
+    abstract protected function getRelativeType(): BusinessRelativeType;
 
     final protected function getRoutePath(string|UrlRoutable ...$suffixs): string
     {
@@ -42,7 +42,7 @@ abstract class StakeholderTestCase extends TestCase
     public function should_able_to_retrieve_all_data(): void
     {
         Sanctum::actingAs($this->user());
-        Company::factory(2)->create();
+        Business::factory(2)->create();
 
         $response = $this->getJson($this->getRoutePath());
 
@@ -54,7 +54,7 @@ abstract class StakeholderTestCase extends TestCase
     {
         Sanctum::actingAs($this->user());
 
-        $data = Company::factory()->raw();
+        $data = Business::factory()->raw();
 
         $response = $this->postJson($this->getRoutePath(), $data);
 
@@ -66,7 +66,7 @@ abstract class StakeholderTestCase extends TestCase
     {
         Sanctum::actingAs($this->user());
 
-        $model = Company::factory()->createOne();
+        $model = Business::factory()->createOne();
 
         $response = $this->getJson($this->getRoutePath($model));
 
@@ -78,7 +78,7 @@ abstract class StakeholderTestCase extends TestCase
     {
         Sanctum::actingAs($this->user());
 
-        $model = Company::factory()->createOne();
+        $model = Business::factory()->createOne();
 
         $response = $this->putJson($this->getRoutePath($model), $model->toArray());
 
@@ -90,7 +90,7 @@ abstract class StakeholderTestCase extends TestCase
     {
         Sanctum::actingAs($this->user());
 
-        $model = Company::factory()->createOne();
+        $model = Business::factory()->createOne();
 
         $response = $this->deleteJson($this->getRoutePath($model));
 

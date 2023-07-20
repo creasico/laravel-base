@@ -19,7 +19,6 @@ class StoreRequest extends FormRequest
             'name' => ['required', 'string'],
             'type' => ['required', Rule::enum(FileUploadType::class)],
             'upload' => ['nullable', 'file'],
-            'summary' => ['nullable', 'string'],
         ];
     }
 
@@ -33,7 +32,6 @@ class StoreRequest extends FormRequest
             $this->file('upload'),
             $this->name,
             $this->title,
-            $this->summary,
         );
     }
 }

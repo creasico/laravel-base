@@ -23,7 +23,7 @@ use Illuminate\Support\Str;
  * @property-read \Illuminate\Database\Eloquent\Collection<int, static> $revisions
  * @property-read \Illuminate\Database\Eloquent\Collection<int, FileAttached> $attaches
  * @property-read null|static $revisionOf
- * @property-read \Illuminate\Database\Eloquent\Collection<int, Company> $ownedByCompanies
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Business> $ownedByCompanies
  * @property-read \Illuminate\Database\Eloquent\Collection<int, Personnel> $ownedByPersonnels
  *
  * @method static static store(FileUploadType $type, string|UploadedFile $path, string $name, ?string $title = null, ?string $summary = null, ?string $disk = null)
@@ -67,7 +67,7 @@ class FileUpload extends Model
 
     public function ownedByCompanies()
     {
-        return $this->attachedTo(Company::class);
+        return $this->attachedTo(Business::class);
     }
 
     public function ownedByPersonnels()

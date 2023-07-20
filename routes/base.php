@@ -1,7 +1,7 @@
 <?php
 
 use Creasi\Base\Http\Controllers;
-use Creasi\Base\Models\Enums\CompanyRelativeType;
+use Creasi\Base\Models\Enums\BusinessRelativeType;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -34,7 +34,7 @@ Route::middleware('auth:sanctum')->group(function () {
         ]);
     }
 
-    foreach (CompanyRelativeType::cases() as $stakeholder) {
+    foreach (BusinessRelativeType::cases() as $stakeholder) {
         if ($stakeholder->isInternal()) {
             continue;
         }

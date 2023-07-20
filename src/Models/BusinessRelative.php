@@ -2,23 +2,24 @@
 
 namespace Creasi\Base\Models;
 
-use Creasi\Base\Models\Enums\CompanyRelativeType;
+use Creasi\Base\Models\Enums\BusinessRelativeType;
 use Illuminate\Database\Eloquent\Relations\MorphPivot;
 
 /**
- * @property int $company_id
+ * @property ?string $code
+ * @property int $business_id
  * @property bool $is_internal
- * @property null|CompanyRelativeType $type
+ * @property null|BusinessRelativeType $type
  * @property null|string $remark
  */
-class CompanyRelative extends MorphPivot
+class BusinessRelative extends MorphPivot
 {
-    protected $table = 'company_relatives';
+    protected $table = 'business_relatives';
 
     protected $casts = [
-        'company_id' => 'int',
+        'business_id' => 'int',
         'is_internal' => 'bool',
-        'type' => CompanyRelativeType::class,
+        'type' => BusinessRelativeType::class,
     ];
 
     /**

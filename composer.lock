@@ -63,31 +63,28 @@
         },
         {
             "name": "creasi/laravel-nusa",
-            "version": "v0.1.0",
+            "version": "v0.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/creasico/laravel-nusa.git",
-                "reference": "7004d32213f885ba17fe981ea1de4e7fdea99cf4"
+                "reference": "c83be1333e57fdfa0a12e79f7f1f6568c7edb01b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/creasico/laravel-nusa/zipball/7004d32213f885ba17fe981ea1de4e7fdea99cf4",
-                "reference": "7004d32213f885ba17fe981ea1de4e7fdea99cf4",
+                "url": "https://api.github.com/repos/creasico/laravel-nusa/zipball/c83be1333e57fdfa0a12e79f7f1f6568c7edb01b",
+                "reference": "c83be1333e57fdfa0a12e79f7f1f6568c7edb01b",
                 "shasum": ""
             },
             "require": {
                 "ext-sqlite3": "*",
-                "illuminate/contracts": "^10.0",
-                "illuminate/database": "^10.0",
-                "illuminate/support": "^10.0",
+                "laravel/framework": "^9.0|^10.0",
                 "php": "^8.1"
             },
             "require-dev": {
                 "composer-runtime-api": "*",
                 "laravel/pint": "^1.1",
-                "mockery/mockery": "^1.5",
-                "orchestra/testbench": "^8.5",
-                "phpunit/phpunit": "^10.1"
+                "nunomaduro/collision": "^7.4",
+                "orchestra/testbench": "^8.5"
             },
             "type": "library",
             "extra": {
@@ -128,7 +125,7 @@
                 "issues": "https://github.com/creasico/laravel-nusa/issues",
                 "source": "https://github.com/creasico/laravel-nusa"
             },
-            "time": "2023-07-16T20:14:52+00:00"
+            "time": "2023-07-20T02:04:36+00:00"
         },
         {
             "name": "dflydev/dot-access-data",

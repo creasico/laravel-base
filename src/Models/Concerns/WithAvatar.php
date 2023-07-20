@@ -3,7 +3,6 @@
 namespace Creasi\Base\Models\Concerns;
 
 use Creasi\Base\Models\Enums\FileUploadType;
-use Creasi\Base\Models\Identity;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Http\UploadedFile;
 
@@ -15,7 +14,7 @@ use Illuminate\Http\UploadedFile;
 trait WithAvatar
 {
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\MorphOne|Identity
+     * @return \Illuminate\Database\Eloquent\Relations\MorphOne|\Creasi\Base\Models\FileUpload
      */
     public function avatar(): Attribute
     {

@@ -4,6 +4,7 @@ namespace Creasi\Tests\Models;
 
 use Creasi\Base\Models\Address;
 use Creasi\Base\Models\Enums\FileUploadType;
+use Creasi\Base\Models\Enums\Gender;
 use Creasi\Base\Models\Enums\PersonnelRelativeStatus;
 use Creasi\Base\Models\FileUpload;
 use Creasi\Base\Models\Personnel;
@@ -22,6 +23,7 @@ class PersonnelTest extends TestCase
         $person = Personnel::factory()->withAddress()->createOne();
 
         $this->assertCount(1, $person->addresses);
+        $this->assertInstanceOf(Gender::class, $person->gender);
         $this->assertInstanceOf(Address::class, $person->addresses->first());
     }
 

@@ -3,6 +3,7 @@
 namespace Creasi\Base;
 
 use Creasi\Base\Contracts\Employee;
+use Creasi\Base\Contracts\Employer;
 use Creasi\Base\Contracts\Stakeholder;
 use Creasi\Base\Models\Address;
 use Creasi\Base\Models\Entity;
@@ -105,6 +106,10 @@ class ServiceProvider extends IlluminateServiceProvider
     {
         $this->app->bind(Entity::class, function ($app) {
             return $app->make(Repository::class)->resolveEntity();
+        });
+
+        $this->app->bind(Employer::class, function ($app) {
+            return $app->make(Repository::class)->resolveEmployer();
         });
 
         $this->app->bind(Employee::class, function ($app) {

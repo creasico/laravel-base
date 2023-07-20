@@ -5,13 +5,13 @@ erDiagram
     businesses ||..o{ business_relatives : stakeholders
     businesses {
         unsignedBigInt id PK
-        varchar name
-        varchar alias
+        varchar(150) name
+        varchar(50) alias
         varchar email UK
-        varchar(20) phone_number
+        varchar(20) phone
         unsignedSmallInt tax_status
         varchar(16) tax_id
-        text summary
+        varchar(200) summary
     }
 
     business_relatives ||--|| businesses : stakeholder
@@ -20,39 +20,37 @@ erDiagram
         unsignedBigInt id PK
         unsignedBigInt business_id FK
         morph stakeholder
-        varchar code UK
-        unsignedSmallInt type
         boolean is_internal
-        text remark
+        varchar(100) code UK
+        unsignedSmallInt type
     }
 
     businesses ||--o{ employments : employees
     employments }o..|| personnels : employees
     employments {
         unsignedBigInt id PK
-        unsignedBigInt business_id FK
+        unsignedBigInt employer_id FK
         unsignedBigInt employee_id FK
         boolean is_primary
-        varchar code UK
+        varchar(100) code UK
         unsignedSmallInt type
         unsignedSmallInt status
         date start_date
         date finish_date
-        text remark
     }
 
     personnels {
         unsignedBigInt id PK
         unsignedBigInt user_id FK
-        varchar name
-        varchar alias
+        varchar(150) name
+        varchar(50) alias
         varchar email UK
-        varchar(20) phone_number
+        varchar(20) phone
         char(1) gender
-        text summary
+        varchar(200) summary
     }
     
-    personnels ||..|| profiles : profiles
+    personnels ||..|| profiles : identity
     profiles {
         unsignedBigInt id PK
         morphs identity
@@ -73,14 +71,13 @@ erDiagram
         unsignedBigInt personnel_id FK
         unsignedBigInt relative_id FK
         unsignedSmallInt status
-        text remark
     }
 
     addresses }o..|| businesses : addresses
     addresses }o..|| personnels : addresses
     addresses {
         unsignedBigInt id PK
-        morph owner
+        morph addressable
         boolean is_resident
         varchar line
         char(3) rt
@@ -90,13 +87,13 @@ erDiagram
         char(4) regency_code
         char(2) province_code
         char(5) postal_code
-        text summary
+        varchar summary
     }
 
     users ||..|| personnels : credential
     users {
         unsignedBigInt id PK
-        varchar name
+        varchar(150) name
         varchar email
         varchar password
     }
@@ -109,7 +106,7 @@ erDiagram
         varchar name
         varchar path
         varchar drive
-        text summary
+        varchar summary
     }
     businesses }o..|| file_attached : files
     personnels }o..|| file_attached : files
@@ -133,29 +130,32 @@ Despite those similarities they must have some differences, including :
 classDiagram
     Entity <|-- Business
     Entity <|-- Personnel
-    Personnel "1" ..> "1" User
+    Personnel "1" ..> "1" User : credential
 
     class Entity {
+        varchar~150~ name
+        varchar~50~ alias
         varchar email
-        varchar phone_number
-        varchar name
-        varchar alias
-        unsignedSmallInt tax_status
+        varchar~20~ phone
+        varchar~200~ summary
     }
     class Business {
         unsignedBigInt id
         unsignedSmallInt tax_status
-        varchar~20~ tax_id
+        varchar~16~ tax_id
     }
     class Personnel {
         unsignedBigInt id
         unsignedBigInt user_id
         char~1~ gender
+        credential() User
     }
     class User {
         unsignedBigInt id
-        varchar name
+        varchar~150~ name
+        varchar email
         varchar password
+        identity(): Personnel
     }
 ```
 
@@ -203,6 +203,8 @@ classDiagram
     }
     class BusinessRelative {
         unsignedBigInt id
+        boolean is_internal
+        varchar~100~ code
         stakeholders() Entity[]
     }
 ```
@@ -212,10 +214,10 @@ classDiagram
 | Field | Attribute | Key | Description |
 | --- | --- | :---: | --- |
 | `id` | `unsignedBigInt`, `incrementing` | `primary` | - |
-| `name` | `varchar` | | - |
-| `alias` | `varchar`, `nullable` | | - |
+| `name` | `varchar(150)` | | - |
+| `alias` | `varchar(50)`, `nullable` | | - |
 | `email` | `varchar`, `nullable` | `unique` | - |
-| `phone_number` | `varchar(20)`, `nullable` | | - |
+| `phone` | `varchar(20)`, `nullable` | | - |
 | `tax_status` | `unsignedSmallInt`, `nullable` | | - |
 | `tax_id` | `varchar(16)`, `nullable` | | - |
 | `summary` | `text`, `nullable` | | - |
@@ -231,10 +233,9 @@ classDiagram
 | `id` | `unsignedBigInt`, `incrementing` | `primary` | - |
 | `business_id` | `unsignedBigInt` | `foreign` | - |
 | `stakeholder` | `morphs`, `nullable` | | - |
-| `code` | `varchar`, `nullable` | `unique` | - |
-| `type` | `unsignedSmallInt`, `nullable` | | - |
 | `is_internal` | `boolean`, `default: false` | | - |
-| `remark` | `text`, `nullable` | | - |
+| `code` | `varchar(100)`, `nullable` | `unique` | - |
+| `type` | `unsignedSmallInt`, `nullable` | | - |
 
 **Relation Properties**
 - `business_id` : reference `businesses`
@@ -250,18 +251,22 @@ classDiagram
 
     class Business {
         unsignedBigInt id
-        employees(): Personnel[]
+        employees() Personnel[]
     }
     class Personnel {
         unsignedBigInt id
-        employer(): Business
+        employer() Business
     }
     class Employments {
         unsignedBigInt id
         unsignedBigInt business_id
         unsignedBigInt employee_id
-        varchar code
         boolean is_primary
+        varchar~100~ code
+        unsignedSmallInt type
+        unsignedSmallInt status
+        date start_date
+        date finish_date
         stakeholders() Entity[]
     }
 ```
@@ -271,18 +276,17 @@ classDiagram
 | Field | Attribute | Key | Description |
 | --- | --- | :---: | --- |
 | `id` | `unsignedBigInt`, `incrementing` | `primary` | - |
-| `business_id` | `unsignedBigInt` | `foreign` | - |
+| `employer_id` | `unsignedBigInt` | `foreign` | - |
 | `employee_id` | `unsignedBigInt` | `foreign` | - |
 | `is_primary` | `boolean`, `default: false` | | - |
-| `code` | `varchar`, `nullable` | `unique` | - |
+| `code` | `varchar(100)`, `nullable` | `unique` | - |
 | `type` | `unsignedSmallInt`, `nullable` | | - |
 | `status` | `unsignedSmallInt`, `nullable` | | - |
 | `start_date` | `date`, `nullable` | | - |
 | `finish_date` | `date`, `nullable` | | - |
-| `remark` | `text`, `nullable` | | - |
 
 **Relation Properties**
-- `business_id` : reference `businesses`
+- `employer_id` : reference `businesses`
 - `employee_id` : reference `personnels`
 
 **Employment Types**
@@ -305,17 +309,17 @@ Meanwhile, a business might want to be able to also communicate with their perso
 
 ```mermaid
 classDiagram
-    Personnel .. Profile : profile
+    Personnel .. Profile : identity
     Personnel ..> PersonnelRelative : relative
     PersonnelRelative --> Personnel : personnel
 
     class Personnel {
         unsignedBigInt id
-        profile(): Profile
+        profile() Profile
     }
     class Profile {
         unsignedBigInt id
-        identity(): Personnel
+        identity() Personnel
     }
     class PersonnelRelative {
         unsignedBigInt personnel_id
@@ -330,11 +334,10 @@ classDiagram
 | --- | --- | :---: | --- |
 | `id` | `unsignedBigInt`, `incrementing` | `primary` | - |
 | `user_id` | `unsignedBigInt`, `nullable` | `foreign` | - |
-| `code` | `varchar`, `nullable` | `unique` | - |
-| `name` | `varchar` | | - |
-| `alias` | `varchar`, `nullable` | | - |
+| `name` | `varchar(150)` | | - |
+| `alias` | `varchar(50)`, `nullable` | | - |
 | `email` | `varchar`, `nullable` | `unique` | - |
-| `phone_number` | `varchar(20)`, `nullable` | | - |
+| `phone` | `varchar(20)`, `nullable` | | - |
 | `gender` | `char(1)` | | - |
 | `summary` | `text`, `nullable` | | - |
 
@@ -423,15 +426,15 @@ classDiagram
 
     class Address {
         unsignedBigInt id
-        morph owner
+        addressable() Entity
     }
     class Business {
         unsignedBigInt id
-        addresses(): Address[]
+        addresses() Address[]
     }
     class Personnel {
         unsignedBigInt id
-        addresses(): Address[]
+        addresses() Address[]
     }
 ```
 
@@ -440,7 +443,7 @@ classDiagram
 | Field | Attribute | Key | Description |
 | --- | --- | :---: | --- |
 | `id` | `unsignedBigInt`, `incrementing` | `primary` | - |
-| `owner` | `morphs`, `nullable` | | - |
+| `addressable` | `morphs`, `nullable` | | - |
 | `is_resident` | `boolean` | | - |
 | `line` | `varchar` | | - |
 | `rt` | `char(3)`, `nullable` | | - |
@@ -450,7 +453,7 @@ classDiagram
 | `regency_code` | `char(4)`, `nullable` | | - |
 | `province_code` | `char(2)`, `nullable` | | - |
 | `postal_code` | `char(5)`, `nullable` | | - |
-| `summary` | `text`, `nullable` | | - |
+| `summary` | `varchar`, `nullable` | | - |
 
 **Model Attributes**
 - `timestamps`

@@ -2,7 +2,7 @@
 
 namespace Creasi\Tests\Http\Business;
 
-use Creasi\Base\Models\Enums\CompanyRelativeType;
+use Creasi\Base\Models\Enums\BusinessRelativeType;
 use Creasi\Tests\Http\StakeholderTestCase;
 use PHPUnit\Framework\Attributes\Group;
 
@@ -10,8 +10,8 @@ use PHPUnit\Framework\Attributes\Group;
 #[Group('customer')]
 class CustomerTest extends StakeholderTestCase
 {
-    protected function getRelativeType(): CompanyRelativeType
+    protected function getRelativeType(): BusinessRelativeType
     {
-        return CompanyRelativeType::Customer;
+        return BusinessRelativeType::Customer;
     }
 }

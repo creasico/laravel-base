@@ -16,7 +16,6 @@ class UpdateRequest extends FormRequest
             'name' => ['required', 'string'],
             'path' => ['required', 'string'],
             'upload' => ['nullable', 'file'],
-            'summary' => ['nullable', 'string'],
         ];
     }
 }

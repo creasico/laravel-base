@@ -2,7 +2,7 @@
 
 namespace Creasi\Tests\Models;
 
-use Creasi\Base\Models\Company;
+use Creasi\Base\Models\Business;
 use Creasi\Base\Models\Enums\FileUploadType;
 use Creasi\Base\Models\FileUpload;
 use Creasi\Base\Models\Personnel;
@@ -76,7 +76,7 @@ class FileUploadTest extends TestCase
     #[Test]
     public function could_attached_to_company()
     {
-        $company = Company::factory()->createOne();
+        $company = Business::factory()->createOne();
         $files = [
             'first' => UploadedFile::fake()->create('first.pdf'),
             'second' => UploadedFile::fake()->create('second.pdf'),
@@ -96,7 +96,7 @@ class FileUploadTest extends TestCase
     #[Test]
     public function could_attached_to_many_companies()
     {
-        $companies = Company::factory(2)->create();
+        $companies = Business::factory(2)->create();
         $file = UploadedFile::fake()->create('document.pdf');
 
         foreach ($companies as $company) {

@@ -11,22 +11,19 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('identities', function (Blueprint $table) {
+        Schema::create('profiles', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->nullable()->constrained()->nullOnDelete();
             $table->nullableMorphs('identity');
 
             $table->char('nik', 16)->unique()->nullable();
-            $table->string('prefix', 10)->nullable();
-            $table->string('fullname', 100);
-            $table->string('suffix', 10)->nullable();
-            $table->char('gender', 1);
+            $table->string('prefix', 20)->nullable();
+            $table->string('suffix', 20)->nullable();
             $table->date('birth_date')->nullable();
             $table->char('birth_place_code', 4)->nullable();
             $table->string('education', 3)->nullable();
             $table->unsignedTinyInteger('religion')->nullable();
-            $table->string('phone_number', 20)->nullable();
-            $table->text('summary')->nullable();
+            $table->unsignedSmallInteger('tax_status')->nullable();
+            $table->string('tax_id', 16)->nullable();
 
             $table->timestamps();
             $table->softDeletes();
@@ -34,7 +31,7 @@ return new class extends Migration
 
         Schema::create('addresses', function (Blueprint $table) {
             $table->id();
-            $table->nullableMorphs('owner');
+            $table->nullableMorphs('addressable');
 
             $table->boolean('is_resident');
             $table->string('line');
@@ -84,6 +81,6 @@ return new class extends Migration
         Schema::dropIfExists('file_attached');
         Schema::dropIfExists('file_uploads');
         Schema::dropIfExists('addresses');
-        Schema::dropIfExists('identities');
+        Schema::dropIfExists('profiles');
     }
 };

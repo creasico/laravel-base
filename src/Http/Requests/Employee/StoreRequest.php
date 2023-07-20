@@ -3,6 +3,8 @@
 namespace Creasi\Base\Http\Requests\Employee;
 
 use Creasi\Base\Http\Requests\FormRequest;
+use Creasi\Base\Models\Enums\Gender;
+use Illuminate\Validation\Rule;
 
 class StoreRequest extends FormRequest
 {
@@ -12,10 +14,10 @@ class StoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'code' => ['required', 'string'],
             'name' => ['required', 'string'],
             'email' => ['required', 'email'],
-            'phone_number' => ['nullable', 'numeric'],
+            'phone' => ['nullable', 'numeric'],
+            'gender' => ['required', Rule::enum(Gender::class)],
             'summary' => ['nullable', 'string'],
         ];
     }

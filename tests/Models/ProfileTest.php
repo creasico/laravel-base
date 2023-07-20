@@ -4,28 +4,26 @@ namespace Creasi\Tests\Models;
 
 use Carbon\CarbonImmutable;
 use Creasi\Base\Models\Enums\Education;
-use Creasi\Base\Models\Enums\Gender;
 use Creasi\Base\Models\Enums\Religion;
-use Creasi\Base\Models\Identity;
 use Creasi\Base\Models\Personnel;
+use Creasi\Base\Models\Profile;
 use Creasi\Nusa\Models\Regency;
 use Creasi\Tests\TestCase;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Test;
 
 #[Group('models')]
-#[Group('identity')]
-class IdentityTest extends TestCase
+#[Group('profile')]
+class ProfileTest extends TestCase
 {
     #[Test]
     public function should_have_correct_attributes_cast()
     {
-        $model = Identity::factory()->createOne();
+        $model = Profile::factory()->createOne();
 
         $this->assertModelExists($model);
         $this->assertInstanceOf(CarbonImmutable::class, $model->birth_date);
         $this->assertInstanceOf(Education::class, $model->education);
-        $this->assertInstanceOf(Gender::class, $model->gender);
         $this->assertInstanceOf(Religion::class, $model->religion);
     }
 
@@ -33,11 +31,11 @@ class IdentityTest extends TestCase
     public function should_owned_by_personnel()
     {
         $person = Personnel::factory()->createOne();
-        $identity = Identity::factory()->createOne();
+        $profile = Profile::factory()->createOne();
 
-        $identity->profile()->associate($person)->save();
+        $profile->identity()->associate($person)->save();
 
-        $this->assertModelExists($person->identity);
-        $this->assertInstanceOf(Regency::class, $identity->birthPlace);
+        $this->assertModelExists($person->profile);
+        $this->assertInstanceOf(Regency::class, $profile->birthPlace);
     }
 }

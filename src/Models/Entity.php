@@ -24,7 +24,7 @@ abstract class Entity extends Model implements HasAddresses, HasFileUploads, Sta
 
     public function getFillable()
     {
-        return \array_merge($this->fillable, [
+        return \array_merge(parent::getFillable(), [
             'name',
             'alias',
             'email',

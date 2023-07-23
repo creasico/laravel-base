@@ -32,7 +32,7 @@ abstract class TestCase extends Orchestra
     final protected function user(array|Closure $attrs = []): User
     {
         if (! $this->currentUser?->exists) {
-            $this->currentUser = User::factory()->createOne($attrs);
+            $this->currentUser = User::factory()->withIdentity()->createOne($attrs);
         }
 
         return $this->currentUser;

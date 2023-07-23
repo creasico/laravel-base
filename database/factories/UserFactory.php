@@ -2,6 +2,8 @@
 
 namespace Database\Factories;
 
+use Creasi\Base\Models\Enums\Gender;
+use Creasi\Base\Models\Personnel;
 use Creasi\Base\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
@@ -37,5 +39,10 @@ class UserFactory extends Factory
         return $this->state([
             'email_verified_at' => null,
         ]);
+    }
+
+    public function withIdentity(Gender $gender = null): static
+    {
+        return $this->has(Personnel::factory()->withProfile($gender), 'identity');
     }
 }

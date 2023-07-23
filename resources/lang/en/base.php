@@ -7,6 +7,7 @@ return [
     ],
 
     'religion' => [
+        'other' => 'Other Religion',
         'islam' => 'Islam',
         'christian' => 'Christian',
         'catholic' => 'Catholic',

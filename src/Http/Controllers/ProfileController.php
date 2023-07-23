@@ -15,6 +15,8 @@ class ProfileController extends Controller
     {
         $user = $request->user();
 
+        $user->load('identity.profile');
+
         return ProfileResource::make($user);
     }
 
@@ -23,7 +25,7 @@ class ProfileController extends Controller
      */
     public function update(ProfileRequest $request)
     {
-        $user = $request->user();
+        $user = $request->fulfill();
 
         return ProfileResource::make($user);
     }

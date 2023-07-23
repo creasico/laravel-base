@@ -43,7 +43,6 @@ class Profile extends Model implements HasIdentity, HasTaxInfo
     ];
 
     protected $casts = [
-        'user_id' => 'int',
         'birth_date' => 'immutable_date',
         'birth_place_code' => 'int',
         'education' => Education::class,

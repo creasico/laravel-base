@@ -9,6 +9,8 @@ use Illuminate\Support\Stringable;
  */
 trait KeyableEnum
 {
+    use OptionableEnum;
+
     /**
      * Retrieve translation key.
      */

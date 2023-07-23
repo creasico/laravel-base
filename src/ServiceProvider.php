@@ -13,7 +13,6 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider as IlluminateServiceProvider;
-use Laravel\Dusk\Browser;
 
 class ServiceProvider extends IlluminateServiceProvider
 {
@@ -61,10 +60,6 @@ class ServiceProvider extends IlluminateServiceProvider
             Factory::guessFactoryNamesUsing(function (string $modelName) {
                 return Factory::$namespace.\class_basename($modelName).'Factory';
             });
-
-            if (\class_exists(Browser::class)) {
-                $this->registerDuskMacroForInertia();
-            }
         }
 
         $this->registerBindings();
@@ -118,25 +113,6 @@ class ServiceProvider extends IlluminateServiceProvider
 
         $this->app->bind(Stakeholder::class, function ($app) {
             return $app->make(Repository::class)->resolveStakeholder();
-        });
-    }
-
-    /**
-     * Register inertia.js helper for dusk testing
-     *
-     * @see https://github.com/protonemedia/inertiajs-events-laravel-dusk
-     */
-    private function registerDuskMacroForInertia(): void
-    {
-        Browser::macro('waitForInertia', function (int $seconds = null): Browser {
-            /** @var Browser $this */
-            $driver = $this->driver;
-
-            $currentCount = $driver->executeScript('return window.__inertiaNavigatedCount;');
-
-            return $this->waitUsing($seconds, 100, fn () => $driver->executeScript(
-                "return window.__inertiaNavigatedCount > {$currentCount};"
-            ), 'Waited %s seconds for Inertia.js to increase the navigate count.');
         });
     }
 

@@ -138,12 +138,12 @@ classDiagram
         varchar~20~ phone
         varchar~200~ summary
     }
-    class Business {
+    class Business~Entity~ {
         unsignedBigInt id
         unsignedSmallInt tax_status
         varchar~16~ tax_id
     }
-    class Personnel {
+    class Personnel~Entity~ {
         unsignedBigInt id
         unsignedBigInt user_id
         char~1~ gender
@@ -194,10 +194,10 @@ classDiagram
      BusinessRelative --> Personnel : stakeholders
      Business --> BusinessRelative : businessRelatives
 
-    class Business {
+    class Business~Entity~ {
         unsignedBigInt id
     }
-    class Personnel {
+    class Personnel~Entity~ {
         unsignedBigInt id
     }
     class BusinessRelative {
@@ -213,10 +213,10 @@ classDiagram
 | Field | Attribute | Key | Description |
 | --- | --- | :---: | --- |
 | `id` | `unsignedBigInt`, `incrementing` | `primary` | |
-| `name` | `varchar(150)` | | |
-| `alias` | `varchar(50)`, `nullable` | | |
-| `email` | `varchar`, `nullable` | `unique` | |
-| `phone` | `varchar(20)`, `nullable` | | |
+| `name` | `varchar(150)` | | Must contain legal name of the business, e.g : `PT. Creasi Tekno Solusi` |
+| `alias` | `varchar(50)`, `nullable` | | Must contain alias name from its legal name of the business, e.g : `Creasico` |
+| `email` | `varchar`, `nullable` | `unique` | The business primary email address, e.g : `hello@creasi.co` |
+| `phone` | `varchar(20)`, `nullable` | | The business primary phone number |
 | `tax_status` | `unsignedSmallInt`, `nullable` | | |
 | `tax_id` | `varchar(16)`, `nullable` | | |
 | `summary` | `text`, `nullable` | | |
@@ -232,7 +232,7 @@ classDiagram
 | `id` | `unsignedBigInt`, `incrementing` | `primary` | |
 | `business_id` | `unsignedBigInt` | `foreign` | |
 | `stakeholder` | `morphs`, `nullable` | | |
-| `is_internal` | `boolean`, `default: false` | | |
+| `is_internal` | `boolean`, `default: false` | | Determine whether the stakeholder is actually from internal business |
 | `code` | `varchar(100)`, `nullable` | `unique` | |
 | `type` | `unsignedSmallInt`, `nullable` | | |
 
@@ -258,7 +258,7 @@ classDiagram
     }
     class Employments {
         unsignedBigInt id
-        unsignedBigInt business_id
+        unsignedBigInt employer_id
         unsignedBigInt employee_id
         boolean is_primary
         varchar~100~ code
@@ -275,11 +275,11 @@ classDiagram
 | Field | Attribute | Key | Description |
 | --- | --- | :---: | --- |
 | `id` | `unsignedBigInt`, `incrementing` | `primary` | |
-| `employer_id` | `unsignedBigInt` | `foreign` | |
-| `employee_id` | `unsignedBigInt` | `foreign` | |
-| `is_primary` | `boolean`, `default: false` | | |
-| `code` | `varchar(100)`, `nullable` | `unique` | |
-| `type` | `unsignedSmallInt`, `nullable` | | |
+| `employer_id` | `unsignedBigInt` | `foreign` | ID of the company |
+| `employee_id` | `unsignedBigInt` | `foreign` | ID of the personnel |
+| `is_primary` | `boolean`, `default: false` | | Determine whether it's the personnel's primary company |
+| `code` | `varchar(100)`, `nullable` | `unique` | An identification that given by the company to employee |
+| `type` | `unsignedSmallInt`, `nullable` | | Define the employment type of the personnel in the company |
 | `status` | `unsignedSmallInt`, `nullable` | | |
 | `start_date` | `date`, `nullable` | | |
 | `finish_date` | `date`, `nullable` | | |
@@ -299,6 +299,9 @@ classDiagram
 - Permanent
 - Contract
 - Probation
+
+**Note :**
+Field `type` and `status` shouldn't be detachable so we can maintain historical changes of the personnel in the company.
 
 ## Personnel and its Profile
 
@@ -425,13 +428,23 @@ classDiagram
 
     class Address {
         unsignedBigInt id
+        boolean is_resident
+        string line
+        char~3~ rt
+        char~3~ rw
+        char~10~ village_code
+        char~6~ district_code
+        char~4~ regency_code
+        char~2~ province_code
+        char~5~ postal_code
+        string summary
         addressable() Entity
     }
-    class Business {
+    class Business~Entity~ {
         unsignedBigInt id
         addresses() Address[]
     }
-    class Personnel {
+    class Personnel~Entity~ {
         unsignedBigInt id
         addresses() Address[]
     }
@@ -447,16 +460,22 @@ classDiagram
 | `line` | `varchar` | | |
 | `rt` | `char(3)`, `nullable` | | |
 | `rw` | `char(3)`, `nullable` | | |
-| `village_code` | `char(10)`, `nullable` | | |
-| `district_code` | `char(6)`, `nullable` | | |
-| `regency_code` | `char(4)`, `nullable` | | |
-| `province_code` | `char(2)`, `nullable` | | |
+| `village_code` | `char(10)`, `nullable` | `foreign` | |
+| `district_code` | `char(6)`, `nullable` | `foreign` | |
+| `regency_code` | `char(4)`, `nullable` | `foreign` | |
+| `province_code` | `char(2)`, `nullable` | `foreign` | |
 | `postal_code` | `char(5)`, `nullable` | | |
 | `summary` | `varchar`, `nullable` | | |
 
 **Model Attributes**
 - `timestamps`
 - `softDeletes`
+
+**Relation Properties**
+- `village_code` : reference `villages`
+- `district_code` : reference `districts`
+- `regency_code` : reference `regencies`
+- `province_code` : reference `provinces`
 
 ## Uploaded Files
 
@@ -468,19 +487,29 @@ It also possible to store an `.xlsx` or `.csv` file that would be used for data 
 classDiagram
     Business "1" ..> "*" FileAttached : files
     Personnel "1" ..> "*" FileAttached : files
+    FileAttached "1" <--> "1" FileUpload : attachments
+
     class FileUpload {
         unsignedBigInt id
+        string revision_id
+        string title
+        string name
+        string path
+        string drive
+        string summary
     }
-    FileAttached "1" <--> "1" FileUpload : attachments
     class FileAttached {
         unsignedBigInt id
         morph attached_to
+        attachedTo() Entity
     }
-    class Business {
+    class Business~Entity~ {
         unsignedBigInt id
+        files() FileUpload[]
     }
-    class Personnel {
+    class Personnel~Entity~ {
         unsignedBigInt id
+        files() FileUpload[]
     }
 ```
 

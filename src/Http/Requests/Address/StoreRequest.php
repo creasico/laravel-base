@@ -4,7 +4,9 @@ namespace Creasi\Base\Http\Requests\Address;
 
 use Creasi\Base\Http\Requests\FormRequest;
 use Creasi\Base\Models\Address;
+use Creasi\Base\Models\Enums\AddressType;
 use Creasi\Nusa\Contracts\HasAddresses;
+use Illuminate\Validation\Rule;
 
 class StoreRequest extends FormRequest
 {
@@ -13,8 +15,10 @@ class StoreRequest extends FormRequest
      */
     public function rules(): array
     {
+        $types = config('creasi.base.address.types', AddressType::class);
+
         return [
-            'is_resident' => ['required', 'boolean'],
+            'type' => ['required', 'numeric', Rule::enum($types)],
             'line' => ['required', 'string'],
             'rt' => ['required', 'numeric'],
             'rw' => ['required', 'numeric'],

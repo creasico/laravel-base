@@ -33,7 +33,7 @@ return new class extends Migration
             $table->id();
             $table->nullableMorphs('addressable');
 
-            $table->boolean('is_resident');
+            $table->unsignedSmallInteger('type')->nullable();
             $table->string('line');
             $table->char('rt', 3)->nullable();
             $table->char('rw', 3)->nullable();

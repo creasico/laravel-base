@@ -3,6 +3,7 @@
 namespace Creasi\Base\Http\Requests\Address;
 
 use Creasi\Base\Http\Requests\FormRequest;
+use Illuminate\Validation\Rule;
 
 class UpdateRequest extends FormRequest
 {
@@ -11,8 +12,10 @@ class UpdateRequest extends FormRequest
      */
     public function rules(): array
     {
+        $types = config('creasi.base.address.types', AddressType::class);
+
         return [
-            'is_resident' => ['required', 'boolean'],
+            'type' => ['required', 'numeric', Rule::enum($types)],
             'line' => ['required', 'string'],
             'rt' => ['required', 'numeric'],
             'rw' => ['required', 'numeric'],

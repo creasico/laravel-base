@@ -78,7 +78,7 @@ erDiagram
     addresses {
         unsignedBigInt id PK
         morph addressable
-        boolean is_resident
+        unsignedSmallInt type
         varchar line
         char(3) rt
         char(3) rw
@@ -384,7 +384,7 @@ classDiagram
 | `prefix` | `varchar(10)`, `nullable` | | |
 | `suffix` | `varchar(10)`, `nullable` | | |
 | `birth_date` | `date`, `nullable` | | |
-| `birth_place_code` | `char(4)`, `nullable` | | |
+| `birth_place_code` | `char(4)`, `nullable` | `foreign` | |
 | `education` | `varchar(3)`, `nullable` | | |
 | `religion` | `unsignedTinyInt`, `nullable` | | |
 | `tax_status` | `unsignedSmallInt`, `nullable` | | |
@@ -393,6 +393,9 @@ classDiagram
 **Model Attributes**
 - `timestamps`
 - `softDeletes`
+
+**Relation Properties**
+- `birth_place_code` : reference `regencies`
 
 **Profile Educations**
 - Uneducated
@@ -427,18 +430,23 @@ classDiagram
     Personnel "1" ..> "*" Address : addresses
 
     class Address {
-        unsignedBigInt id
-        boolean is_resident
+        int id
         string line
-        char~3~ rt
-        char~3~ rw
-        char~10~ village_code
-        char~6~ district_code
-        char~4~ regency_code
-        char~2~ province_code
-        char~5~ postal_code
-        string summary
+        null|int type
+        boolean is_resident
+        null|string rt
+        null|string rw
+        null|int village_code
+        null|int district_code
+        null|int regency_code
+        null|int province_code
+        null|int postal_code
+        null|string summary
         addressable() Entity
+        village() null|Village
+        district() null|District
+        regency() null|Regency
+        province() null|Province
     }
     class Business~Entity~ {
         unsignedBigInt id
@@ -456,7 +464,7 @@ classDiagram
 | --- | --- | :---: | --- |
 | `id` | `unsignedBigInt`, `incrementing` | `primary` | |
 | `addressable` | `morphs`, `nullable` | | |
-| `is_resident` | `boolean` | | |
+| `type` | `unsignedSmallInt`, `nullable` | | |
 | `line` | `varchar` | | |
 | `rt` | `char(3)`, `nullable` | | |
 | `rw` | `char(3)`, `nullable` | | |
@@ -476,6 +484,13 @@ classDiagram
 - `district_code` : reference `districts`
 - `regency_code` : reference `regencies`
 - `province_code` : reference `provinces`
+
+**Address Types**
+Currently there's only 2 types of address, which is :
+- `Legal` : Meaning that the address data is what defined in their legal document,
+- `Resident` : Meaning that the address data  is actually the place where their live,
+
+But it can be extended by the config `creasi.base.address.types` value, that said we have flexibility to define the address type per-project-basis.
 
 ## Uploaded Files
 

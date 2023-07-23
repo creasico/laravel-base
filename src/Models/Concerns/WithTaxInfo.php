@@ -2,6 +2,8 @@
 
 namespace Creasi\Base\Models\Concerns;
 
+use Creasi\Base\Models\Enums\TaxStatus;
+
 /**
  * @mixin \Creasi\Base\Contracts\HasTaxInfo
  */
@@ -13,7 +15,7 @@ trait WithTaxInfo
     public function initializeWithTaxInfo(): void
     {
         $this->mergeCasts([
-            'tax_status' => 'int',
+            'tax_status' => TaxStatus::class,
         ]);
 
         $this->mergeFillable([

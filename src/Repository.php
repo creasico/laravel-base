@@ -6,7 +6,6 @@ use Creasi\Base\Contracts\Company;
 use Creasi\Base\Contracts\Employee;
 use Creasi\Base\Contracts\Stakeholder;
 use Creasi\Base\Models\Business;
-use Creasi\Base\Models\BusinessRelative;
 use Creasi\Base\Models\Entity;
 use Creasi\Base\Models\Enums\BusinessRelativeType;
 use Creasi\Base\Models\Personnel;
@@ -74,11 +73,12 @@ class Repository
 
     public function resolveStakeholder(Company $company, BusinessRelativeType $type): Stakeholder
     {
-        $relative = BusinessRelative::with('stakeholder')->where([
+        /** @var \Creasi\Base\Models\BusinessRelative */
+        $relative = $company->stakeholders()->newQuery()->with('stakeholder')->where([
             'type' => $type,
             'stakeholder_id' => (int) $this->router->input('stakeholder'),
-        ]);
+        ])->first();
 
-        return $relative->first()?->stakeholder ?: $company;
+        return $relative?->stakeholder ?: $company->newInstance();
     }
 }

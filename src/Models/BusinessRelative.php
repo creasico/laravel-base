@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Relations\MorphPivot;
  * @property bool $is_internal
  * @property null|BusinessRelativeType $type
  * @property null|string $remark
+ * @property-read Entity $stakeholder
  */
 class BusinessRelative extends MorphPivot
 {

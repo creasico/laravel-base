@@ -69,7 +69,7 @@ return new class extends Migration
 
         Schema::create('file_attached', function (Blueprint $table) {
             $table->foreignUuid('file_upload_id')->constrained('file_uploads')->cascadeOnDelete();
-            $table->nullableMorphs('attached_to');
+            $table->nullableMorphs('attachable');
         });
     }
 

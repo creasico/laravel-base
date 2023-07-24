@@ -59,20 +59,20 @@ class FileUpload extends Model
         return Attribute::get(fn ($_, array $attrs) => ! \str_contains($attrs['path'], '://'));
     }
 
-    protected function attachedTo(string $owner)
+    protected function attachable(string $owner)
     {
-        return $this->morphedByMany($owner, 'attached_to', 'file_attached', 'file_upload_id')
+        return $this->morphedByMany($owner, 'attachable', 'file_attached', 'file_upload_id')
             ->as('attachments');
     }
 
     public function ownedByCompanies()
     {
-        return $this->attachedTo(Business::class);
+        return $this->attachable(Business::class);
     }
 
     public function ownedByPersonnels()
     {
-        return $this->attachedTo(Personnel::class);
+        return $this->attachable(Personnel::class);
     }
 
     /**
@@ -136,7 +136,7 @@ class FileUpload extends Model
         $this->revisions()->save($revision);
 
         foreach ($this->attaches as $model) {
-            $model->attachedTo->files()->sync($revision);
+            $model->attachable->files()->sync($revision->getKey());
         }
 
         $this->refresh();

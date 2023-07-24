@@ -5,10 +5,8 @@ namespace Creasi\Base;
 use Creasi\Base\Contracts\Company;
 use Creasi\Base\Contracts\Employee;
 use Creasi\Base\Contracts\Stakeholder;
-use Creasi\Base\Models\Business;
 use Creasi\Base\Models\Entity;
 use Creasi\Base\Models\Enums\BusinessRelativeType;
-use Creasi\Base\Models\Personnel;
 use Creasi\Base\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Router;
@@ -32,43 +30,32 @@ class Repository
         }
     }
 
-    public function resolveEntity(): Entity
-    {
-        /** @var Entity */
-        $entity = app($this->router->is('companies.*') ? Business::class : Personnel::class);
-
-        // For some reason we do need to resolve the binding ourselves
-        // see: https://stackoverflow.com/a/76717314/881743
-        return $entity->resolveRouteBinding($this->router->input('entity')) ?: $entity;
-    }
-
     public function resolveEmployee(): Employee
     {
-        if ($personnel = $this->user->identity) {
-            $key = $this->router->input('employee');
+        /** @var Employee */
+        $entity = $this->user->identity;
+        $key = $this->router->input('employee');
 
-            return $key ? $personnel->newInstance()->resolveRouteBinding($key) : $personnel;
-        }
-
-        return app(Personnel::class);
+        return $key ? $entity->resolveRouteBinding($key) : $entity;
     }
 
     public function resolveEmployer(): Company
     {
-        if ($company = $this->user->identity?->company) {
-            $key = $this->router->input('company');
+        /** @var Company */
+        $entity = $this->user->identity->company;
+        $key = $this->router->input('company');
 
-            return $key ? $company->newInstance()->resolveRouteBinding($key) : $company;
-        }
-
-        return app(Business::class);
+        return $key ? $entity->resolveRouteBinding($key) : $entity;
     }
 
-    public function resolveBusinessRelativeType(): BusinessRelativeType
+    public function resolveEntity(Company $company, Employee $employee): Entity
     {
-        $name = \explode('.', $this->router->currentRouteName())[0];
+        $entity = $this->currentRoutePrefix('companies') ? $company : $employee;
+        $key = $this->router->input('entity');
 
-        return $this->stakeholders[$name];
+        // For some reason we do need to resolve the binding ourselves
+        // see: https://stackoverflow.com/a/76717314/881743
+        return $entity->resolveRouteBinding($key) ?: $entity;
     }
 
     public function resolveStakeholder(Company $company, BusinessRelativeType $type): Stakeholder
@@ -80,5 +67,17 @@ class Repository
         ])->first();
 
         return $relative?->stakeholder ?: $company->newInstance();
+    }
+
+    public function resolveBusinessRelativeType(): BusinessRelativeType
+    {
+        return $this->stakeholders[$this->currentRoutePrefix()];
+    }
+
+    private function currentRoutePrefix(string $prefix = null)
+    {
+        $name = \explode('.', $this->router->currentRouteName())[0];
+
+        return $prefix ? $name === $prefix : $name;
     }
 }

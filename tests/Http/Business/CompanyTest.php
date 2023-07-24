@@ -4,6 +4,7 @@ namespace Creasi\Tests\Http\Business;
 
 use Creasi\Base\Models\Address;
 use Creasi\Base\Models\Business;
+use Creasi\Base\Models\Enums\BusinessRelativeType;
 use Creasi\Base\Models\FileUpload;
 use Creasi\Tests\TestCase;
 use Illuminate\Http\UploadedFile;
@@ -14,7 +15,7 @@ use PHPUnit\Framework\Attributes\Test;
 
 #[Group('api')]
 #[Group('company')]
-class BusinessTest extends TestCase
+class CompanyTest extends TestCase
 {
     #[Test]
     public function should_receive_404_when_no_data_available(): void
@@ -29,8 +30,11 @@ class BusinessTest extends TestCase
     #[Test]
     public function should_able_to_retrieve_all_data(): void
     {
-        Sanctum::actingAs($this->user());
-        Business::factory(2)->create();
+        Sanctum::actingAs($user = $this->user());
+
+        $external = Business::factory()->createOne(['name' => 'Internal Company']);
+
+        $user->identity->company->addStakeholder(BusinessRelativeType::Subsidiary, $external);
 
         $response = $this->getJson('base/companies');
 

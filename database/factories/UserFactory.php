@@ -2,7 +2,6 @@
 
 namespace Database\Factories;
 
-use Creasi\Base\Models\Enums\Gender;
 use Creasi\Base\Models\Personnel;
 use Creasi\Base\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -41,8 +40,12 @@ class UserFactory extends Factory
         ]);
     }
 
-    public function withIdentity(Gender $gender = null): static
+    public function withIdentity(\Closure $cb = null): static
     {
-        return $this->has(Personnel::factory()->withProfile($gender), 'identity');
+        if (null === $cb) {
+            $cb = fn (PersonnelFactory $identity) => $identity->withProfile();
+        }
+
+        return $this->has($cb(Personnel::factory()), 'identity');
     }
 }

@@ -2,11 +2,11 @@
 
 namespace Creasi\Base\Http\Controllers;
 
+use Creasi\Base\Contracts\Company;
 use Creasi\Base\Http\Requests\Company\StoreRequest;
 use Creasi\Base\Http\Requests\Company\UpdateRequest;
 use Creasi\Base\Http\Resources\Company\CompanyCollection;
 use Creasi\Base\Http\Resources\Company\CompanyResource;
-use Creasi\Base\Models\Business;
 use Illuminate\Http\Request;
 
 class CompanyController extends Controller
@@ -19,9 +19,11 @@ class CompanyController extends Controller
     /**
      * @return CompanyCollection
      */
-    public function index()
+    public function index(Company $company)
     {
-        $items = Business::query()->latest();
+        $items = $company->subsidiaries()->latest('id');
+
+        $items->with('stakeholder');
 
         return new CompanyCollection($items->paginate());
     }
@@ -29,10 +31,10 @@ class CompanyController extends Controller
     /**
      * @return CompanyResource
      */
-    public function store(StoreRequest $request)
+    public function store(StoreRequest $request, Company $company)
     {
-        /** @var Business $item */
-        $item = Business::create($request->validated());
+        /** @var Company $item */
+        $item = $company->create($request->validated());
 
         return $this->show($item, $request)->setStatusCode(201);
     }
@@ -40,7 +42,7 @@ class CompanyController extends Controller
     /**
      * @return CompanyResource
      */
-    public function show(Business $company, Request $request)
+    public function show(Company $company, Request $request)
     {
         return CompanyResource::make($company)->toResponse($request);
     }
@@ -48,7 +50,7 @@ class CompanyController extends Controller
     /**
      * @return CompanyResource
      */
-    public function update(UpdateRequest $request, Business $company)
+    public function update(UpdateRequest $request, Company $company)
     {
         $company->update($request->validated());
 
@@ -58,7 +60,7 @@ class CompanyController extends Controller
     /**
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Business $company)
+    public function destroy(Company $company)
     {
         $company->delete();
 

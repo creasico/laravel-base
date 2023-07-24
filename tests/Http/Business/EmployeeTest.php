@@ -17,16 +17,6 @@ use PHPUnit\Framework\Attributes\Test;
 class EmployeeTest extends TestCase
 {
     #[Test]
-    public function should_receive_404_when_no_data_available(): void
-    {
-        Sanctum::actingAs($this->user());
-
-        $response = $this->getJson('base/employees');
-
-        $response->assertNotFound();
-    }
-
-    #[Test]
     public function should_able_to_retrieve_all_data(): void
     {
         Sanctum::actingAs($this->user());

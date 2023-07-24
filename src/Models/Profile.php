@@ -33,13 +33,11 @@ class Profile extends Model implements HasIdentity, HasTaxInfo
     protected $fillable = [
         'nik',
         'prefix',
-        'fullname',
         'suffix',
         'birth_date',
         'birth_place_code',
         'education',
         'religion',
-        'photo_path',
     ];
 
     protected $casts = [

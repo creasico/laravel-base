@@ -2,11 +2,13 @@
 
 namespace Creasi\Base\Http\Controllers;
 
+use Creasi\Base\Contracts\Company;
 use Creasi\Base\Contracts\Stakeholder;
 use Creasi\Base\Http\Requests\Stakeholder\StoreRequest;
 use Creasi\Base\Http\Requests\Stakeholder\UpdateRequest;
 use Creasi\Base\Http\Resources\Stakeholder\StakeholderCollection;
 use Creasi\Base\Http\Resources\Stakeholder\StakeholderResource;
+use Creasi\Base\Models\Enums\BusinessRelativeType;
 use Illuminate\Http\Request;
 
 class StakeholderController extends Controller
@@ -19,9 +21,13 @@ class StakeholderController extends Controller
     /**
      * @return StakeholderCollection
      */
-    public function index(Stakeholder $stakeholder)
+    public function index(Company $company, BusinessRelativeType $type)
     {
-        $items = $stakeholder->newQuery()->latest();
+        $items = $company->stakeholders()->where([
+            'type' => $type,
+        ])->latest('id');
+
+        $items->with('stakeholder');
 
         return new StakeholderCollection($items->paginate());
     }
@@ -29,10 +35,9 @@ class StakeholderController extends Controller
     /**
      * @return StakeholderResource
      */
-    public function store(StoreRequest $request, Stakeholder $stakeholder)
+    public function store(StoreRequest $request, Company $company, BusinessRelativeType $type)
     {
-        /** @var Stakeholder */
-        $item = $stakeholder->create($request->validated());
+        $item = $request->fulfill($company, $type);
 
         return $this->show($item, $request)->setStatusCode(201);
     }

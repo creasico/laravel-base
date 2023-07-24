@@ -2,7 +2,10 @@
 
 namespace Creasi\Base\Http\Requests\Stakeholder;
 
+use Creasi\Base\Contracts\Company;
 use Creasi\Base\Http\Requests\FormRequest;
+use Creasi\Base\Models\Enums\BusinessRelativeType;
+use Illuminate\Validation\Rule;
 
 class StoreRequest extends FormRequest
 {
@@ -13,9 +16,20 @@ class StoreRequest extends FormRequest
     {
         return [
             'name' => ['required', 'string'],
-            'email' => ['required', 'email'],
+            'alias' => ['nullable', 'string', Rule::unique('businesses', 'alias')],
+            'email' => ['required', 'email', Rule::unique('businesses', 'email')],
             'phone_number' => ['nullable', 'numeric'],
             'summary' => ['nullable', 'string'],
         ];
+    }
+
+    public function fulfill(Company $company, BusinessRelativeType $type)
+    {
+        /** @var \Creasi\Base\Models\Entity */
+        $entity = $company->newInstance($this->validated());
+
+        $company->addStakeholder($type, $entity);
+
+        return $entity;
     }
 }

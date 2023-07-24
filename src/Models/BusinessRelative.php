@@ -22,6 +22,8 @@ class BusinessRelative extends MorphPivot
         'type' => BusinessRelativeType::class,
     ];
 
+    public $timestamps = false;
+
     /**
      * @return \Illuminate\Database\Eloquent\Relations\MorphTo
      */

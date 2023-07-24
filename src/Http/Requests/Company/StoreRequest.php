@@ -3,6 +3,7 @@
 namespace Creasi\Base\Http\Requests\Company;
 
 use Creasi\Base\Http\Requests\FormRequest;
+use Illuminate\Validation\Rule;
 
 class StoreRequest extends FormRequest
 {
@@ -13,7 +14,8 @@ class StoreRequest extends FormRequest
     {
         return [
             'name' => ['required', 'string'],
-            'email' => ['required', 'email'],
+            'alias' => ['nullable', 'string', Rule::unique('businesses', 'alias')],
+            'email' => ['required', 'email', Rule::unique('businesses', 'email')],
             'phone_number' => ['nullable', 'numeric'],
             'summary' => ['nullable', 'string'],
         ];

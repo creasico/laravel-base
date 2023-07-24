@@ -2,11 +2,12 @@
 
 namespace Creasi\Base;
 
+use Creasi\Base\Contracts\Company;
 use Creasi\Base\Contracts\Employee;
-use Creasi\Base\Contracts\Employer;
 use Creasi\Base\Contracts\Stakeholder;
 use Creasi\Base\Models\Address;
 use Creasi\Base\Models\Entity;
+use Creasi\Base\Models\Enums\BusinessRelativeType;
 use Creasi\Base\View\Composers\TranslationsComposer;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Mail;
@@ -100,19 +101,33 @@ class ServiceProvider extends IlluminateServiceProvider
     protected function registerBindings()
     {
         $this->app->bind(Entity::class, function ($app) {
-            return $app->make(Repository::class)->resolveEntity();
+            $repo = $app->make(Repository::class);
+
+            return $app->call([$repo, 'resolveEntity']);
         });
 
-        $this->app->bind(Employer::class, function ($app) {
-            return $app->make(Repository::class)->resolveEmployer();
+        $this->app->bind(Company::class, function ($app) {
+            $repo = $app->make(Repository::class);
+
+            return $app->call([$repo, 'resolveEmployer']);
         });
 
         $this->app->bind(Employee::class, function ($app) {
-            return $app->make(Repository::class)->resolveEmployee();
+            $repo = $app->make(Repository::class);
+
+            return $app->call([$repo, 'resolveEmployee']);
         });
 
         $this->app->bind(Stakeholder::class, function ($app) {
-            return $app->make(Repository::class)->resolveStakeholder();
+            $repo = $app->make(Repository::class);
+
+            return $app->call([$repo, 'resolveStakeholder']);
+        });
+
+        $this->app->bind(BusinessRelativeType::class, function ($app) {
+            $repo = $app->make(Repository::class);
+
+            return $app->call([$repo, 'resolveBusinessRelativeType']);
         });
     }
 

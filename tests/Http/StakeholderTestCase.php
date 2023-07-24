@@ -41,8 +41,11 @@ abstract class StakeholderTestCase extends TestCase
     #[Test]
     public function should_able_to_retrieve_all_data(): void
     {
-        Sanctum::actingAs($this->user());
-        Business::factory(2)->create();
+        Sanctum::actingAs($user = $this->user());
+
+        $external = Business::factory()->createOne(['name' => 'External Company']);
+
+        $user->identity->company->addStakeholder($this->getRelativeType(), $external);
 
         $response = $this->getJson($this->getRoutePath());
 
@@ -64,9 +67,11 @@ abstract class StakeholderTestCase extends TestCase
     #[Test]
     public function should_able_to_show_existing_data(): void
     {
-        Sanctum::actingAs($this->user());
+        Sanctum::actingAs($user = $this->user());
 
         $model = Business::factory()->createOne();
+
+        $user->identity->company->addStakeholder($this->getRelativeType(), $model);
 
         $response = $this->getJson($this->getRoutePath($model));
 
@@ -76,9 +81,11 @@ abstract class StakeholderTestCase extends TestCase
     #[Test]
     public function should_able_to_update_existing_data(): void
     {
-        Sanctum::actingAs($this->user());
+        Sanctum::actingAs($user = $this->user());
 
         $model = Business::factory()->createOne();
+
+        $user->identity->company->addStakeholder($this->getRelativeType(), $model);
 
         $response = $this->putJson($this->getRoutePath($model), $model->toArray());
 
@@ -88,9 +95,11 @@ abstract class StakeholderTestCase extends TestCase
     #[Test]
     public function should_able_to_delete_existing_data(): void
     {
-        Sanctum::actingAs($this->user());
+        Sanctum::actingAs($user = $this->user());
 
         $model = Business::factory()->createOne();
+
+        $user->identity->company->addStakeholder($this->getRelativeType(), $model);
 
         $response = $this->deleteJson($this->getRoutePath($model));
 

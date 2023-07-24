@@ -14,11 +14,23 @@ use Illuminate\Http\UploadedFile;
 trait WithAvatar
 {
     /**
+     * Initialize the trait.
+     */
+    final protected function initializeWithAvatar(): void
+    {
+        $this->append('avatar');
+
+        $this->makeHidden('avatarFile');
+    }
+
+    /**
      * @return \Illuminate\Database\Eloquent\Relations\MorphOne|\Creasi\Base\Models\FileUpload
      */
     public function avatar(): Attribute
     {
-        return Attribute::get(fn () => $this->getAvatarFile?->first());
+        $this->loadMissing('avatarFile');
+
+        return Attribute::get(fn () => $this->avatarFile?->first());
     }
 
     public function setAvatar(string|UploadedFile $image)
@@ -26,7 +38,7 @@ trait WithAvatar
         return $this->storeFile(FileUploadType::Avatar, $image, $this->getRouteKey(), 'Avatar Image');
     }
 
-    protected function getAvatarFile()
+    public function avatarFile()
     {
         return $this->files()->where('type', FileUploadType::Avatar);
     }

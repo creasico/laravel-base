@@ -65,9 +65,9 @@ class ProfileTest extends TestCase
             'summary' => null,
             'prefix' => null,
             'suffix' => null,
-            'education' => $user->identity->profile->education->value,
-            'tax_status' => $user->identity->profile->tax_status->value,
-            'tax_id' => $user->identity->profile->tax_id,
+            'education' => $user->identity->profile?->education->value,
+            'tax_status' => $user->identity->profile?->tax_status->value,
+            'tax_id' => $user->identity->profile?->tax_id,
         ]);
 
         $response->assertOk()->assertJsonStructure($this->responseStructure);

@@ -15,7 +15,8 @@ class StoreRequest extends FormRequest
     {
         return [
             'name' => ['required', 'string'],
-            'email' => ['required', 'email'],
+            'alias' => ['nullable', 'string', Rule::unique('personnels', 'alias')],
+            'email' => ['required', 'email', Rule::unique('personnels', 'email')],
             'phone' => ['nullable', 'numeric'],
             'gender' => ['required', Rule::enum(Gender::class)],
             'summary' => ['nullable', 'string'],

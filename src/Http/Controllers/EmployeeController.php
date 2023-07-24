@@ -2,6 +2,7 @@
 
 namespace Creasi\Base\Http\Controllers;
 
+use Creasi\Base\Contracts\Company;
 use Creasi\Base\Contracts\Employee;
 use Creasi\Base\Http\Requests\Employee\StoreRequest;
 use Creasi\Base\Http\Requests\Employee\UpdateRequest;
@@ -19,9 +20,9 @@ class EmployeeController extends Controller
     /**
      * @return EmployeeCollection
      */
-    public function index(Employee $employee)
+    public function index(Company $company)
     {
-        $items = $employee->newInstance()->latest();
+        $items = $company->employees()->latest();
 
         return new EmployeeCollection($items->paginate());
     }
@@ -29,10 +30,10 @@ class EmployeeController extends Controller
     /**
      * @return EmployeeResource
      */
-    public function store(StoreRequest $request, Employee $employee)
+    public function store(StoreRequest $request, Company $company)
     {
         /** @var Employee */
-        $item = $employee->create($request->validated());
+        $item = $company->employees()->create($request->validated());
 
         return $this->show($item, $request)->setStatusCode(201);
     }

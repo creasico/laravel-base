@@ -105,7 +105,7 @@ erDiagram
         varchar title
         varchar name
         varchar path
-        varchar drive
+        varchar disk
         varchar summary
     }
     businesses }o..|| file_attached : files
@@ -113,7 +113,8 @@ erDiagram
     file_attached ||--|| file_uploads : attachments
     file_attached {
         unsignedBigInt file_upload_id FK
-        morph attached_to
+        morph attachable
+        unsignedSmallInt type
     }
 ```
 ---
@@ -132,28 +133,28 @@ classDiagram
     Personnel "1" ..> "1" User : credential
 
     class Entity {
-        varchar~150~ name
-        varchar~50~ alias
-        varchar email
-        varchar~20~ phone
-        varchar~200~ summary
+        string name
+        null|string alias
+        string email
+        null|string phone
+        null|string summary
     }
     class Business~Entity~ {
-        unsignedBigInt id
-        unsignedSmallInt tax_status
-        varchar~16~ tax_id
+        int id
+        null|int tax_status
+        null|string tax_id
     }
     class Personnel~Entity~ {
-        unsignedBigInt id
-        unsignedBigInt user_id
-        char~1~ gender
+        int id
+        null|int user_id
+        string gender
         credential() User
     }
     class User {
-        unsignedBigInt id
-        varchar~150~ name
-        varchar email
-        varchar password
+        int id
+        string name
+        string email
+        string password
         identity(): Personnel
     }
 ```
@@ -195,16 +196,22 @@ classDiagram
      Business --> BusinessRelative : businessRelatives
 
     class Business~Entity~ {
-        unsignedBigInt id
+        int id
+        owners() Entity[]
+        subsidiaries() Entity[]
+        customers() Entity[]
+        suppliers() Entity[]
+        vendors() Entity[]
     }
     class Personnel~Entity~ {
-        unsignedBigInt id
+        int id
     }
     class BusinessRelative {
-        unsignedBigInt id
+        int id
         boolean is_internal
-        varchar~100~ code
-        stakeholders() Entity[]
+        string code
+        int type
+        stakeholder() Entity
     }
 ```
 
@@ -232,7 +239,7 @@ classDiagram
 | `id` | `unsignedBigInt`, `incrementing` | `primary` | |
 | `business_id` | `unsignedBigInt` | `foreign` | |
 | `stakeholder` | `morphs`, `nullable` | | |
-| `is_internal` | `boolean`, `default: false` | | Determine whether the stakeholder is actually from internal business |
+| `is_internal` | `boolean` | | Determine whether the stakeholder is actually from internal business, default: `false` |
 | `code` | `varchar(100)`, `nullable` | `unique` | |
 | `type` | `unsignedSmallInt`, `nullable` | | |
 
@@ -249,24 +256,26 @@ classDiagram
      Business --> Employments : employments
 
     class Business {
-        unsignedBigInt id
+        int id
         employees() Personnel[]
     }
     class Personnel {
-        unsignedBigInt id
+        int id
+        company() null|Business
         employers() Business[]
     }
     class Employments {
-        unsignedBigInt id
-        unsignedBigInt employer_id
-        unsignedBigInt employee_id
+        int id
+        int employer_id
+        int employee_id
         boolean is_primary
-        varchar~100~ code
-        unsignedSmallInt type
-        unsignedSmallInt status
-        date start_date
-        date finish_date
-        stakeholders() Entity[]
+        null|string code
+        int type
+        int status
+        null|date start_date
+        null|date finish_date
+        null|bool is_started
+        null|bool is_finished
     }
 ```
 
@@ -277,7 +286,7 @@ classDiagram
 | `id` | `unsignedBigInt`, `incrementing` | `primary` | |
 | `employer_id` | `unsignedBigInt` | `foreign` | ID of the company |
 | `employee_id` | `unsignedBigInt` | `foreign` | ID of the personnel |
-| `is_primary` | `boolean`, `default: false` | | Determine whether it's the personnel's primary company |
+| `is_primary` | `boolean` | | Determine whether it's the personnel's primary company, default: `false` |
 | `code` | `varchar(100)`, `nullable` | `unique` | An identification that given by the company to employee |
 | `type` | `unsignedSmallInt`, `nullable` | | Define the employment type of the personnel in the company |
 | `status` | `unsignedSmallInt`, `nullable` | | |
@@ -316,17 +325,17 @@ classDiagram
     PersonnelRelative --> Personnel : personnel
 
     class Personnel {
-        unsignedBigInt id
-        profile() Profile
+        int id
+        profile() null|Profile
     }
     class Profile {
-        unsignedBigInt id
+        int id
         identity() Personnel
     }
     class PersonnelRelative {
-        unsignedBigInt personnel_id
-        unsignedBigInt relative_id
-        unsignedSmallInt status
+        int personnel_id
+        int relative_id
+        int status
     }
 ```
 
@@ -449,11 +458,11 @@ classDiagram
         province() null|Province
     }
     class Business~Entity~ {
-        unsignedBigInt id
+        int id
         addresses() Address[]
     }
     class Personnel~Entity~ {
-        unsignedBigInt id
+        int id
         addresses() Address[]
     }
 ```
@@ -502,28 +511,31 @@ It also possible to store an `.xlsx` or `.csv` file that would be used for data 
 classDiagram
     Business "1" ..> "*" FileAttached : files
     Personnel "1" ..> "*" FileAttached : files
-    FileAttached "1" <--> "1" FileUpload : attachments
+    FileUpload "1" ..> "*" FileUpload : revisions
+    FileAttached <--> FileUpload : attachment
 
     class FileUpload {
-        unsignedBigInt id
+        int id
         string revision_id
         string title
         string name
         string path
-        string drive
-        string summary
+        string disk
+        null|string summary
+        revisions() FileUpload[]
     }
     class FileAttached {
-        unsignedBigInt id
-        morph attached_to
-        attachedTo() Entity
+        int id
+        morph attachable
+        int type
+        attachable() Entity
     }
     class Business~Entity~ {
-        unsignedBigInt id
+        int id
         files() FileUpload[]
     }
     class Personnel~Entity~ {
-        unsignedBigInt id
+        int id
         files() FileUpload[]
     }
 ```
@@ -537,7 +549,7 @@ classDiagram
 | `title` | `varchar`, `nullable` | | |
 | `name` | `varchar` | | |
 | `path` | `varchar`, `nullable` | | |
-| `drive` | `varchar`, `nullable` | | |
+| `disk` | `varchar`, `nullable` | | |
 | `summary` | `varchar`, `nullable` | | |
 
 **Model Attributes**
@@ -552,7 +564,13 @@ classDiagram
 | Field | Attribute | Key | Description |
 | --- | --- | :---: | --- |
 | `file_upload_id` | `uuid` | `foreign` | |
-| `attached_to` | `morphs`, `nullable` | | |
+| `attachable` | `morphs`, `nullable` | | |
+| `type` | `insignedSmallInt` | | |
 
 **Relation Properties**
 - `file_upload_id` : reference `file_uploads`
+
+**File Attached Types**
+- Avatar
+- Image
+- Document

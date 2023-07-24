@@ -19,6 +19,7 @@ class BusinessRelative extends MorphPivot
 
     protected $casts = [
         'business_id' => 'int',
+        'stakeholder_id' => 'int',
         'is_internal' => 'bool',
         'type' => BusinessRelativeType::class,
     ];

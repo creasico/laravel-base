@@ -17,11 +17,7 @@ class Business extends Entity implements HasTaxInfo, Company
     use AsCompany;
     use WithTaxInfo;
 
-    protected $fillable = [
-        // .
-    ];
+    protected $fillable = [];
 
-    protected $casts = [
-        // .
-    ];
+    protected $casts = [];
 }

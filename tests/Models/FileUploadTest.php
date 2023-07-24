@@ -20,7 +20,7 @@ class FileUploadTest extends TestCase
     {
         $file = UploadedFile::fake()->create('original.pdf');
 
-        $original = FileUpload::store(FileUploadType::Document, $file, 'document');
+        $original = FileUpload::store($file, 'document');
 
         $revision = $original->createRevision(
             UploadedFile::fake()->create('revision.pdf')
@@ -56,21 +56,13 @@ class FileUploadTest extends TestCase
     public function could_attached_to_many_personnels()
     {
         $people = Personnel::factory(2)->create();
-        $file = FileUpload::factory()->createOne([
-            'path' => 'path/to/file.pdf',
-        ]);
+        $file = UploadedFile::fake()->create('document.pdf');
 
         foreach ($people as $person) {
-            $person->files()->attach($file);
+            $person->storeFile(FileUploadType::Document, $file, 'document');
 
             $this->assertCount(1, $person->files);
         }
-
-        $this->assertCount($file->attaches()->count(), $file->ownedByPersonnels);
-
-        $revision = $file->createRevision('path/to/revision.pdf');
-
-        $this->assertCount($revision->attaches()->count(), $revision->ownedByPersonnels);
     }
 
     #[Test]

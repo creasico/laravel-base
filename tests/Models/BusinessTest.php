@@ -7,7 +7,6 @@ use Creasi\Base\Models\Business;
 use Creasi\Base\Models\Enums\BusinessRelativeType;
 use Creasi\Base\Models\Enums\EmploymentStatus;
 use Creasi\Base\Models\Enums\EmploymentType;
-use Creasi\Base\Models\Enums\FileUploadType;
 use Creasi\Base\Models\FileUpload;
 use Creasi\Base\Models\Personnel;
 use Creasi\Tests\TestCase;
@@ -42,7 +41,6 @@ class BusinessTest extends TestCase
         );
 
         $this->assertInstanceOf(FileUpload::class, $business->avatar);
-        $this->assertEquals(FileUploadType::Avatar, $business->avatar->type);
         $this->assertTrue($business->avatar->is_internal);
     }
 

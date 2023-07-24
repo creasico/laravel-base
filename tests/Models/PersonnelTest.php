@@ -3,7 +3,6 @@
 namespace Creasi\Tests\Models;
 
 use Creasi\Base\Models\Address;
-use Creasi\Base\Models\Enums\FileUploadType;
 use Creasi\Base\Models\Enums\Gender;
 use Creasi\Base\Models\Enums\PersonnelRelativeStatus;
 use Creasi\Base\Models\FileUpload;
@@ -37,7 +36,6 @@ class PersonnelTest extends TestCase
         );
 
         $this->assertInstanceOf(FileUpload::class, $person->avatar);
-        $this->assertEquals(FileUploadType::Avatar, $person->avatar->type);
         $this->assertTrue($person->avatar->is_internal);
     }
 

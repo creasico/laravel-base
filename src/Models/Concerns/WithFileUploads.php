@@ -18,7 +18,9 @@ trait WithFileUploads
     public function files()
     {
         return $this->morphToMany(FileUpload::class, 'attachable', 'file_attached', null, 'file_upload_id')
-            ->using(FileAttached::class);
+            ->using(FileAttached::class)
+            ->withPivot('type')
+            ->as('attachment');
     }
 
     public function storeFile(
@@ -29,9 +31,9 @@ trait WithFileUploads
         string $summary = null,
         string $disk = null,
     ): FileUpload {
-        $file = FileUpload::store($type, $path, $name, $title, $summary, $disk);
+        $file = FileUpload::store($path, $name, $title, $summary, $disk);
 
-        $this->files()->attach($file);
+        $this->files()->syncWithPivotValues($file, ['type' => $type], false);
 
         return $file;
     }

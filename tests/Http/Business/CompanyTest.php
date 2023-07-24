@@ -5,6 +5,7 @@ namespace Creasi\Tests\Http\Business;
 use Creasi\Base\Models\Address;
 use Creasi\Base\Models\Business;
 use Creasi\Base\Models\Enums\BusinessRelativeType;
+use Creasi\Base\Models\Enums\FileUploadType;
 use Creasi\Base\Models\FileUpload;
 use Creasi\Tests\TestCase;
 use Illuminate\Http\UploadedFile;
@@ -123,6 +124,7 @@ class CompanyTest extends TestCase
         $model = Business::factory()->createOne();
         $data = FileUpload::factory()->withoutFile()->raw();
         $data['upload'] = UploadedFile::fake()->create('file.pdf');
+        $data['type'] = FileUploadType::Document->value;
 
         $response = $this->postJson("base/companies/{$model->getRouteKey()}/files", $data);
 
@@ -134,7 +136,7 @@ class CompanyTest extends TestCase
     {
         Sanctum::actingAs($this->user());
 
-        $model = Business::factory()->withFileUpload()->createOne();
+        $model = Business::factory()->withFileUpload(FileUploadType::Document)->createOne();
 
         $response = $this->getJson("base/companies/{$model->getRouteKey()}/files");
 

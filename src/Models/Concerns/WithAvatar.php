@@ -40,6 +40,6 @@ trait WithAvatar
 
     public function avatarFile()
     {
-        return $this->files()->where('type', FileUploadType::Avatar);
+        return $this->files()->wherePivot('type', '=', FileUploadType::Avatar);
     }
 }

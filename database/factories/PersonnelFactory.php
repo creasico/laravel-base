@@ -6,6 +6,7 @@ use Creasi\Base\Models\Address;
 use Creasi\Base\Models\Business;
 use Creasi\Base\Models\Enums\EmploymentStatus;
 use Creasi\Base\Models\Enums\EmploymentType;
+use Creasi\Base\Models\Enums\FileUploadType;
 use Creasi\Base\Models\Enums\Gender;
 use Creasi\Base\Models\FileUpload;
 use Creasi\Base\Models\Personnel;
@@ -75,8 +76,10 @@ class PersonnelFactory extends Factory
         return $this->has(Address::factory());
     }
 
-    public function withFileUpload(): static
+    public function withFileUpload(FileUploadType $type = null): static
     {
-        return $this->has(FileUpload::factory(), 'files');
+        return $this->hasAttached(FileUpload::factory(), [
+            'type' => $type ?? $this->faker->randomElement(FileUploadType::cases()),
+        ], 'files');
     }
 }

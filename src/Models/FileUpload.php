@@ -2,7 +2,6 @@
 
 namespace Creasi\Base\Models;
 
-use Creasi\Base\Models\Enums\FileUploadType;
 use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
@@ -14,19 +13,19 @@ use Illuminate\Support\Str;
  * @property null|int $revision_id
  * @property null|string $title
  * @property string $name
- * @property null|FileUploadType $type
- * @property null|string $path
+ * @property string $path
  * @property null|string $disk
  * @property string $url
- * @property bool $is_internal
+ * @property bool $is_internal Determine whether the file is actually stored internally or its an external link.
  * @property null|string $summary
- * @property-read \Illuminate\Database\Eloquent\Collection<int, static> $revisions
  * @property-read \Illuminate\Database\Eloquent\Collection<int, FileAttached> $attaches
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, static> $revisions
  * @property-read null|static $revisionOf
+ * @property-read FileAttached $attachment
  * @property-read \Illuminate\Database\Eloquent\Collection<int, Business> $ownedByCompanies
  * @property-read \Illuminate\Database\Eloquent\Collection<int, Personnel> $ownedByPersonnels
  *
- * @method static static store(FileUploadType $type, string|UploadedFile $path, string $name, ?string $title = null, ?string $summary = null, ?string $disk = null)
+ * @method static static store(string|UploadedFile $path, string $name, ?string $title = null, ?string $summary = null, ?string $disk = null)
  * @method static \Database\Factories\FileUploadFactory<static> factory()
  */
 class FileUpload extends Model
@@ -38,31 +37,43 @@ class FileUpload extends Model
         'title',
         'name',
         'path',
-        'type',
         'disk',
         'summary',
     ];
 
-    protected $casts = [
-        'type' => FileUploadType::class,
-    ];
+    protected $casts = [];
+
+    protected $appends = ['url', 'is_internal'];
 
     public function url(): Attribute
     {
-        return Attribute::get(fn ($_, array $attrs) => $this->is_internal
-            ? Storage::url($attrs['path'])
-            : $attrs['path']);
+        return Attribute::get(function () {
+            if ($path = $this->getAttributeValue('path')) {
+                return $this->is_internal ? Storage::url($path) : $path;
+            }
+
+            return null;
+        });
     }
 
+    /**
+     * Determine whether the file is actually stored internally or its an external link.
+     */
     public function isInternal(): Attribute
     {
-        return Attribute::get(fn ($_, array $attrs) => ! \str_contains($attrs['path'], '://'));
+        return Attribute::get(function () {
+            if ($path = $this->getAttributeValue('path')) {
+                return ! \str_contains($path, '://');
+            }
+
+            return null;
+        });
     }
 
     protected function attachable(string $owner)
     {
         return $this->morphedByMany($owner, 'attachable', 'file_attached', 'file_upload_id')
-            ->as('attachments');
+            ->as('attachment');
     }
 
     public function ownedByCompanies()
@@ -101,7 +112,6 @@ class FileUpload extends Model
 
     public function scopeStore(
         Builder $query,
-        FileUploadType $type,
         string|UploadedFile $path,
         string $name,
         string $title = null,
@@ -111,13 +121,12 @@ class FileUpload extends Model
         $name = Str::slug($name);
 
         if ($path instanceof UploadedFile) {
-            $path = $path->store($type->key().'/'.$name, $disk ?? []);
+            $path = $path->store($name, $disk ?? []);
         }
 
         $instance = $query->newModelInstance([
             'title' => $title,
             'disk' => $disk,
-            'type' => $type,
             'name' => $name,
             'path' => $path,
             'summary' => $summary,
@@ -130,7 +139,7 @@ class FileUpload extends Model
 
     public function createRevision(string|UploadedFile $path, string $summary = null): static
     {
-        $revision = static::store($this->type, $path, $this->name, $this->title, $summary, $this->disk);
+        $revision = static::store($path, $this->name, $this->title, $summary, $this->disk);
 
         /** @var static */
         $this->revisions()->save($revision);

@@ -55,7 +55,6 @@ return new class extends Migration
             $table->string('title')->nullable();
             $table->string('name')->nullable();
             $table->string('path');
-            $table->unsignedSmallInteger('type')->nullable();
             $table->string('disk')->nullable();
             $table->string('summary')->nullable();
 
@@ -70,6 +69,7 @@ return new class extends Migration
         Schema::create('file_attached', function (Blueprint $table) {
             $table->foreignUuid('file_upload_id')->constrained('file_uploads')->cascadeOnDelete();
             $table->nullableMorphs('attachable');
+            $table->unsignedSmallInteger('type');
         });
     }
 

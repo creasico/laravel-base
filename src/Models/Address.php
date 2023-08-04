@@ -10,7 +10,7 @@ use Illuminate\Support\Str;
 
 /**
  * @property-read bool $is_resident
- * @property null|Addres $type
+ * @property null|Enums\AddressType $type
  * @property null|string $rt
  * @property null|string $rw
  * @property null|string $summary

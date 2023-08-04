@@ -48,11 +48,20 @@ class FileUpload extends Model
     public function url(): Attribute
     {
         return Attribute::get(function () {
-            if ($path = $this->getAttributeValue('path')) {
-                return $this->is_internal ? Storage::url($path) : $path;
+            $path = $this->getAttributeValue('path');
+
+            if (! $path) {
+                return null;
             }
 
-            return null;
+            if (! $this->is_internal) {
+                return $path;
+            }
+
+            /** @var \Illuminate\Contracts\Filesystem\Cloud */
+            $storage = Storage::disk($this->disk);
+
+            return $storage->url(\ltrim($path, '/'));
         });
     }
 

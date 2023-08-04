@@ -7,6 +7,11 @@ namespace Creasi\Base\Models\Enums;
  */
 trait OptionableEnum
 {
+    /**
+     * Retrieve `cases` of enum as array options.
+     *
+     * @return array
+     */
     public static function toOptions()
     {
         static $options = [];
@@ -16,20 +21,28 @@ trait OptionableEnum
         }
 
         foreach (static::cases() as $self) {
-            $option = [
-                'value' => $self->value,
-            ];
-
-            if (\in_array(KeyableEnum::class, \trait_uses_recursive($self), true)) {
-                $option['key'] = (string) $self->key();
-                $option['label'] = $self->label();
-            } else {
-                $option['key'] = $self->name;
-            }
-
-            $options[] = $option;
+            $options[] = $self->toArray();
         }
 
         return $options;
+    }
+
+    /**
+     * Retrieve `key` and `value` of enum as an array.
+     */
+    public function toArray(): array
+    {
+        $arr = [
+            'value' => $this->value,
+        ];
+
+        if (\in_array(KeyableEnum::class, \trait_uses_recursive($this), true)) {
+            $arr['key'] = (string) $this->key();
+            $arr['label'] = $this->label();
+        } else {
+            $arr['key'] = $this->name;
+        }
+
+        return $arr;
     }
 }

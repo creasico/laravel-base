@@ -28,7 +28,7 @@ class AddressController extends Controller
     }
 
     /**
-     * @return AddressResource
+     * @return \Illuminate\Http\Response
      */
     public function store(StoreRequest $request, Entity $entity)
     {
@@ -38,18 +38,22 @@ class AddressController extends Controller
     }
 
     /**
-     * @return AddressResource
+     * @return \Illuminate\Http\Response
      */
-    public function show(Address $address, Request $request)
+    public function show(Address $model, Request $request, int $address = null)
     {
+        $address = $model->exists ? $model : $model->newQuery()->findOrFail($address);
+
         return AddressResource::make($address)->toResponse($request);
     }
 
     /**
-     * @return AddressResource
+     * @return \Illuminate\Http\Response
      */
-    public function update(UpdateRequest $request, Address $address)
+    public function update(UpdateRequest $request, Address $model, int $address = null)
     {
+        $address = $model->newQuery()->findOrFail($address);
+
         $address->update($request->validated());
 
         return $this->show($address, $request);
@@ -58,8 +62,10 @@ class AddressController extends Controller
     /**
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Address $address)
+    public function destroy(Address $model, int $address = null)
     {
+        $address = $model->newQuery()->findOrFail($address);
+
         $address->delete();
 
         return response()->noContent();

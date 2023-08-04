@@ -28,7 +28,7 @@ class FileUploadController extends Controller
     }
 
     /**
-     * @return FileUploadResource
+     * @return \Illuminate\Http\Response
      */
     public function store(StoreRequest $request, Entity $entity)
     {
@@ -38,18 +38,22 @@ class FileUploadController extends Controller
     }
 
     /**
-     * @return FileUploadResource
+     * @return \Illuminate\Http\Response
      */
-    public function show(FileUpload $file, Request $request)
+    public function show(FileUpload $model, Request $request, string $file = null)
     {
+        $file = $model->exists ? $model : $model->newQuery()->findOrFail($file);
+
         return FileUploadResource::make($file)->toResponse($request);
     }
 
     /**
-     * @return FileUploadResource
+     * @return \Illuminate\Http\Response
      */
-    public function update(UpdateRequest $request, FileUpload $file)
+    public function update(UpdateRequest $request, FileUpload $model, string $file = null)
     {
+        $file = $model->newQuery()->findOrFail($file);
+
         $file->update($request->validated());
 
         return $this->show($file, $request);
@@ -58,8 +62,10 @@ class FileUploadController extends Controller
     /**
      * @return \Illuminate\Http\Response
      */
-    public function destroy(FileUpload $file)
+    public function destroy(FileUpload $model, string $file = null)
     {
+        $file = $model->newQuery()->findOrFail($file);
+
         $file->delete();
 
         return response()->noContent();

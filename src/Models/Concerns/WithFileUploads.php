@@ -37,4 +37,14 @@ trait WithFileUploads
 
         return $file;
     }
+
+    public function getAttachableKey(): mixed
+    {
+        return $this->getAttributeValue($this->getAttachableKeyName());
+    }
+
+    public function getAttachableKeyName(): string
+    {
+        return 'name';
+    }
 }

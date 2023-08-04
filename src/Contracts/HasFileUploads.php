@@ -26,4 +26,14 @@ interface HasFileUploads
         string $summary = null,
         string $disk = null,
     ): FileUpload;
+
+    /**
+     * Retrieve attachable key attribute value
+     */
+    public function getAttachableKey(): mixed;
+
+    /**
+     * Retrieve attachable key attribute name.
+     */
+    public function getAttachableKeyName(): string;
 }

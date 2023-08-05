@@ -6,6 +6,11 @@ return [
         'female' => 'Female',
     ],
 
+    'address-type' => [
+        'resident' => 'Resident',
+        'legal' => 'Legal',
+    ],
+
     'religion' => [
         'other' => 'Other Religion',
         'islam' => 'Islam',
@@ -14,6 +19,13 @@ return [
         'hinduism' => 'Hinduism',
         'buddhism' => 'Buddhism',
         'confucianism' => 'Confucianism',
+    ],
+
+    'file-upload-type' => [
+        'avatar' => 'Avatar',
+        'logo' => 'Logo',
+        'image' => 'Image',
+        'document' => 'Document',
     ],
 
     'employment-type' => [
@@ -57,7 +69,7 @@ return [
         'cousin' => 'Cousin',
     ],
 
-    'stakeholder' => [
+    'business-relative-type' => [
         'owner' => 'Owner',
         'subsidiary' => 'Subsidiary',
         'customer' => 'Customer',

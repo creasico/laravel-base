@@ -12,6 +12,20 @@ use PHPUnit\Framework\Attributes\Test;
 #[Group('address')]
 class AddressTest extends TestCase
 {
+    private array $dataStructure = [
+        'id',
+        'type',
+        'line',
+        'rt',
+        'rw',
+        'village' => ['code', 'name'],
+        'district' => ['code', 'name'],
+        'regency' => ['code', 'name'],
+        'province' => ['code', 'name'],
+        'postal_code',
+        'summary',
+    ];
+
     #[Test]
     public function should_receive_404_when_no_data_available(): void
     {
@@ -32,7 +46,11 @@ class AddressTest extends TestCase
 
         $response = $this->getJson('base/addresses');
 
-        $response->assertOk();
+        $response->assertOk()->assertJsonStructure([
+            'data' => [$this->dataStructure],
+            'links' => [],
+            'meta' => ['types'],
+        ]);
     }
 
     #[Test]
@@ -44,7 +62,10 @@ class AddressTest extends TestCase
 
         $response = $this->postJson('base/addresses', $data);
 
-        $response->assertCreated();
+        $response->assertCreated()->assertJsonStructure([
+            'data' => $this->dataStructure,
+            'meta' => ['types'],
+        ]);
     }
 
     #[Test]
@@ -57,7 +78,10 @@ class AddressTest extends TestCase
 
         $response = $this->getJson("base/addresses/{$model->getRouteKey()}");
 
-        $response->assertOk();
+        $response->assertOk()->assertJsonStructure([
+            'data' => $this->dataStructure,
+            'meta' => ['types'],
+        ]);
     }
 
     #[Test]
@@ -69,7 +93,10 @@ class AddressTest extends TestCase
 
         $response = $this->putJson("base/addresses/{$model->getRouteKey()}", $model->toArray());
 
-        $response->assertOk();
+        $response->assertOk()->assertJsonStructure([
+            'data' => $this->dataStructure,
+            'meta' => ['types'],
+        ]);
     }
 
     #[Test]

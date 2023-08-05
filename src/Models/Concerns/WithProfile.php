@@ -5,8 +5,6 @@ namespace Creasi\Base\Models\Concerns;
 use Creasi\Base\Models\Profile;
 
 /**
- * @property-read ?Profile $profile
- *
  * @mixin \Creasi\Base\Contracts\HasProfile
  */
 trait WithProfile

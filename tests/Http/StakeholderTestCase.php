@@ -4,6 +4,7 @@ namespace Creasi\Tests\Http;
 
 use Creasi\Base\Models\Business;
 use Creasi\Base\Models\Enums\BusinessRelativeType;
+use Creasi\Base\Models\Personnel;
 use Creasi\Tests\TestCase;
 use Illuminate\Contracts\Routing\UrlRoutable;
 use Laravel\Sanctum\Sanctum;
@@ -14,6 +15,14 @@ use PHPUnit\Framework\Attributes\Test;
 #[Group('stakeholder')]
 abstract class StakeholderTestCase extends TestCase
 {
+    private array $dataStructure = [
+        'id',
+        'avatar',
+        'email',
+        'phone',
+        'summary',
+    ];
+
     abstract protected function getRelativeType(): BusinessRelativeType;
 
     final protected function getRoutePath(string|UrlRoutable ...$suffixs): string
@@ -43,13 +52,20 @@ abstract class StakeholderTestCase extends TestCase
     {
         Sanctum::actingAs($user = $this->user());
 
-        $external = Business::factory()->createOne(['name' => 'External Company']);
+        $company = Business::factory()->createOne(['name' => 'External Company']);
+        $personal = Personnel::factory()->createOne(['name' => 'External Personal']);
 
-        $user->identity->company->addStakeholder($this->getRelativeType(), $external);
+        $user->identity->company->addStakeholder($this->getRelativeType(), $company);
+        $user->identity->company->addStakeholder($this->getRelativeType(), $personal);
 
         $response = $this->getJson($this->getRoutePath());
 
-        $response->assertOk();
+        $response->dump();
+        $response->assertOk()->assertJsonStructure([
+            'data' => [$this->dataStructure],
+            'links' => [],
+            'meta' => [],
+        ]);
     }
 
     #[Test]
@@ -61,7 +77,10 @@ abstract class StakeholderTestCase extends TestCase
 
         $response = $this->postJson($this->getRoutePath(), $data);
 
-        $response->assertCreated();
+        $response->assertCreated()->assertJsonStructure([
+            'data' => $this->dataStructure,
+            'meta' => [],
+        ]);
     }
 
     #[Test]
@@ -75,7 +94,10 @@ abstract class StakeholderTestCase extends TestCase
 
         $response = $this->getJson($this->getRoutePath($model));
 
-        $response->assertOk();
+        $response->assertOk()->assertJsonStructure([
+            'data' => $this->dataStructure,
+            'meta' => [],
+        ]);
     }
 
     #[Test]
@@ -89,7 +111,10 @@ abstract class StakeholderTestCase extends TestCase
 
         $response = $this->putJson($this->getRoutePath($model), $model->toArray());
 
-        $response->assertOk();
+        $response->assertOk()->assertJsonStructure([
+            'data' => $this->dataStructure,
+            'meta' => [],
+        ]);
     }
 
     #[Test]

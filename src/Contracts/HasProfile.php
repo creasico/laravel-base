@@ -3,6 +3,8 @@
 namespace Creasi\Base\Contracts;
 
 /**
+ * @property-read null|\Creasi\Base\Models\Profile $profile
+ *
  * @mixin \Illuminate\Database\Eloquent\Model
  */
 interface HasProfile

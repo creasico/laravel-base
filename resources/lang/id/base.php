@@ -6,6 +6,11 @@ return [
         'female' => 'Perempuan',
     ],
 
+    'address-type' => [
+        'resident' => 'Domisili',
+        'legal' => 'Legal',
+    ],
+
     'religion' => [
         'other' => 'Kepercaan Lainnya',
         'islam' => 'Islam',
@@ -14,6 +19,13 @@ return [
         'hinduism' => 'Hindu',
         'buddhism' => 'Buddha',
         'confucianism' => 'Konghuchu',
+    ],
+
+    'file-upload-type' => [
+        'avatar' => 'Avatar',
+        'logo' => 'Logo',
+        'image' => 'Image',
+        'document' => 'Document',
     ],
 
     'employment-type' => [
@@ -45,7 +57,7 @@ return [
         'k-i3' => 'K/I/3',
     ],
 
-    'personnel-relative' => [
+    'personnel-relative-status' => [
         'child' => 'Anak',
         'spouse' => 'Pasangan',
         'sibling' => 'Saudara Kandung',
@@ -57,7 +69,7 @@ return [
         'cousin' => 'Sepupu',
     ],
 
-    'stakeholder' => [
+    'business-relative-type' => [
         'owner' => 'Pemilik',
         'subsidiary' => 'Anak Perusahaan',
         'customer' => 'Pelanggan',

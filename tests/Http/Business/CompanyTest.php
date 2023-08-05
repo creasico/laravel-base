@@ -18,6 +18,16 @@ use PHPUnit\Framework\Attributes\Test;
 #[Group('company')]
 class CompanyTest extends TestCase
 {
+    private array $dataStructure = [
+        'id',
+        'avatar',
+        'legalname',
+        'aliasname',
+        'email',
+        'phone',
+        'summary',
+    ];
+
     #[Test]
     public function should_receive_404_when_no_data_available(): void
     {
@@ -39,7 +49,11 @@ class CompanyTest extends TestCase
 
         $response = $this->getJson('base/companies');
 
-        $response->assertOk();
+        $response->assertOk()->assertJsonStructure([
+            'data' => [$this->dataStructure],
+            'links' => [],
+            'meta' => [],
+        ]);
     }
 
     #[Test]
@@ -51,7 +65,10 @@ class CompanyTest extends TestCase
 
         $response = $this->postJson('base/companies', $data);
 
-        $response->assertCreated();
+        $response->assertCreated()->assertJsonStructure([
+            'data' => $this->dataStructure,
+            'meta' => [],
+        ]);
     }
 
     #[Test]
@@ -63,7 +80,10 @@ class CompanyTest extends TestCase
 
         $response = $this->getJson("base/companies/{$model->getRouteKey()}");
 
-        $response->assertOk();
+        $response->assertOk()->assertJsonStructure([
+            'data' => $this->dataStructure,
+            'meta' => [],
+        ]);
     }
 
     #[Test]
@@ -152,7 +172,10 @@ class CompanyTest extends TestCase
 
         $response = $this->putJson("base/companies/{$model->getRouteKey()}", $model->toArray());
 
-        $response->assertOk();
+        $response->assertOk()->assertJsonStructure([
+            'data' => $this->dataStructure,
+            'meta' => [],
+        ]);
     }
 
     #[Test]

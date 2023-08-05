@@ -12,7 +12,6 @@ use Creasi\Base\Models\Enums\Gender;
 use Creasi\Base\Models\Enums\PersonnelRelativeStatus;
 
 /**
- * @property null|Gender $gender
  * @property-read ?PersonnelRelative $relative
  * @property-read \Illuminate\Database\Eloquent\Collection<int, Personnel> $relatives
  * @property-read BusinessRelative $stakeholder

@@ -11,10 +11,8 @@ use Creasi\Base\Models\Enums\BusinessRelativeType;
  * @property-read \Illuminate\Database\Eloquent\Collection<int, Personnel> $individualRelatives
  * @property-read \Illuminate\Database\Eloquent\Collection<int, static> $companyRelatives
  * @property-read \Illuminate\Database\Eloquent\Collection<int, BusinessRelative> $stakeholders
- *
- * @mixin \Illuminate\Database\Eloquent\Model
  */
-interface Company
+interface Company extends Stakeholder
 {
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany|Employee

@@ -3,7 +3,7 @@
 namespace Creasi\Base\Contracts;
 
 /**
- * @mixin \Illuminate\Database\Eloquent\Model
+ * @mixin \Creasi\Base\Models\Entity
  */
 interface Stakeholder
 {

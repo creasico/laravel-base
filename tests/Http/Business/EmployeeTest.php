@@ -17,6 +17,16 @@ use PHPUnit\Framework\Attributes\Test;
 #[Group('employee')]
 class EmployeeTest extends TestCase
 {
+    private array $dataStructure = [
+        'id',
+        'avatar',
+        'fullname',
+        'nickname',
+        'email',
+        'phone',
+        'summary',
+    ];
+
     #[Test]
     public function should_able_to_retrieve_all_data(): void
     {
@@ -25,7 +35,11 @@ class EmployeeTest extends TestCase
 
         $response = $this->getJson('base/employees');
 
-        $response->assertOk();
+        $response->assertOk()->assertJsonStructure([
+            'data' => [$this->dataStructure],
+            'links' => [],
+            'meta' => [],
+        ]);
     }
 
     #[Test]
@@ -36,7 +50,10 @@ class EmployeeTest extends TestCase
 
         $response = $this->postJson('base/employees', $data);
 
-        $response->assertCreated();
+        $response->assertCreated()->assertJsonStructure([
+            'data' => $this->dataStructure,
+            'meta' => [],
+        ]);
     }
 
     #[Test]
@@ -48,7 +65,10 @@ class EmployeeTest extends TestCase
 
         $response = $this->getJson("base/employees/{$model->getRouteKey()}");
 
-        $response->assertOk();
+        $response->assertOk()->assertJsonStructure([
+            'data' => $this->dataStructure,
+            'meta' => [],
+        ]);
     }
 
     #[Test]
@@ -139,7 +159,10 @@ class EmployeeTest extends TestCase
 
         $response = $this->putJson("base/employees/{$model->getRouteKey()}", $model->toArray());
 
-        $response->assertOk();
+        $response->assertOk()->assertJsonStructure([
+            'data' => $this->dataStructure,
+            'meta' => [],
+        ]);
     }
 
     #[Test]

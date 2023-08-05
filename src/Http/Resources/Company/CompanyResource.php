@@ -2,11 +2,27 @@
 
 namespace Creasi\Base\Http\Resources\Company;
 
+use Creasi\Base\Http\Resources\AsEntity;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
+/**
+ * @property-read \Creasi\Base\Models\BusinessRelative $resource
+ */
 class CompanyResource extends JsonResource
 {
+    use AsEntity;
+
+    public function __construct($resource)
+    {
+        parent::__construct($resource);
+
+        $this->additional([
+            'meta' => $this->meta(),
+            'links' => $this->links(),
+        ]);
+    }
+
     /**
      * Transform the resource into an array.
      *
@@ -14,6 +30,6 @@ class CompanyResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        return parent::toArray($request);
+        return $this->forStakeholder($this->resource);
     }
 }

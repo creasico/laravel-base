@@ -19,7 +19,7 @@ class StoreRequest extends FormRequest
             'email' => ['required', 'email', Rule::unique('personnels', 'email')],
             'phone' => ['nullable', 'numeric'],
             'gender' => ['required', Rule::enum(Gender::class)],
-            'summary' => ['nullable', 'string'],
+            'summary' => ['nullable', 'string', 'max:200'],
         ];
     }
 }

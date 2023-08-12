@@ -42,7 +42,7 @@ return new class extends Migration
             $table->char('regency_code', 4)->nullable();
             $table->char('province_code', 2)->nullable();
             $table->char('postal_code', 5)->nullable();
-            $table->string('summary')->nullable();
+            $table->string('summary', 200)->nullable();
 
             $table->timestamps();
             $table->softDeletes();
@@ -56,7 +56,7 @@ return new class extends Migration
             $table->string('name')->nullable();
             $table->string('path');
             $table->string('disk')->nullable();
-            $table->string('summary')->nullable();
+            $table->string('summary', 200)->nullable();
 
             $table->timestamps();
             $table->softDeletes();

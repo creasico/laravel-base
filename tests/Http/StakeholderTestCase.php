@@ -60,7 +60,6 @@ abstract class StakeholderTestCase extends TestCase
 
         $response = $this->getJson($this->getRoutePath());
 
-        $response->dump();
         $response->assertOk()->assertJsonStructure([
             'data' => [$this->dataStructure],
             'links' => [],

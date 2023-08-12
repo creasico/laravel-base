@@ -19,7 +19,7 @@ class StoreRequest extends FormRequest
             'alias' => ['nullable', 'string', Rule::unique('businesses', 'alias')],
             'email' => ['required', 'email', Rule::unique('businesses', 'email')],
             'phone_number' => ['nullable', 'numeric'],
-            'summary' => ['nullable', 'string'],
+            'summary' => ['nullable', 'string', 'max:200'],
         ];
     }
 

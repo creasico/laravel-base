@@ -27,7 +27,7 @@ class StoreRequest extends FormRequest
             'regency_code' => ['required', 'numeric'],
             'province_code' => ['required', 'numeric'],
             'postal_code' => ['required', 'numeric'],
-            'summary' => ['string', 'nullable'],
+            'summary' => ['nullable', 'string', 'max:200'],
         ];
     }
 

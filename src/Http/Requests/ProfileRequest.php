@@ -17,7 +17,7 @@ class ProfileRequest extends FormRequest
             'fullname' => ['required', 'string'],
             'nickname' => ['nullable', 'string'],
             'phone' => ['required', 'string'],
-            'summary' => ['nullable', 'string'],
+            'summary' => ['nullable', 'string', 'max:200'],
             'prefix' => ['nullable', 'string'],
             'suffix' => ['nullable', 'string'],
             'education' => ['nullable', Rule::enum(Education::class)],

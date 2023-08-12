@@ -16,7 +16,7 @@ class UpdateRequest extends FormRequest
             'alias' => ['nullable', 'string'],
             'email' => ['required', 'email'],
             'phone_number' => ['nullable', 'numeric'],
-            'summary' => ['nullable', 'string'],
+            'summary' => ['nullable', 'string', 'max:200'],
         ];
     }
 }

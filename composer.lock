@@ -63,16 +63,16 @@
         },
         {
             "name": "creasi/laravel-nusa",
-            "version": "v0.1.1",
+            "version": "v0.1.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/creasico/laravel-nusa.git",
-                "reference": "c83be1333e57fdfa0a12e79f7f1f6568c7edb01b"
+                "reference": "f30f649c022ea8acca4fbc61ec67c512de6f0048"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/creasico/laravel-nusa/zipball/c83be1333e57fdfa0a12e79f7f1f6568c7edb01b",
-                "reference": "c83be1333e57fdfa0a12e79f7f1f6568c7edb01b",
+                "url": "https://api.github.com/repos/creasico/laravel-nusa/zipball/f30f649c022ea8acca4fbc61ec67c512de6f0048",
+                "reference": "f30f649c022ea8acca4fbc61ec67c512de6f0048",
                 "shasum": ""
             },
             "require": {
@@ -125,7 +125,7 @@
                 "issues": "https://github.com/creasico/laravel-nusa/issues",
                 "source": "https://github.com/creasico/laravel-nusa"
             },
-            "time": "2023-07-20T02:04:36+00:00"
+            "time": "2023-08-30T15:55:39+00:00"
         },
         {
             "name": "dflydev/dot-access-data",

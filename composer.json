@@ -37,7 +37,7 @@
     },
     "require": {
         "php": "^8.1",
-        "creasi/laravel-nusa": "^0.1.0",
+        "creasi/laravel-nusa": "^0.1.1",
         "laravel/framework": "^9.0|^10.0"
     },
     "require-dev": {

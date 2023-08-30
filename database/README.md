@@ -12,6 +12,9 @@ erDiagram
         unsignedSmallInt tax_status
         varchar(16) tax_id
         varchar(200) summary
+        timestamp created_at
+        timestamp updated_at
+        timestamp deleted_at
     }
 
     business_relatives ||--|| businesses : stakeholder
@@ -48,6 +51,9 @@ erDiagram
         varchar(20) phone
         char(1) gender
         varchar(200) summary
+        timestamp created_at
+        timestamp updated_at
+        timestamp deleted_at
     }
     
     personnels ||..|| profiles : identity
@@ -63,6 +69,9 @@ erDiagram
         unsignedSmallInt religion
         unsignedSmallInt tax_status
         varchar(16) tax_id
+        timestamp created_at
+        timestamp updated_at
+        timestamp deleted_at
     }
 
     personnels ||..o{ personnel_relatives : relatives
@@ -87,7 +96,10 @@ erDiagram
         char(4) regency_code
         char(2) province_code
         char(5) postal_code
-        varchar summary
+        varchar(200) summary
+        timestamp created_at
+        timestamp updated_at
+        timestamp deleted_at
     }
 
     users ||..|| personnels : credential
@@ -106,8 +118,12 @@ erDiagram
         varchar name
         varchar path
         varchar disk
-        varchar summary
+        varchar(200) summary
+        timestamp created_at
+        timestamp updated_at
+        timestamp deleted_at
     }
+
     businesses }o..|| file_attached : files
     personnels }o..|| file_attached : files
     file_attached ||--|| file_uploads : attachments
@@ -120,7 +136,7 @@ erDiagram
 ---
 ## Entities
 
-Either a companies or an individuals are tent to have share some similarities, which is they must have a way for externals to communicate with them. The most common ways are by `email` or `phone`. In that regard, another similarity is they must have a name, but there's case that differenciate how we describe the way we call them. A businesses are commonly use term `legal_name` and `alias_name`, while an individuals are commonly using `full_name` and `nick_name`. Either of them serve the same purposes.
+Either a companies or an individuals are tent to shares some similarities, which is they must have a way for externals to communicate with them. The most common ways are by `email` or `phone`. In that regard, another similarity is they must have a name, but there's case that differenciate how we describe the way we call them. A businesses are commonly use term `legal_name` and `alias_name`, while an individuals are commonly using `full_name` and `nick_name`. Either of them serve the same purposes.
 
 Despite those similarities they must have some differences, including :
 - An individual does have gender, while a company doesn't
@@ -161,7 +177,7 @@ classDiagram
 
 ## Businesses
 
-A business must have some short of [relationship](https://www.investopedia.com/terms/b/business-relations.asp) to the externals, either to another business or individuals regardless of its size. The most common term to describe it is [stakeholder](https://www.investopedia.com/terms/s/stakeholder.asp).
+A business must have some sort of [relationship](https://www.investopedia.com/terms/b/business-relations.asp) to the externals, either to another business or individuals regardless of its size. The most common term to describe it is [stakeholder](https://www.investopedia.com/terms/s/stakeholder.asp).
 
 > A stakeholder is a person or group with an interest in an enterprise - [What Are Stakeholders: Definition, Types, and Examples](https://www.investopedia.com/terms/s/stakeholder.asp)
 
@@ -226,7 +242,7 @@ classDiagram
 | `phone` | `varchar(20)`, `nullable` | | The business primary phone number |
 | `tax_status` | `unsignedSmallInt`, `nullable` | | |
 | `tax_id` | `varchar(16)`, `nullable` | | |
-| `summary` | `text`, `nullable` | | |
+| `summary` | `varchar(200)`, `nullable` | | |
 
 **Model Attributes**
 - `timestamps`
@@ -350,7 +366,7 @@ classDiagram
 | `email` | `varchar`, `nullable` | `unique` | |
 | `phone` | `varchar(20)`, `nullable` | | |
 | `gender` | `char(1)` | | |
-| `summary` | `text`, `nullable` | | |
+| `summary` | `varchar(200)`, `nullable` | | |
 
 **Model Attributes**
 - `timestamps`
@@ -366,7 +382,6 @@ classDiagram
 | `personnel_id` | `unsignedBigInt` | `foreign` | |
 | `relative_id` | `unsignedBigInt` | `foreign` | |
 | `status` | `unsignedSmallInt`, `nullable` | | |
-| `remark` | `text`, `nullable` | | |
 
 **Relation Properties**
 - `personnel_id` : reference `personnels`
@@ -482,7 +497,7 @@ classDiagram
 | `regency_code` | `char(4)`, `nullable` | `foreign` | |
 | `province_code` | `char(2)`, `nullable` | `foreign` | |
 | `postal_code` | `char(5)`, `nullable` | | |
-| `summary` | `varchar`, `nullable` | | |
+| `summary` | `varchar(200)`, `nullable` | | |
 
 **Model Attributes**
 - `timestamps`
@@ -550,7 +565,7 @@ classDiagram
 | `name` | `varchar` | | |
 | `path` | `varchar`, `nullable` | | |
 | `disk` | `varchar`, `nullable` | | |
-| `summary` | `varchar`, `nullable` | | |
+| `summary` | `varchar(200)`, `nullable` | | |
 
 **Model Attributes**
 - `timestamps`

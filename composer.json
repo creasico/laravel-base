@@ -1,7 +1,7 @@
 {
     "name": "creasi/laravel-base",
-    "description": "Accounts Management Package",
-    "keywords": ["laravel", "accounts", "package"],
+    "description": "Laravel Package that aims to provide basic organization directory structures.",
+    "keywords": ["laravel", "package", "base", "accountability", "organization", "directory"],
     "license": "MIT",
     "type": "library",
     "authors": [

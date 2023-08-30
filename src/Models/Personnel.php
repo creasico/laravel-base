@@ -2,38 +2,34 @@
 
 namespace Creasi\Base\Models;
 
-use Creasi\Base\Contracts\Contactable;
-use Creasi\Base\Models\Concerns\HasDocuments;
-use Creasi\Base\Models\Concerns\HasIdentity;
+use Creasi\Base\Contracts\Employee;
+use Creasi\Base\Contracts\HasCredential;
+use Creasi\Base\Contracts\HasProfile;
+use Creasi\Base\Models\Concerns\AsEmployee;
+use Creasi\Base\Models\Concerns\WithCredential;
+use Creasi\Base\Models\Concerns\WithProfile;
+use Creasi\Base\Models\Enums\Gender;
 use Creasi\Base\Models\Enums\PersonnelRelativeStatus;
-use Creasi\Nusa\Contracts\Addressable;
-use Creasi\Nusa\Support\HasAddresses;
 
 /**
- * @property ?string $photo_path
  * @property-read ?PersonnelRelative $relative
  * @property-read \Illuminate\Database\Eloquent\Collection<int, Personnel> $relatives
- * @property-read CompanyRelative $stakeholder
+ * @property-read BusinessRelative $stakeholder
  *
  * @method static \Database\Factories\PersonnelFactory<static> factory()
  */
-class Personnel extends Model implements Addressable, Contactable
+class Personnel extends Entity implements Employee, HasCredential, HasProfile
 {
-    use HasAddresses;
-    use HasDocuments;
-    use HasIdentity;
+    use AsEmployee;
+    use WithCredential;
+    use WithProfile;
 
     protected $fillable = [
-        'code',
-        'name',
-        'email',
-        'phone_number',
-        'photo_path',
-        'summary',
+        'gender',
     ];
 
     protected $casts = [
-        // .
+        'gender' => Gender::class,
     ];
 
     /**
@@ -42,26 +38,25 @@ class Personnel extends Model implements Addressable, Contactable
     public function relatives()
     {
         return $this->belongsToMany(static::class, 'personnel_relatives', 'personnel_id', 'relative_id')
-            ->withPivot('status', 'remark')
+            ->withPivot('status')
             ->using(PersonnelRelative::class)
             ->as('relative');
     }
 
-    public function addRelative(Personnel $relative, PersonnelRelativeStatus $status, ?string $remark = null)
+    public function addRelative(Personnel $relative, PersonnelRelativeStatus $status)
     {
         $this->relatives()->attach($relative, [
             'status' => $status,
-            'remark' => $remark,
         ]);
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\MorphToMany|CompanyRelative
+     * @return \Illuminate\Database\Eloquent\Relations\MorphToMany|BusinessRelative
      */
     public function stakeholders()
     {
-        return $this->morphToMany(Company::class, 'stakeholder', 'company_relatives', 'company_id', 'stakeholder_id')
-            ->withPivot('type', 'remark')
+        return $this->morphToMany(Business::class, 'stakeholder', 'company_relatives', 'company_id', 'stakeholder_id')
+            ->withPivot('type')
             ->as('stakeholder');
     }
 }

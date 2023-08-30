@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use Creasi\Base\Models\Address;
+use Creasi\Base\Models\Enums\AddressType;
 use Creasi\Nusa\Models\Village;
 use Illuminate\Contracts\Database\Query\Builder;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -24,8 +25,10 @@ class AddressFactory extends Factory
             $query->where('code', 33);
         })->inRandomOrder()->first();
 
+        $types = config('creasi.base.address.types', AddressType::class);
+
         return [
-            'is_resident' => $this->faker->boolean(),
+            'type' => $this->faker->randomElement($types::cases()),
             'line' => $this->faker->streetAddress(),
             'rt' => $this->faker->numberBetween(1, 15),
             'rw' => $this->faker->numerify(1, 10),

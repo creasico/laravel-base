@@ -9,7 +9,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Str;
 
 /**
- * @property bool $is_resident
+ * @property-read bool $is_resident
+ * @property null|Enums\AddressType $type
  * @property null|string $rt
  * @property null|string $rw
  * @property null|string $summary
@@ -22,15 +23,25 @@ class Address extends NusaAddress
     use SoftDeletes;
 
     protected $fillable = [
-        'is_resident',
+        'type',
         'rt',
         'rw',
         'summary',
     ];
 
-    protected $casts = [
-        'is_resident' => 'bool',
-    ];
+    protected $casts = [];
+
+    public function getCasts()
+    {
+        return \array_merge(parent::getCasts(), [
+            'type' => config('creasi.base.address.types', Enums\AddressType::class),
+        ]);
+    }
+
+    public function isResident(): Attribute
+    {
+        return Attribute::get(fn () => $this->getAttributeValue('type')->isResident());
+    }
 
     public function rt(): Attribute
     {

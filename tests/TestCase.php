@@ -2,17 +2,21 @@
 
 namespace Creasi\Tests;
 
+use Closure;
+use Creasi\Base\Models\User;
 use Creasi\Base\ServiceProvider;
 use Creasi\Nusa\ServiceProvider as NusaServiceProvider;
+use Database\Factories\PersonnelFactory;
 use Illuminate\Contracts\Config\Repository;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Laravel\Sanctum\SanctumServiceProvider;
 use Orchestra\Testbench\TestCase as Orchestra;
 
-class TestCase extends Orchestra
+abstract class TestCase extends Orchestra
 {
     use RefreshDatabase;
-    use DatabaseMigrations;
+
+    private ?User $currentUser = null;
 
     /**
      * @param  \Illuminate\Foundation\Application  $app
@@ -22,7 +26,19 @@ class TestCase extends Orchestra
         return [
             ServiceProvider::class,
             NusaServiceProvider::class,
+            SanctumServiceProvider::class,
         ];
+    }
+
+    final protected function user(array|Closure $attrs = []): User
+    {
+        if (! $this->currentUser?->exists) {
+            $this->currentUser = User::factory()
+                ->withIdentity(fn (PersonnelFactory $p) => $p->withProfile()->withCompany(true))
+                ->createOne($attrs);
+        }
+
+        return $this->currentUser;
     }
 
     /**
@@ -36,21 +52,35 @@ class TestCase extends Orchestra
             $config->set('app.locale', 'id');
             $config->set('app.faker_locale', 'id_ID');
 
-            if (env('DB_CONNECTION', 'sqlite')) {
-                $config->set('database.default', 'sqlite');
+            $this->mergeConfig($config, 'auth.providers.users', [
+                'model' => User::class,
+            ]);
 
-                $database = __DIR__.'/test.sqlite';
+            $conn = env('DB_CONNECTION', 'sqlite');
 
-                if (! file_exists($database)) {
+            $config->set('database.default', $conn);
+
+            if ($conn === 'sqlite') {
+                if (! file_exists($database = __DIR__.'/test.sqlite')) {
                     touch($database);
                 }
 
-                $config->set('database.connections.sqlite', [
-                    'driver' => 'sqlite',
+                $this->mergeConfig($config, 'database.connections.sqlite', [
                     'database' => $database,
                     'foreign_key_constraints' => true,
                 ]);
+            } else {
+                $this->mergeConfig($config, 'database.connections.'.$conn, [
+                    'database' => env('DB_DATABASE', 'creasi_test'),
+                    'username' => env('DB_USERNAME', 'creasico'),
+                    'password' => env('DB_PASSWORD', 'secret'),
+                ]);
             }
         });
+    }
+
+    private function mergeConfig(Repository $config, string $key, array $value)
+    {
+        $config->set($key, array_merge($config->get($key, []), $value));
     }
 }

@@ -9,6 +9,8 @@ use Illuminate\Support\Stringable;
  */
 trait KeyableEnum
 {
+    use OptionableEnum;
+
     /**
      * Retrieve translation key.
      */
@@ -16,7 +18,7 @@ trait KeyableEnum
     {
         assert($this instanceof \BackedEnum, '"KeyableEnum" should only be used in an emun');
 
-        return str($this->name)->slug();
+        return str($this->name)->snake('-');
     }
 
     /**
@@ -24,7 +26,7 @@ trait KeyableEnum
      */
     public function label(): string
     {
-        $self = str(static::class)->classBasename()->slug();
+        $self = str(static::class)->classBasename()->snake('-');
 
         return trans("creasico::base.{$self}.{$this->key()}");
     }

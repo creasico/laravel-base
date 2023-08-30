@@ -6,13 +6,26 @@ return [
         'female' => 'Female',
     ],
 
+    'address-type' => [
+        'resident' => 'Resident',
+        'legal' => 'Legal',
+    ],
+
     'religion' => [
+        'other' => 'Other Religion',
         'islam' => 'Islam',
         'christian' => 'Christian',
         'catholic' => 'Catholic',
         'hinduism' => 'Hinduism',
         'buddhism' => 'Buddhism',
         'confucianism' => 'Confucianism',
+    ],
+
+    'file-upload-type' => [
+        'avatar' => 'Avatar',
+        'logo' => 'Logo',
+        'image' => 'Image',
+        'document' => 'Document',
     ],
 
     'employment-type' => [
@@ -29,6 +42,21 @@ return [
         'probation' => 'Probation',
     ],
 
+    'tax-status' => [
+        't-k0' => 'TK/0',
+        't-k1' => 'TK/1',
+        't-k2' => 'TK/2',
+        't-k3' => 'TK/3',
+        'k0' => 'K/0',
+        'k1' => 'K/1',
+        'k2' => 'K/2',
+        'k3' => 'K/3',
+        'k-i0' => 'K/I/0',
+        'k-i1' => 'K/I/1',
+        'k-i2' => 'K/I/2',
+        'k-i3' => 'K/I/3',
+    ],
+
     'personnel-relative-status' => [
         'child' => 'Child',
         'spouse' => 'Spouse',
@@ -41,7 +69,7 @@ return [
         'cousin' => 'Cousin',
     ],
 
-    'stakeholder' => [
+    'business-relative-type' => [
         'owner' => 'Owner',
         'subsidiary' => 'Subsidiary',
         'customer' => 'Customer',

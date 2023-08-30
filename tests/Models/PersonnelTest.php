@@ -3,43 +3,40 @@
 namespace Creasi\Tests\Models;
 
 use Creasi\Base\Models\Address;
-use Creasi\Base\Models\Document;
+use Creasi\Base\Models\Enums\Gender;
 use Creasi\Base\Models\Enums\PersonnelRelativeStatus;
+use Creasi\Base\Models\FileUpload;
 use Creasi\Base\Models\Personnel;
 use Creasi\Tests\TestCase;
+use Illuminate\Http\UploadedFile;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Test;
 
+#[Group('models')]
 #[Group('personnel')]
 class PersonnelTest extends TestCase
 {
-    #[Test]
-    public function should_be_exists()
-    {
-        $model = Personnel::factory()->createOne();
-
-        $this->assertModelExists($model);
-    }
-
     #[Test]
     public function should_have_addresses()
     {
         $person = Personnel::factory()->withAddress()->createOne();
 
         $this->assertCount(1, $person->addresses);
+        $this->assertInstanceOf(Gender::class, $person->gender);
         $this->assertInstanceOf(Address::class, $person->addresses->first());
     }
 
     #[Test]
-    public function should_have_documents()
+    public function should_have_avatar_image()
     {
-        $company = Personnel::factory()->createOne();
-        $document = Document::factory()->createOne();
+        $person = Personnel::factory()->createOne();
 
-        $company->documents()->save($document);
+        $avatar = $person->setAvatar(
+            UploadedFile::fake()->image('avatar.png')
+        );
 
-        $this->assertCount(1, $company->documents);
-        $this->assertCount(1, $document->ownedByPersonnels);
+        $this->assertInstanceOf(FileUpload::class, $person->avatar);
+        $this->assertTrue($person->avatar->is_internal);
     }
 
     #[Test]

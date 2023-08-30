@@ -4,6 +4,8 @@ namespace Creasi\Base\Models\Enums;
 
 enum Education: string
 {
+    use OptionableEnum;
+
     case Uneducated = '-';
     case SD = 'SD';
     case SMP = 'SMP';

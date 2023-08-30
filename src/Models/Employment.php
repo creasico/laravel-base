@@ -8,18 +8,22 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Relations\Pivot;
 
 /**
+ * @property int $id
+ * @property string $code
  * @property bool $is_primary
  * @property null|EmploymentType $type
  * @property null|EmploymentStatus $status
  * @property null|\Carbon\CarbonImmutable $start_date
  * @property null|\Carbon\CarbonImmutable $finish_date
- * @property null|string $remark
- * @property null|bool $is_started
- * @property null|bool $is_finished
+ *
+ * @property-reads null|bool $is_started
+ * @property-reads null|bool $is_finished
  */
 class Employment extends Pivot
 {
     protected $casts = [
+        'employer_id' => 'int',
+        'employee_id' => 'int',
         'is_primary' => 'bool',
         'type' => EmploymentType::class,
         'status' => EmploymentStatus::class,

@@ -2,9 +2,16 @@
 [![License](https://img.shields.io/github/license/creasico/laravel-base?style=flat-square)](https://github.com/creasico/laravel-base/blob/main/LICENSE)
 [![Actions Status](https://img.shields.io/github/actions/workflow/status/creasico/laravel-base/test.yml?branch=main&style=flat-square)](https://github.com/creasico/laravel-base/actions)
 
-# Laravel Account
+# Creasi Base
 
-Account Management Package for All of Our Projects
+Laravel Package that aims to provide basic organization directory structures for most of our projects.
+
+## Requirements
+
+- PHP `>=v8.1`
+- Laravel `>=10.0`
+
+## Why?
 
 ## Installation
 

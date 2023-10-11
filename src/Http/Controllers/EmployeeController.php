@@ -33,7 +33,7 @@ class EmployeeController extends Controller
     public function store(StoreRequest $request, Company $company)
     {
         /** @var Employee */
-        $item = $company->employees()->create($request->validated());
+        $item = $request->fulfill($company);
 
         return $this->show($item, $request)->setStatusCode(201);
     }
@@ -51,7 +51,7 @@ class EmployeeController extends Controller
      */
     public function update(UpdateRequest $request, Employee $employee)
     {
-        $employee->update($request->validated());
+        $request->fulfill($employee);
 
         return $this->show($employee, $request);
     }

@@ -2,9 +2,11 @@
 
 namespace Creasi\Base\Http\Requests\Stakeholder;
 
-use Creasi\Base\Http\Requests\FormRequest;
+use Creasi\Base\Contracts\FormRequest as FormRequestContract;
+use Creasi\Base\Contracts\Stakeholder;
+use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateRequest extends FormRequest
+class UpdateRequest extends FormRequest implements FormRequestContract
 {
     /**
      * @return array<string, array>
@@ -18,5 +20,10 @@ class UpdateRequest extends FormRequest
             'phone_number' => ['nullable', 'numeric'],
             'summary' => ['nullable', 'string', 'max:200'],
         ];
+    }
+
+    public function fulfill(Stakeholder $stakeholder)
+    {
+        return $stakeholder->update($this->validated());
     }
 }

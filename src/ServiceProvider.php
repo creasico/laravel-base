@@ -94,7 +94,10 @@ class ServiceProvider extends IlluminateServiceProvider
             return;
         }
 
-        Route::prefix(config('creasi.base.routes_prefix', 'base'))
+        $prefix = config('creasi.base.routes_prefix', 'base');
+
+        Route::prefix($prefix)
+            ->name("$prefix.")
             ->group(self::LIB_PATH.'/routes/base.php');
     }
 

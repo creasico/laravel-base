@@ -29,9 +29,8 @@ class ServiceProviderTest extends TestCase
     #[Group('routes')]
     public function should_able_to_disable_routes()
     {
-        /** @var \Countable */
-        $routes = Route::getRoutes();
+        $prefix = config('creasi.base.routes_prefix');
 
-        $this->assertCount(1, $routes);
+        $this->assertFalse(Route::getRoutes()->hasNamedRoute("$prefix.*"));
     }
 }

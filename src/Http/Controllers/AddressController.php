@@ -32,7 +32,7 @@ class AddressController extends Controller
      */
     public function store(StoreRequest $request, Entity $entity)
     {
-        $item = $request->storeFor($entity);
+        $item = $request->fulfill($entity);
 
         return $this->show($item, $request)->setStatusCode(201);
     }
@@ -52,9 +52,9 @@ class AddressController extends Controller
      */
     public function update(UpdateRequest $request, Address $model, int $address = null)
     {
-        $address = $model->newQuery()->findOrFail($address);
-
-        $address->update($request->validated());
+        $request->fulfill(
+            $address = $model->newQuery()->findOrFail($address)
+        );
 
         return $this->show($address, $request);
     }

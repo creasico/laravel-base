@@ -2,11 +2,13 @@
 
 namespace Creasi\Base\Http\Requests;
 
+use Creasi\Base\Contracts\FormRequest as FormRequestContract;
 use Creasi\Base\Models\Enums\Education;
 use Creasi\Base\Models\Enums\TaxStatus;
+use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-class ProfileRequest extends FormRequest
+class ProfileRequest extends FormRequest implements FormRequestContract
 {
     /**
      * @return array<string, array>

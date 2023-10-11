@@ -55,7 +55,7 @@ class StakeholderController extends Controller
      */
     public function update(UpdateRequest $request, Stakeholder $stakeholder)
     {
-        $stakeholder->update($request->validated());
+        $request->fulfill($stakeholder);
 
         return $this->show($stakeholder, $request);
     }

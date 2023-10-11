@@ -33,8 +33,7 @@ class CompanyController extends Controller
      */
     public function store(StoreRequest $request, Company $company)
     {
-        /** @var Company $item */
-        $item = $company->create($request->validated());
+        $item = $request->fulfill($company);
 
         return $this->show($item, $request)->setStatusCode(201);
     }
@@ -52,7 +51,7 @@ class CompanyController extends Controller
      */
     public function update(UpdateRequest $request, Company $company)
     {
-        $company->update($request->validated());
+        $request->fulfill($company);
 
         return $this->show($company, $request);
     }

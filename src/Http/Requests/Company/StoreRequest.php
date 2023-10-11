@@ -2,10 +2,12 @@
 
 namespace Creasi\Base\Http\Requests\Company;
 
-use Creasi\Base\Http\Requests\FormRequest;
+use Creasi\Base\Contracts\Company;
+use Creasi\Base\Contracts\FormRequest as FormRequestContract;
+use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-class StoreRequest extends FormRequest
+class StoreRequest extends FormRequest implements FormRequestContract
 {
     /**
      * @return array<string, array>
@@ -19,5 +21,10 @@ class StoreRequest extends FormRequest
             'phone_number' => ['nullable', 'numeric'],
             'summary' => ['nullable', 'string', 'max:200'],
         ];
+    }
+
+    public function fulfill(Company $company)
+    {
+        return $company->create($this->validated());
     }
 }

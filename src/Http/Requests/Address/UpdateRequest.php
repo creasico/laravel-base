@@ -2,10 +2,12 @@
 
 namespace Creasi\Base\Http\Requests\Address;
 
-use Creasi\Base\Http\Requests\FormRequest;
+use Creasi\Base\Contracts\FormRequest as FormRequestContract;
+use Creasi\Base\Models\Address;
+use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-class UpdateRequest extends FormRequest
+class UpdateRequest extends FormRequest implements FormRequestContract
 {
     /**
      * @return array<string, array>
@@ -26,5 +28,10 @@ class UpdateRequest extends FormRequest
             'postal_code' => ['required', 'numeric'],
             'summary' => ['nullable', 'string', 'max:200'],
         ];
+    }
+
+    public function fulfill(Address $address)
+    {
+        return $address->update($this->validated());
     }
 }

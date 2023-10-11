@@ -76,7 +76,7 @@ class Repository
 
     private function currentRoutePrefix(string $prefix = null)
     {
-        $name = \explode('.', $this->router->currentRouteName())[0];
+        $name = \explode('.', $this->router->currentRouteName())[1];
 
         return $prefix ? $name === $prefix : $name;
     }

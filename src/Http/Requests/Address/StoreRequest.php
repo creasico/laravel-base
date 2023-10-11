@@ -32,7 +32,7 @@ class StoreRequest extends FormRequest implements FormRequestContract
         ];
     }
 
-    public function storeFor(HasAddresses $entity)
+    public function fulfill(HasAddresses $entity)
     {
         $address = Address::query()->make($this->validated());
 

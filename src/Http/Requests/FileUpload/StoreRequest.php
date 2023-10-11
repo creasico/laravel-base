@@ -23,7 +23,7 @@ class StoreRequest extends FormRequest implements FormRequestContract
         ];
     }
 
-    public function storeFor(HasFileUploads $entity)
+    public function fulfill(HasFileUploads $entity)
     {
         /** @var FileUploadType */
         $type = $this->enum('type', FileUploadType::class);

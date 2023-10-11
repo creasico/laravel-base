@@ -32,7 +32,7 @@ class FileUploadController extends Controller
      */
     public function store(StoreRequest $request, Entity $entity)
     {
-        $item = $request->storeFor($entity);
+        $item = $request->fulfill($entity);
 
         return $this->show($item, $request)->setStatusCode(201);
     }
@@ -52,9 +52,9 @@ class FileUploadController extends Controller
      */
     public function update(UpdateRequest $request, FileUpload $model, string $file = null)
     {
-        $file = $model->newQuery()->findOrFail($file);
-
-        $file->update($request->validated());
+        $request->fulfill(
+            $file = $model->newQuery()->findOrFail($file)
+        );
 
         return $this->show($file, $request);
     }

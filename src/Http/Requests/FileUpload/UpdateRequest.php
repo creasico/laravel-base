@@ -3,6 +3,7 @@
 namespace Creasi\Base\Http\Requests\FileUpload;
 
 use Creasi\Base\Contracts\FormRequest as FormRequestContract;
+use Creasi\Base\Models\FileUpload;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateRequest extends FormRequest implements FormRequestContract
@@ -18,5 +19,10 @@ class UpdateRequest extends FormRequest implements FormRequestContract
             'path' => ['required', 'string'],
             'upload' => ['nullable', 'file'],
         ];
+    }
+
+    public function fulfill(FileUpload $file)
+    {
+        return $file->update($this->validated());
     }
 }

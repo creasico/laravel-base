@@ -2,6 +2,7 @@
 
 namespace Creasi\Base\Http\Requests\Employee;
 
+use Creasi\Base\Contracts\Company;
 use Creasi\Base\Contracts\FormRequest as FormRequestContract;
 use Creasi\Base\Models\Enums\Gender;
 use Illuminate\Foundation\Http\FormRequest;
@@ -22,5 +23,10 @@ class StoreRequest extends FormRequest implements FormRequestContract
             'gender' => ['required', Rule::enum(Gender::class)],
             'summary' => ['nullable', 'string', 'max:200'],
         ];
+    }
+
+    public function fulfill(Company $company)
+    {
+        return $company->employees()->create($this->validated());
     }
 }

@@ -2,10 +2,11 @@
 
 namespace Creasi\Base\Http\Requests\Address;
 
-use Creasi\Base\Http\Requests\FormRequest;
+use Creasi\Base\Contracts\FormRequest as FormRequestContract;
+use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-class UpdateRequest extends FormRequest
+class UpdateRequest extends FormRequest implements FormRequestContract
 {
     /**
      * @return array<string, array>

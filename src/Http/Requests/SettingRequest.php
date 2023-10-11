@@ -2,7 +2,10 @@
 
 namespace Creasi\Base\Http\Requests;
 
-class SettingRequest extends FormRequest
+use Creasi\Base\Contracts\FormRequest as FormRequestContract;
+use Illuminate\Foundation\Http\FormRequest;
+
+class SettingRequest extends FormRequest implements FormRequestContract
 {
     /**
      * @return array<string, array>

@@ -3,11 +3,12 @@
 namespace Creasi\Base\Http\Requests\Stakeholder;
 
 use Creasi\Base\Contracts\Company;
-use Creasi\Base\Http\Requests\FormRequest;
+use Creasi\Base\Contracts\FormRequest as FormRequestContract;
 use Creasi\Base\Models\Enums\BusinessRelativeType;
+use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-class StoreRequest extends FormRequest
+class StoreRequest extends FormRequest implements FormRequestContract
 {
     /**
      * @return array<string, array>

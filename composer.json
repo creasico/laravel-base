@@ -26,8 +26,7 @@
     },
     "autoload": {
         "psr-4": {
-            "Creasi\\Base\\": "src",
-            "Database\\Factories\\": "database/factories/"
+            "Creasi\\Base\\": "src"
         }
     },
     "autoload-dev": {

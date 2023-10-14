@@ -26,13 +26,13 @@
     },
     "autoload": {
         "psr-4": {
-            "Creasi\\Base\\": "src"
+            "Creasi\\Base\\": "src",
+            "Database\\Factories\\": "database/factories/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Creasi\\Tests\\": "tests",
-            "Database\\Factories\\": "database/factories/"
+            "Creasi\\Tests\\": "tests"
         }
     },
     "require": {

@@ -7,7 +7,7 @@ use Creasi\Base\Contracts\Employee;
 use Creasi\Base\Contracts\Stakeholder;
 use Creasi\Base\Models\Entity;
 use Creasi\Base\Models\Enums\BusinessRelativeType;
-use Creasi\Base\Models\User;
+use Illuminate\Foundation\Auth\User;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Router;
 

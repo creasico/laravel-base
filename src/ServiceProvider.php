@@ -103,6 +103,12 @@ class ServiceProvider extends IlluminateServiceProvider
 
     protected function registerBindings()
     {
+        $this->app->bind('creasi.base.user_model', function ($app) {
+            $provider = $app['config']["auth.guards.{$app['auth']->getDefaultDriver()}.provider"];
+
+            return $app['config']["auth.providers.$provider.model"];
+        });
+
         $this->app->bind(Entity::class, function ($app) {
             $repo = $app->make(Repository::class);
 

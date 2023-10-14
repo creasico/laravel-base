@@ -3,7 +3,7 @@
 namespace Creasi\Tests\Models;
 
 use Creasi\Base\Models\Personnel;
-use Creasi\Base\Models\User;
+use Creasi\Tests\Fixtures\User;
 use Creasi\Tests\TestCase;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Test;

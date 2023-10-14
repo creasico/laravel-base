@@ -3,16 +3,18 @@
 namespace Database\Factories;
 
 use Creasi\Base\Models\Personnel;
-use Creasi\Base\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 
 /**
- * @extends Factory<User>
+ * @extends Factory<\App\Model\User>
  */
 class UserFactory extends Factory
 {
-    protected $model = User::class;
+    public function modelName()
+    {
+        return app('creasi.base.user_model');
+    }
 
     /**
      * Define the model's default state.
@@ -42,7 +44,7 @@ class UserFactory extends Factory
 
     public function withIdentity(\Closure $cb = null): static
     {
-        if (null === $cb) {
+        if ($cb === null) {
             $cb = fn (PersonnelFactory $identity) => $identity->withProfile();
         }
 

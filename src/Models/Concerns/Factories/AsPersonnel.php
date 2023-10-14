@@ -14,8 +14,13 @@ trait AsPersonnel
 {
     public function withProfile(Enums\Gender $gender = null): static
     {
-        return $this->has(Profile::factory(), 'profile')->state(fn () => [
-            'name' => $this->faker->firstName($gender?->toFaker()),
+        $gender = $gender ?: \fake()->randomElement(Enums\Gender::cases());
+
+        return $this->has(Profile::factory(), 'profile')->state(fn ($_, $user) => [
+            'name' => \fake()->firstName($gender->toFaker()),
+            'alias' => $user->name,
+            'email' => $user->email,
+            'gender' => $gender,
         ]);
     }
 
@@ -26,13 +31,13 @@ trait AsPersonnel
         false|DateTimeInterface $startDate = null,
     ): static {
         if ($startDate === null) {
-            $startDate = $this->faker->dateTime();
+            $startDate = \fake()->dateTime();
         }
 
         return $this->hasAttached(Business::factory(), [
             'is_primary' => $primary,
-            'type' => $type ?? $this->faker->randomElement(Enums\EmploymentType::cases()),
-            'status' => $status ?? $this->faker->randomElement(Enums\EmploymentStatus::cases()),
+            'type' => $type ?? \fake()->randomElement(Enums\EmploymentType::cases()),
+            'status' => $status ?? \fake()->randomElement(Enums\EmploymentStatus::cases()),
             'start_date' => $startDate?->format('Y-m-d'),
             'finish_date' => null,
         ], 'employers');

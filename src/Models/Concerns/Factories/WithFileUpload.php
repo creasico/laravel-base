@@ -13,7 +13,7 @@ trait WithFileUpload
     public function withFileUpload(FileUploadType $type = null): static
     {
         return $this->hasAttached(FileUpload::factory(), [
-            'type' => $type ?? $this->faker->randomElement(FileUploadType::cases()),
+            'type' => $type ?? \fake()->randomElement(FileUploadType::cases()),
         ], 'files');
     }
 }

@@ -2,7 +2,7 @@
 
 namespace Database\Factories;
 
-use Creasi\Base\Models\Personnel;
+use Creasi\Base\Models\Concerns\Factories\WithIdentity;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 
@@ -11,6 +11,8 @@ use Illuminate\Support\Str;
  */
 class UserFactory extends Factory
 {
+    use WithIdentity;
+
     public function modelName()
     {
         return app('creasi.base.user_model');
@@ -40,14 +42,5 @@ class UserFactory extends Factory
         return $this->state([
             'email_verified_at' => null,
         ]);
-    }
-
-    public function withIdentity(\Closure $cb = null): static
-    {
-        if ($cb === null) {
-            $cb = fn (PersonnelFactory $identity) => $identity->withProfile();
-        }
-
-        return $this->has($cb(Personnel::factory()), 'identity');
     }
 }

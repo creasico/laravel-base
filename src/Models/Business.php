@@ -12,7 +12,7 @@ use Creasi\Base\Models\Concerns\WithTaxInfo;
  *
  * @method static \Database\Factories\BusinessFactory<static> factory()
  */
-class Business extends Entity implements HasTaxInfo, Company
+class Business extends Entity implements Company, HasTaxInfo
 {
     use AsCompany;
     use WithTaxInfo;

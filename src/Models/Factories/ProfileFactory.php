@@ -1,6 +1,6 @@
 <?php
 
-namespace Database\Factories;
+namespace Creasi\Base\Models\Factories;
 
 use Creasi\Base\Models\Enums;
 use Creasi\Base\Models\Profile;

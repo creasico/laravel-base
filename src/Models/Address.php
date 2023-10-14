@@ -31,6 +31,11 @@ class Address extends NusaAddress
 
     protected $casts = [];
 
+    protected static function newFactory()
+    {
+        return Factories\AddressFactory::new();
+    }
+
     public function getCasts()
     {
         return \array_merge(parent::getCasts(), [

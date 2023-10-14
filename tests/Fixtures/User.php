@@ -4,6 +4,7 @@ namespace Creasi\Tests\Fixtures;
 
 use Creasi\Base\Contracts\HasIdentity;
 use Creasi\Base\Models\Concerns\WithIdentity;
+use Creasi\Base\Models\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -26,6 +27,11 @@ class User extends Authenticatable implements HasIdentity
     use HasFactory;
     use Notifiable;
     use WithIdentity;
+
+    protected static function newFactory()
+    {
+        return UserFactory::new();
+    }
 
     public function password(): Attribute
     {

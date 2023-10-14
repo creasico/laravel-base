@@ -1,3 +1,0 @@
-# Exclude unused files
-*_testbench_*.php        export-ignore
-UserFactory.php          export-ignore

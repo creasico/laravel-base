@@ -1,6 +1,6 @@
 <?php
 
-namespace Database\Factories;
+namespace Creasi\Base\Models\Factories;
 
 use Creasi\Base\Models\Concerns\Factories\WithIdentity;
 use Illuminate\Database\Eloquent\Factories\Factory;

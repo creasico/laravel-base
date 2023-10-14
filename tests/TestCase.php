@@ -6,7 +6,6 @@ use Closure;
 use Creasi\Base\ServiceProvider;
 use Creasi\Nusa\ServiceProvider as NusaServiceProvider;
 use Creasi\Tests\Fixtures\User;
-use Database\Factories\PersonnelFactory;
 use Illuminate\Contracts\Config\Repository;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Laravel\Sanctum\SanctumServiceProvider;
@@ -34,7 +33,7 @@ abstract class TestCase extends Orchestra
     {
         if (! $this->currentUser?->exists) {
             $this->currentUser = User::factory()
-                ->withIdentity(fn (PersonnelFactory $p) => $p->withProfile()->withCompany(true))
+                ->withIdentity(fn ($p) => $p->withProfile()->withCompany(true))
                 ->createOne($attrs);
         }
 

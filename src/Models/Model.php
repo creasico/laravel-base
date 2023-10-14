@@ -16,4 +16,12 @@ abstract class Model extends EloquentModel
 {
     use HasFactory;
     use SoftDeletes;
+
+    protected static function newFactory()
+    {
+        $modelName = \class_basename(static::class);
+        $factory = __NAMESPACE__."\\Factories\\{$modelName}Factory";
+
+        return $factory::new();
+    }
 }

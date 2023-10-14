@@ -1,8 +1,9 @@
 <?php
 
-namespace Creasi\Base\Models;
+namespace Creasi\Tests\Fixtures;
 
 use Creasi\Base\Contracts\HasIdentity;
+use Creasi\Base\Models\Concerns\WithIdentity;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -21,30 +22,13 @@ use Laravel\Sanctum\HasApiTokens;
  */
 class User extends Authenticatable implements HasIdentity
 {
+    use HasApiTokens;
     use HasFactory;
     use Notifiable;
-    use HasApiTokens;
-
-    protected $fillable = ['name', 'email', 'password'];
-
-    protected $hidden = ['password', 'remember_token'];
-
-    protected $casts = [
-        'email_verified_at' => 'immutable_datetime',
-    ];
-
-    protected $appends = [];
+    use WithIdentity;
 
     public function password(): Attribute
     {
         return Attribute::set(fn (string $value) => \bcrypt($value));
-    }
-
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasOne|Personnel
-     */
-    public function identity()
-    {
-        return $this->hasOne(Personnel::class);
     }
 }

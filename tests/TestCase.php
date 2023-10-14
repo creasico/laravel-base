@@ -3,9 +3,9 @@
 namespace Creasi\Tests;
 
 use Closure;
-use Creasi\Base\Models\User;
 use Creasi\Base\ServiceProvider;
 use Creasi\Nusa\ServiceProvider as NusaServiceProvider;
+use Creasi\Tests\Fixtures\User;
 use Database\Factories\PersonnelFactory;
 use Illuminate\Contracts\Config\Repository;
 use Illuminate\Foundation\Testing\RefreshDatabase;

@@ -16,10 +16,10 @@ trait AsPersonnel
     {
         $gender = $gender ?: \fake()->randomElement(Enums\Gender::cases());
 
-        return $this->has(Profile::factory(), 'profile')->state(fn ($_, $user) => [
+        return $this->has(Profile::factory(), 'profile')->state(fn ($attrs, $user) => [
             'name' => \fake()->firstName($gender->toFaker()),
-            'alias' => $user->name,
-            'email' => $user->email,
+            'alias' => $user?->name ?: $attrs['name'],
+            'email' => $user?->email ?: $attrs['email'],
             'gender' => $gender,
         ]);
     }

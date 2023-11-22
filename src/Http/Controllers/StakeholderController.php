@@ -15,7 +15,7 @@ class StakeholderController extends Controller
 {
     public function __construct()
     {
-        // $this->authorizeResource(Stakeholder::class);
+        $this->authorizeResource(Stakeholder::class);
     }
 
     /**

@@ -14,7 +14,7 @@ class FileUploadController extends Controller
 {
     public function __construct()
     {
-        // $this->authorizeResource(FileUpload::class);
+        $this->authorizeResource(FileUpload::class);
     }
 
     /**

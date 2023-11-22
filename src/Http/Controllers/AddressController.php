@@ -14,7 +14,7 @@ class AddressController extends Controller
 {
     public function __construct()
     {
-        // $this->authorizeResource(Address::class);
+        $this->authorizeResource(Address::class);
     }
 
     /**

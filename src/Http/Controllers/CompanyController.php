@@ -13,7 +13,7 @@ class CompanyController extends Controller
 {
     public function __construct()
     {
-        // $this->authorizeResource(Company::class);
+        $this->authorizeResource(Company::class);
     }
 
     /**

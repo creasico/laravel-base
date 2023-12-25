@@ -11,12 +11,6 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('user_devices', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
-            $table->string('token');
-        });
-
         Schema::create('profiles', function (Blueprint $table) {
             $table->id();
             $table->nullableMorphs('identity');
@@ -88,6 +82,5 @@ return new class extends Migration
         Schema::dropIfExists('file_uploads');
         Schema::dropIfExists('addresses');
         Schema::dropIfExists('profiles');
-        Schema::dropIfExists('user_devices');
     }
 };

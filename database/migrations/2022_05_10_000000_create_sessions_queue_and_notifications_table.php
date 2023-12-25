@@ -55,6 +55,12 @@ return new class extends Migration
             $table->timestamp('read_at')->nullable();
             $table->timestamps();
         });
+
+        Schema::create('user_devices', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
+            $table->string('token');
+        });
     }
 
     /**
@@ -62,6 +68,7 @@ return new class extends Migration
      */
     public function down(): void
     {
+        Schema::dropIfExists('user_devices');
         Schema::dropIfExists('notifications');
 
         if (config('queue.default') !== 'database') {

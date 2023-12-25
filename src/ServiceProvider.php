@@ -9,7 +9,9 @@ use Creasi\Base\Models\Address;
 use Creasi\Base\Models\Entity;
 use Creasi\Base\Models\Enums\BusinessRelativeType;
 use Creasi\Base\View\Composers\TranslationsComposer;
+use Illuminate\Auth\Events\Authenticated;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\View;
@@ -64,6 +66,10 @@ class ServiceProvider extends IlluminateServiceProvider
         }
 
         $this->registerBindings();
+
+        $this->booting(function (): void {
+            Event::listen(Authenticated::class, Listeners\RegisterUserDevice::class);
+        });
     }
 
     protected function registerPublishables(): void

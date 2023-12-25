@@ -22,7 +22,7 @@ return new class extends Migration
             });
         }
 
-        if (config('queue.default') !== 'database') {
+        if (config('queue.default') === 'database') {
             Schema::create(config('queue.connections.database.table'), function (Blueprint $table) {
                 $table->id();
                 $table->string('queue')->index();
@@ -71,7 +71,7 @@ return new class extends Migration
         Schema::dropIfExists('user_devices');
         Schema::dropIfExists('notifications');
 
-        if (config('queue.default') !== 'database') {
+        if (config('queue.default') === 'database') {
             Schema::dropIfExists('job_batches');
             Schema::dropIfExists(config('queue.connections.database.table'));
         }

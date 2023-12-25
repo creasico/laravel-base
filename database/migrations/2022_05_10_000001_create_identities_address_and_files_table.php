@@ -88,5 +88,6 @@ return new class extends Migration
         Schema::dropIfExists('file_uploads');
         Schema::dropIfExists('addresses');
         Schema::dropIfExists('profiles');
+        Schema::dropIfExists('user_devices');
     }
 };

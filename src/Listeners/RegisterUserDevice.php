@@ -24,7 +24,7 @@ class RegisterUserDevice
         $user = $event->user;
 
         $device = $user->devices()->firstOrCreate([
-            'device' => $this->request->input('device'),
+            'token' => $this->request->input('device'),
         ]);
 
         \event(new UserDeviceRegistered($device));

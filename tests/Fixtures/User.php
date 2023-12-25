@@ -3,6 +3,7 @@
 namespace Creasi\Tests\Fixtures;
 
 use Creasi\Base\Contracts\HasIdentity;
+use Creasi\Base\Models\Concerns\WithDevices;
 use Creasi\Base\Models\Concerns\WithIdentity;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -25,6 +26,7 @@ class User extends Authenticatable implements HasIdentity
     use HasApiTokens;
     use HasFactory;
     use Notifiable;
+    use WithDevices;
     use WithIdentity;
 
     protected static function newFactory()

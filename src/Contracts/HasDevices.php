@@ -13,4 +13,9 @@ interface HasDevices
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function devices();
+
+    /**
+     * @return string[]
+     */
+    public function deviceTokens(): array;
 }

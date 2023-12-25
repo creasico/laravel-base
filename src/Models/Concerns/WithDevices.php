@@ -16,4 +16,20 @@ trait WithDevices
     {
         return $this->hasMany(UserDevice::class);
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function deviceTokens(): array
+    {
+        static $tokens;
+
+        if ($tokens) {
+            return $tokens;
+        }
+
+        $this->loadMissing('devices');
+
+        return $tokens = $this->devices->pluck('token')->toArray();
+    }
 }

@@ -2,10 +2,10 @@
 
 namespace Creasi\Base\Http\Resources;
 
-use Creasi\Base\Contracts\Company;
-use Creasi\Base\Contracts\Employee;
-use Creasi\Base\Contracts\Stakeholder;
 use Creasi\Base\Models\BusinessRelative;
+use Creasi\Base\Models\Contracts\Company;
+use Creasi\Base\Models\Contracts\Employee;
+use Creasi\Base\Models\Contracts\Stakeholder;
 use Creasi\Base\Models\Profile;
 
 trait AsEntity
@@ -23,7 +23,7 @@ trait AsEntity
     /**
      * @param  \Creasi\Base\Models\Personnel|null  $entity
      */
-    final protected function forPersonnel(Employee $entity = null, bool $showProfile = true): array
+    final protected function forPersonnel(?Employee $entity = null, bool $showProfile = true): array
     {
         $arr = [
             $entity->getKeyName() => $entity->getKey(),
@@ -46,7 +46,7 @@ trait AsEntity
     /**
      * @param  \Creasi\Base\Models\Business|null  $entity
      */
-    final protected function forCompany(Company $entity = null): array
+    final protected function forCompany(?Company $entity = null): array
     {
         $arr = [
             $entity->getKeyName() => $entity->getKey(),

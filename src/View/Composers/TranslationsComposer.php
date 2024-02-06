@@ -26,7 +26,7 @@ class TranslationsComposer
     /**
      * @return array<string, \Illuminate\Support\Collection<string, string>>
      */
-    private function loadMessages(Loader $loader, string $path, string $namespace = null)
+    private function loadMessages(Loader $loader, string $path, ?string $namespace = null)
     {
         $messages = [];
 

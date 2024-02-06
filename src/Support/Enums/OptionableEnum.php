@@ -1,6 +1,6 @@
 <?php
 
-namespace Creasi\Base\Models\Enums;
+namespace Creasi\Base\Support\Enums;
 
 /**
  * @mixin KeyableEnum

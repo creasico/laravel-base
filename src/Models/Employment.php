@@ -15,9 +15,8 @@ use Illuminate\Database\Eloquent\Relations\Pivot;
  * @property null|EmploymentStatus $status
  * @property null|\Carbon\CarbonImmutable $start_date
  * @property null|\Carbon\CarbonImmutable $finish_date
- *
- * @property-reads null|bool $is_started
- * @property-reads null|bool $is_finished
+ * @property-read null|bool $is_started
+ * @property-read null|bool $is_finished
  */
 class Employment extends Pivot
 {

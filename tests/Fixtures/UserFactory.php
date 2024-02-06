@@ -2,7 +2,7 @@
 
 namespace Creasi\Tests\Fixtures;
 
-use Creasi\Base\Models\Concerns\Factories\WithIdentity;
+use Creasi\Base\Models\Factories\Concerns\WithIdentity;
 use Orchestra\Testbench\Factories\UserFactory as Factory;
 
 /**

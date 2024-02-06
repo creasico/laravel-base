@@ -2,12 +2,12 @@
 
 namespace Creasi\Base\Models;
 
-use Creasi\Base\Contracts\Employee;
-use Creasi\Base\Contracts\HasCredential;
-use Creasi\Base\Contracts\HasProfile;
 use Creasi\Base\Models\Concerns\AsEmployee;
 use Creasi\Base\Models\Concerns\WithCredential;
 use Creasi\Base\Models\Concerns\WithProfile;
+use Creasi\Base\Models\Contracts\Employee;
+use Creasi\Base\Models\Contracts\HasCredential;
+use Creasi\Base\Models\Contracts\HasProfile;
 use Creasi\Base\Models\Enums\Gender;
 use Creasi\Base\Models\Enums\PersonnelRelativeStatus;
 
@@ -16,7 +16,7 @@ use Creasi\Base\Models\Enums\PersonnelRelativeStatus;
  * @property-read \Illuminate\Database\Eloquent\Collection<int, Personnel> $relatives
  * @property-read BusinessRelative $stakeholder
  *
- * @method static \Database\Factories\PersonnelFactory<static> factory()
+ * @method static Factories\PersonnelFactory<Personnel> factory()
  */
 class Personnel extends Entity implements Employee, HasCredential, HasProfile
 {
@@ -24,9 +24,7 @@ class Personnel extends Entity implements Employee, HasCredential, HasProfile
     use WithCredential;
     use WithProfile;
 
-    protected $fillable = [
-        'gender',
-    ];
+    protected $fillable = ['gender'];
 
     protected $casts = [
         'gender' => Gender::class,

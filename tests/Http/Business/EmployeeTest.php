@@ -6,7 +6,7 @@ use Creasi\Base\Models\Address;
 use Creasi\Base\Models\Enums\FileUploadType;
 use Creasi\Base\Models\FileUpload;
 use Creasi\Base\Models\Personnel;
-use Creasi\Tests\TestCase;
+use Creasi\Tests\Http\TestCase;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use Laravel\Sanctum\Sanctum;
@@ -17,6 +17,8 @@ use PHPUnit\Framework\Attributes\Test;
 #[Group('employee')]
 class EmployeeTest extends TestCase
 {
+    protected string $apiPath = 'employees';
+
     private array $dataStructure = [
         'id',
         'avatar',
@@ -33,7 +35,7 @@ class EmployeeTest extends TestCase
         Sanctum::actingAs($this->user());
         Personnel::factory(2)->create();
 
-        $response = $this->getJson('base/employees');
+        $response = $this->getJson($this->getRoutePath());
 
         $response->assertOk()->assertJsonStructure([
             'data' => [$this->dataStructure],
@@ -48,7 +50,7 @@ class EmployeeTest extends TestCase
         Sanctum::actingAs($this->user());
         $data = Personnel::factory()->raw();
 
-        $response = $this->postJson('base/employees', $data);
+        $response = $this->postJson($this->getRoutePath(), $data);
 
         $response->assertCreated()->assertJsonStructure([
             'data' => $this->dataStructure,
@@ -63,7 +65,7 @@ class EmployeeTest extends TestCase
 
         $model = Personnel::factory()->createOne();
 
-        $response = $this->getJson("base/employees/{$model->getRouteKey()}");
+        $response = $this->getJson($this->getRoutePath($model));
 
         $response->assertOk()->assertJsonStructure([
             'data' => $this->dataStructure,
@@ -78,7 +80,7 @@ class EmployeeTest extends TestCase
 
         $model = Personnel::factory()->createOne();
 
-        $response = $this->getJson("base/employees/{$model->getRouteKey()}/addresses");
+        $response = $this->getJson($this->getRoutePath($model, 'addresses'));
 
         $response->assertNotFound();
     }
@@ -91,7 +93,7 @@ class EmployeeTest extends TestCase
         $model = Personnel::factory()->createOne();
         $data = Address::factory()->raw();
 
-        $response = $this->postJson("base/employees/{$model->getRouteKey()}/addresses", $data);
+        $response = $this->postJson($this->getRoutePath($model, 'addresses'), $data);
 
         $response->assertCreated();
     }
@@ -105,7 +107,7 @@ class EmployeeTest extends TestCase
 
         $model->addresses()->saveMany(Address::factory(2)->create());
 
-        $response = $this->getJson("base/employees/{$model->getRouteKey()}/addresses");
+        $response = $this->getJson($this->getRoutePath($model, 'addresses'));
 
         $response->assertOk();
     }
@@ -117,7 +119,7 @@ class EmployeeTest extends TestCase
 
         $model = Personnel::factory()->createOne();
 
-        $response = $this->getJson("base/employees/{$model->getRouteKey()}/files");
+        $response = $this->getJson($this->getRoutePath($model, 'files'));
 
         $response->assertNotFound();
     }
@@ -133,7 +135,7 @@ class EmployeeTest extends TestCase
         $data['upload'] = UploadedFile::fake()->create('file.pdf');
         $data['type'] = FileUploadType::Document->value;
 
-        $response = $this->postJson("base/employees/{$model->getRouteKey()}/files", $data);
+        $response = $this->postJson($this->getRoutePath($model, 'files'), $data);
 
         $response->assertCreated();
     }
@@ -145,7 +147,7 @@ class EmployeeTest extends TestCase
 
         $model = Personnel::factory()->withFileUpload(FileUploadType::Document)->createOne();
 
-        $response = $this->getJson("base/employees/{$model->getRouteKey()}/files");
+        $response = $this->getJson($this->getRoutePath($model, 'files'));
 
         $response->assertOk();
     }
@@ -157,7 +159,7 @@ class EmployeeTest extends TestCase
 
         $model = Personnel::factory()->createOne();
 
-        $response = $this->putJson("base/employees/{$model->getRouteKey()}", $model->toArray());
+        $response = $this->putJson($this->getRoutePath($model), $model->toArray());
 
         $response->assertOk()->assertJsonStructure([
             'data' => $this->dataStructure,
@@ -172,7 +174,7 @@ class EmployeeTest extends TestCase
 
         $model = Personnel::factory()->createOne();
 
-        $response = $this->deleteJson("base/employees/{$model->getRouteKey()}");
+        $response = $this->deleteJson($this->getRoutePath($model));
 
         $response->assertNoContent();
     }

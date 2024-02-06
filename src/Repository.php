@@ -2,9 +2,9 @@
 
 namespace Creasi\Base;
 
-use Creasi\Base\Contracts\Company;
-use Creasi\Base\Contracts\Employee;
-use Creasi\Base\Contracts\Stakeholder;
+use Creasi\Base\Models\Contracts\Company;
+use Creasi\Base\Models\Contracts\Employee;
+use Creasi\Base\Models\Contracts\Stakeholder;
 use Creasi\Base\Models\Entity;
 use Creasi\Base\Models\Enums\BusinessRelativeType;
 use Illuminate\Foundation\Auth\User;
@@ -74,7 +74,7 @@ class Repository
         return $this->stakeholders[$this->currentRoutePrefix()];
     }
 
-    private function currentRoutePrefix(string $prefix = null)
+    private function currentRoutePrefix(?string $prefix = null)
     {
         $name = \explode('.', $this->router->currentRouteName())[1];
 

@@ -7,7 +7,7 @@ use Creasi\Base\Models\Business;
 use Creasi\Base\Models\Enums\BusinessRelativeType;
 use Creasi\Base\Models\Enums\FileUploadType;
 use Creasi\Base\Models\FileUpload;
-use Creasi\Tests\TestCase;
+use Creasi\Tests\Http\TestCase;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use Laravel\Sanctum\Sanctum;
@@ -18,6 +18,8 @@ use PHPUnit\Framework\Attributes\Test;
 #[Group('company')]
 class CompanyTest extends TestCase
 {
+    protected string $apiPath = 'companies';
+
     private array $dataStructure = [
         'id',
         'avatar',
@@ -33,7 +35,7 @@ class CompanyTest extends TestCase
     {
         Sanctum::actingAs($this->user());
 
-        $response = $this->getJson('base/companies');
+        $response = $this->getJson($this->getRoutePath());
 
         $response->assertNotFound();
     }
@@ -47,7 +49,7 @@ class CompanyTest extends TestCase
 
         $user->identity->company->addStakeholder(BusinessRelativeType::Subsidiary, $external);
 
-        $response = $this->getJson('base/companies');
+        $response = $this->getJson($this->getRoutePath());
 
         $response->assertOk()->assertJsonStructure([
             'data' => [$this->dataStructure],
@@ -63,7 +65,7 @@ class CompanyTest extends TestCase
 
         $data = Business::factory()->raw();
 
-        $response = $this->postJson('base/companies', $data);
+        $response = $this->postJson($this->getRoutePath(), $data);
 
         $response->assertCreated()->assertJsonStructure([
             'data' => $this->dataStructure,
@@ -78,7 +80,7 @@ class CompanyTest extends TestCase
 
         $model = Business::factory()->createOne();
 
-        $response = $this->getJson("base/companies/{$model->getRouteKey()}");
+        $response = $this->getJson($this->getRoutePath($model));
 
         $response->assertOk()->assertJsonStructure([
             'data' => $this->dataStructure,
@@ -93,7 +95,7 @@ class CompanyTest extends TestCase
 
         $model = Business::factory()->createOne();
 
-        $response = $this->getJson("base/companies/{$model->getRouteKey()}/addresses");
+        $response = $this->getJson($this->getRoutePath($model, 'addresses'));
 
         $response->assertNotFound();
     }
@@ -106,7 +108,7 @@ class CompanyTest extends TestCase
         $data = Address::factory()->raw();
         $model = Business::factory()->createOne();
 
-        $response = $this->postJson("base/companies/{$model->getRouteKey()}/addresses", $data);
+        $response = $this->postJson($this->getRoutePath($model, 'addresses'), $data);
 
         $response->assertCreated();
     }
@@ -118,7 +120,7 @@ class CompanyTest extends TestCase
 
         $model = Business::factory()->withAddress()->createOne();
 
-        $response = $this->getJson("base/companies/{$model->getRouteKey()}/addresses");
+        $response = $this->getJson($this->getRoutePath($model, 'addresses'));
 
         $response->assertOk();
     }
@@ -130,7 +132,7 @@ class CompanyTest extends TestCase
 
         $model = Business::factory()->createOne();
 
-        $response = $this->getJson("base/companies/{$model->getRouteKey()}/files");
+        $response = $this->getJson($this->getRoutePath($model, 'files'));
 
         $response->assertNotFound();
     }
@@ -146,7 +148,7 @@ class CompanyTest extends TestCase
         $data['upload'] = UploadedFile::fake()->create('file.pdf');
         $data['type'] = FileUploadType::Document->value;
 
-        $response = $this->postJson("base/companies/{$model->getRouteKey()}/files", $data);
+        $response = $this->postJson($this->getRoutePath($model, 'files'), $data);
 
         $response->assertCreated();
     }
@@ -158,7 +160,7 @@ class CompanyTest extends TestCase
 
         $model = Business::factory()->withFileUpload(FileUploadType::Document)->createOne();
 
-        $response = $this->getJson("base/companies/{$model->getRouteKey()}/files");
+        $response = $this->getJson($this->getRoutePath($model, 'files'));
 
         $response->assertOk();
     }
@@ -170,7 +172,7 @@ class CompanyTest extends TestCase
 
         $model = Business::factory()->createOne();
 
-        $response = $this->putJson("base/companies/{$model->getRouteKey()}", $model->toArray());
+        $response = $this->putJson($this->getRoutePath($model), $model->toArray());
 
         $response->assertOk()->assertJsonStructure([
             'data' => $this->dataStructure,
@@ -185,7 +187,7 @@ class CompanyTest extends TestCase
 
         $model = Business::factory()->createOne();
 
-        $response = $this->deleteJson("base/companies/{$model->getRouteKey()}");
+        $response = $this->deleteJson($this->getRoutePath($model));
 
         $response->assertNoContent();
     }

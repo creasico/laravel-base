@@ -1,6 +1,6 @@
 <?php
 
-namespace Creasi\Base\Models\Concerns\Factories;
+namespace Creasi\Base\Models\Factories\Concerns;
 
 use Creasi\Base\Models\Personnel;
 
@@ -9,7 +9,7 @@ use Creasi\Base\Models\Personnel;
  */
 trait WithIdentity
 {
-    public function withIdentity(\Closure $cb = null): static
+    public function withIdentity(?\Closure $cb = null): static
     {
         if ($cb === null) {
             $cb = fn ($identity) => $identity->withProfile();

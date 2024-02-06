@@ -2,8 +2,8 @@
 
 namespace Creasi\Base\Models\Concerns;
 
-use Creasi\Base\Contracts\Company;
 use Creasi\Base\Models\BusinessRelative;
+use Creasi\Base\Models\Contracts\Company;
 use Creasi\Base\Models\Employment;
 use Creasi\Base\Models\Entity;
 use Creasi\Base\Models\Enums\BusinessRelativeType;
@@ -69,7 +69,7 @@ trait AsCompany
             ? $this->morphedByMany($relative, 'stakeholder', 'business_relatives', 'business_id')
             : $this->morphToMany(static::class, 'stakeholder', 'business_relatives', null, 'business_id');
 
-        return $relation->using(BusinessRelative::class)->withPivot('type', 'is_internal', 'code');
+        return $relation->using(BusinessRelative::class)->withPivot('type', 'code');
     }
 
     public function companyRelatives()
@@ -93,11 +93,9 @@ trait AsCompany
     public function addStakeholder(
         BusinessRelativeType $type,
         Entity $stakeholder,
-        bool $internal = null,
     ): static {
         $this->relatives(\get_class($stakeholder))->attach($stakeholder, [
             'type' => $type,
-            'is_internal' => $internal ?? $type->isInternal(),
         ]);
 
         return $this->fresh();

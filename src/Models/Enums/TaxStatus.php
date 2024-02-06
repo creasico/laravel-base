@@ -2,6 +2,8 @@
 
 namespace Creasi\Base\Models\Enums;
 
+use Creasi\Base\Support\Enums\KeyableEnum;
+
 enum TaxStatus: int
 {
     use KeyableEnum;

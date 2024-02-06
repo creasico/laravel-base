@@ -2,10 +2,10 @@
 
 namespace Creasi\Base\Models;
 
-use Creasi\Base\Contracts\HasFileUploads;
-use Creasi\Base\Contracts\Stakeholder;
 use Creasi\Base\Models\Concerns\WithAvatar;
 use Creasi\Base\Models\Concerns\WithFileUploads;
+use Creasi\Base\Models\Contracts\HasFileUploads;
+use Creasi\Base\Models\Contracts\Stakeholder;
 use Creasi\Nusa\Contracts\HasAddresses;
 use Creasi\Nusa\Models\Concerns\WithAddresses;
 

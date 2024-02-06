@@ -2,7 +2,6 @@
 
 namespace Creasi\Tests\Http;
 
-use Creasi\Tests\TestCase;
 use Laravel\Sanctum\Sanctum;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Test;
@@ -12,6 +11,8 @@ use PHPUnit\Framework\Attributes\Test;
 #[Group('profile')]
 class ProfileTest extends TestCase
 {
+    protected string $apiPath = 'profile';
+
     private array $responseStructure = [
         'data' => [
             'avatar',
@@ -46,7 +47,7 @@ class ProfileTest extends TestCase
     {
         Sanctum::actingAs($this->user());
 
-        $response = $this->getJson('base/profile');
+        $response = $this->getJson($this->getRoutePath());
 
         $response->assertOk()->assertJsonStructure($this->responseStructure);
     }
@@ -58,7 +59,7 @@ class ProfileTest extends TestCase
 
         $user->load('identity.profile');
 
-        $response = $this->putJson('base/profile', [
+        $response = $this->putJson($this->getRoutePath(), [
             'fullname' => $user->identity->name,
             'nickname' => $user->identity->alias,
             'phone' => $user->identity->phone,

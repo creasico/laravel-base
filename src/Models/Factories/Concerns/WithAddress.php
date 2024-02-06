@@ -1,6 +1,6 @@
 <?php
 
-namespace Creasi\Base\Models\Concerns\Factories;
+namespace Creasi\Base\Models\Factories\Concerns;
 
 use Creasi\Base\Models\Address;
 

@@ -40,7 +40,7 @@ class AddressController extends Controller
     /**
      * @return \Illuminate\Http\Response
      */
-    public function show(Address $model, Request $request, int $address = null)
+    public function show(Address $model, Request $request, ?int $address = null)
     {
         $address = $model->exists ? $model : $model->newQuery()->findOrFail($address);
 
@@ -50,7 +50,7 @@ class AddressController extends Controller
     /**
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateRequest $request, Address $model, int $address = null)
+    public function update(UpdateRequest $request, Address $model, ?int $address = null)
     {
         $request->fulfill(
             $address = $model->newQuery()->findOrFail($address)
@@ -62,7 +62,7 @@ class AddressController extends Controller
     /**
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Address $model, int $address = null)
+    public function destroy(Address $model, ?int $address = null)
     {
         $address = $model->newQuery()->findOrFail($address);
 

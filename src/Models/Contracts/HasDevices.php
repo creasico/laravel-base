@@ -1,6 +1,6 @@
 <?php
 
-namespace Creasi\Base\Contracts;
+namespace Creasi\Base\Models\Contracts;
 
 /**
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \Creasi\Base\Models\UserDevice> $devices

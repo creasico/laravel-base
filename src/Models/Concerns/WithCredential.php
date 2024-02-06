@@ -16,9 +16,7 @@ trait WithCredential
             'user_id' => 'int',
         ]);
 
-        $this->mergeFillable([
-            'user_id',
-        ]);
+        $this->mergeFillable(['user_id']);
     }
 
     /**

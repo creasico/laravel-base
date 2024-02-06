@@ -1,6 +1,6 @@
 <?php
 
-namespace Creasi\Base\Contracts;
+namespace Creasi\Base\Models\Contracts;
 
 /**
  * @property null|\Creasi\Base\Models\Enums\TaxStatus $tax_status

@@ -18,10 +18,7 @@ class FileAttached extends MorphPivot
 
     public $timestamps = false;
 
-    protected $fillable = [
-        'type',
-        'file_upload_id',
-    ];
+    protected $fillable = ['type', 'file_upload_id'];
 
     protected $casts = [
         'attachable_id' => 'int',

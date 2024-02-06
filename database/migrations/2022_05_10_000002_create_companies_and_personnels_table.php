@@ -31,7 +31,6 @@ return new class extends Migration
             $table->foreignId('business_id')->constrained()->cascadeOnDelete();
             $table->nullableMorphs('stakeholder');
 
-            $table->boolean('is_internal')->default(false);
             $table->string('code')->unique()->nullable();
             $table->unsignedSmallInteger('type')->nullable();
         });

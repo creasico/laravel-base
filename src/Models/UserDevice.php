@@ -10,17 +10,15 @@ use Illuminate\Database\Eloquent\Model as EloquentModel;
  */
 class UserDevice extends EloquentModel
 {
-    protected $fillable = [
-        'token',
-    ];
+    protected $fillable = ['token'];
 
     public $timestamps = false;
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\MorphTo|Personnel
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo|\App\Models\User
      */
     public function user()
     {
-        return $this->belongsTo('\App\Models\User');
+        return $this->belongsTo(app('creasi.base.user_model'));
     }
 }

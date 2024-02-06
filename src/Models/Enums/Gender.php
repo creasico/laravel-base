@@ -2,6 +2,7 @@
 
 namespace Creasi\Base\Models\Enums;
 
+use Creasi\Base\Support\Enums\KeyableEnum;
 use Faker\Provider\Person;
 
 /**

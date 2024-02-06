@@ -2,9 +2,9 @@
 
 namespace Creasi\Base\Models;
 
-use Creasi\Base\Contracts\HasIdentity;
-use Creasi\Base\Contracts\HasTaxInfo;
 use Creasi\Base\Models\Concerns\WithTaxInfo;
+use Creasi\Base\Models\Contracts\HasIdentity;
+use Creasi\Base\Models\Contracts\HasTaxInfo;
 use Creasi\Base\Models\Enums\Education;
 use Creasi\Base\Models\Enums\Religion;
 use Creasi\Nusa\Models\Concerns\WithRegency;
@@ -21,7 +21,7 @@ use Creasi\Nusa\Models\Regency;
  * @property null|string $summary
  * @property-read null|Regency $birthPlace
  *
- * @method static \Database\Factories\ProfileFactory<static> factory()
+ * @method static Factories\ProfileFactory<Profile> factory()
  */
 class Profile extends Model implements HasIdentity, HasTaxInfo
 {

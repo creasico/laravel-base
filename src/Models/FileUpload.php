@@ -26,7 +26,7 @@ use Illuminate\Support\Str;
  * @property-read \Illuminate\Database\Eloquent\Collection<int, Personnel> $ownedByPersonnels
  *
  * @method static static store(string|UploadedFile $path, string $name, ?string $title = null, ?string $summary = null, ?string $disk = null)
- * @method static \Database\Factories\FileUploadFactory<static> factory()
+ * @method static Factories\FileUploadFactory<FileUpload> factory()
  */
 class FileUpload extends Model
 {
@@ -123,9 +123,9 @@ class FileUpload extends Model
         Builder $query,
         string|UploadedFile $path,
         string $name,
-        string $title = null,
-        string $summary = null,
-        string $disk = null
+        ?string $title = null,
+        ?string $summary = null,
+        ?string $disk = null
     ): static {
         $name = Str::slug($name);
 
@@ -146,7 +146,7 @@ class FileUpload extends Model
         return $instance;
     }
 
-    public function createRevision(string|UploadedFile $path, string $summary = null): static
+    public function createRevision(string|UploadedFile $path, ?string $summary = null): static
     {
         $revision = static::store($path, $this->name, $this->title, $summary, $this->disk);
 

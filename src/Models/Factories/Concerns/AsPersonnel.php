@@ -1,6 +1,6 @@
 <?php
 
-namespace Creasi\Base\Models\Concerns\Factories;
+namespace Creasi\Base\Models\Factories\Concerns;
 
 use Creasi\Base\Models\Business;
 use Creasi\Base\Models\Enums;
@@ -12,7 +12,7 @@ use DateTimeInterface;
  */
 trait AsPersonnel
 {
-    public function withProfile(Enums\Gender $gender = null): static
+    public function withProfile(?Enums\Gender $gender = null): static
     {
         $gender = $gender ?: \fake()->randomElement(Enums\Gender::cases());
 
@@ -25,10 +25,10 @@ trait AsPersonnel
     }
 
     public function withCompany(
-        bool $primary = null,
-        Enums\EmploymentType $type = null,
-        Enums\EmploymentStatus $status = null,
-        false|DateTimeInterface $startDate = null,
+        ?bool $primary = null,
+        ?Enums\EmploymentType $type = null,
+        ?Enums\EmploymentStatus $status = null,
+        false|DateTimeInterface|null $startDate = null,
     ): static {
         if ($startDate === null) {
             $startDate = \fake()->dateTime();

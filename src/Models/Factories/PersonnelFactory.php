@@ -2,7 +2,6 @@
 
 namespace Creasi\Base\Models\Factories;
 
-use Creasi\Base\Models\Concerns\Factories;
 use Creasi\Base\Models\Enums\Gender;
 use Creasi\Base\Models\Personnel;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -12,9 +11,9 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  */
 class PersonnelFactory extends Factory
 {
-    use Factories\AsPersonnel;
-    use Factories\WithAddress;
-    use Factories\WithFileUpload;
+    use Concerns\AsPersonnel;
+    use Concerns\WithAddress;
+    use Concerns\WithFileUpload;
 
     protected $model = Personnel::class;
 

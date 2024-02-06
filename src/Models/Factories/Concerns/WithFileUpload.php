@@ -1,6 +1,6 @@
 <?php
 
-namespace Creasi\Base\Models\Concerns\Factories;
+namespace Creasi\Base\Models\Factories\Concerns;
 
 use Creasi\Base\Models\Enums\FileUploadType;
 use Creasi\Base\Models\FileUpload;
@@ -10,7 +10,7 @@ use Creasi\Base\Models\FileUpload;
  */
 trait WithFileUpload
 {
-    public function withFileUpload(FileUploadType $type = null): static
+    public function withFileUpload(?FileUploadType $type = null): static
     {
         return $this->hasAttached(FileUpload::factory(), [
             'type' => $type ?? \fake()->randomElement(FileUploadType::cases()),

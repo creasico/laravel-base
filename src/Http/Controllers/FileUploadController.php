@@ -40,7 +40,7 @@ class FileUploadController extends Controller
     /**
      * @return \Illuminate\Http\Response
      */
-    public function show(FileUpload $model, Request $request, string $file = null)
+    public function show(FileUpload $model, Request $request, ?string $file = null)
     {
         $file = $model->exists ? $model : $model->newQuery()->findOrFail($file);
 
@@ -50,7 +50,7 @@ class FileUploadController extends Controller
     /**
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateRequest $request, FileUpload $model, string $file = null)
+    public function update(UpdateRequest $request, FileUpload $model, ?string $file = null)
     {
         $request->fulfill(
             $file = $model->newQuery()->findOrFail($file)
@@ -62,7 +62,7 @@ class FileUploadController extends Controller
     /**
      * @return \Illuminate\Http\Response
      */
-    public function destroy(FileUpload $model, string $file = null)
+    public function destroy(FileUpload $model, ?string $file = null)
     {
         $file = $model->newQuery()->findOrFail($file);
 

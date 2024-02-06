@@ -2,6 +2,8 @@
 
 namespace Creasi\Base\Models\Enums;
 
+use Creasi\Base\Support\Enums\KeyableEnum;
+
 /**
  * Only binary-type genders are supported here.
  */

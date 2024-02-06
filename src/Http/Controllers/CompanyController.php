@@ -2,11 +2,11 @@
 
 namespace Creasi\Base\Http\Controllers;
 
-use Creasi\Base\Contracts\Company;
 use Creasi\Base\Http\Requests\Company\StoreRequest;
 use Creasi\Base\Http\Requests\Company\UpdateRequest;
 use Creasi\Base\Http\Resources\Company\CompanyCollection;
 use Creasi\Base\Http\Resources\Company\CompanyResource;
+use Creasi\Base\Models\Contracts\Company;
 use Illuminate\Http\Request;
 
 class CompanyController extends Controller

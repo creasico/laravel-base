@@ -3,7 +3,6 @@
 namespace Creasi\Base\Models\Factories;
 
 use Creasi\Base\Models\Business;
-use Creasi\Base\Models\Concerns\Factories;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -11,8 +10,8 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  */
 class BusinessFactory extends Factory
 {
-    use Factories\WithAddress;
-    use Factories\WithFileUpload;
+    use Concerns\WithAddress;
+    use Concerns\WithFileUpload;
 
     protected $model = Business::class;
 

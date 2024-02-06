@@ -15,19 +15,14 @@ use Illuminate\Support\Str;
  * @property null|string $rw
  * @property null|string $summary
  *
- * @method static \Database\Factories\AddressFactory<static> factory()
+ * @method static Factories\AddressFactory<Address> factory()
  */
 class Address extends NusaAddress
 {
     use HasFactory;
     use SoftDeletes;
 
-    protected $fillable = [
-        'type',
-        'rt',
-        'rw',
-        'summary',
-    ];
+    protected $fillable = ['type', 'rt', 'rw', 'summary'];
 
     protected $casts = [];
 

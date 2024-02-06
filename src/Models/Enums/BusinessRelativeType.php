@@ -2,6 +2,8 @@
 
 namespace Creasi\Base\Models\Enums;
 
+use Creasi\Base\Support\Enums\KeyableEnum;
+
 /**
  * Typically a stakeholder that has some interests in the company.
  */

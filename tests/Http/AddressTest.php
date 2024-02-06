@@ -3,7 +3,6 @@
 namespace Creasi\Tests\Http;
 
 use Creasi\Base\Models\Address;
-use Creasi\Tests\TestCase;
 use Laravel\Sanctum\Sanctum;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Test;
@@ -12,6 +11,8 @@ use PHPUnit\Framework\Attributes\Test;
 #[Group('address')]
 class AddressTest extends TestCase
 {
+    protected string $apiPath = 'addresses';
+
     private array $dataStructure = [
         'id',
         'type',
@@ -31,7 +32,7 @@ class AddressTest extends TestCase
     {
         Sanctum::actingAs($this->user());
 
-        $response = $this->getJson('base/addresses');
+        $response = $this->getJson($this->getRoutePath());
 
         $response->assertNotFound();
     }
@@ -44,7 +45,7 @@ class AddressTest extends TestCase
         $model = Address::factory()->createOne();
         $user->identity->addresses()->save($model);
 
-        $response = $this->getJson('base/addresses');
+        $response = $this->getJson($this->getRoutePath());
 
         $response->assertOk()->assertJsonStructure([
             'data' => [$this->dataStructure],
@@ -60,7 +61,7 @@ class AddressTest extends TestCase
 
         $data = Address::factory()->raw();
 
-        $response = $this->postJson('base/addresses', $data);
+        $response = $this->postJson($this->getRoutePath(), $data);
 
         $response->assertCreated()->assertJsonStructure([
             'data' => $this->dataStructure,
@@ -76,7 +77,7 @@ class AddressTest extends TestCase
         $model = Address::factory()->createOne();
         $user->identity->addresses()->save($model);
 
-        $response = $this->getJson("base/addresses/{$model->getRouteKey()}");
+        $response = $this->getJson($this->getRoutePath($model));
 
         $response->assertOk()->assertJsonStructure([
             'data' => $this->dataStructure,
@@ -91,7 +92,7 @@ class AddressTest extends TestCase
 
         $model = Address::factory()->createOne();
 
-        $response = $this->putJson("base/addresses/{$model->getRouteKey()}", $model->toArray());
+        $response = $this->putJson($this->getRoutePath($model), $model->toArray());
 
         $response->assertOk()->assertJsonStructure([
             'data' => $this->dataStructure,
@@ -107,7 +108,7 @@ class AddressTest extends TestCase
         $model = Address::factory()->createOne();
         $user->identity->addresses()->save($model);
 
-        $response = $this->deleteJson("base/addresses/{$model->getRouteKey()}");
+        $response = $this->deleteJson($this->getRoutePath($model));
 
         $response->assertNoContent();
     }

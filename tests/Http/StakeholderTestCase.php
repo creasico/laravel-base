@@ -5,7 +5,6 @@ namespace Creasi\Tests\Http;
 use Creasi\Base\Models\Business;
 use Creasi\Base\Models\Enums\BusinessRelativeType;
 use Creasi\Base\Models\Personnel;
-use Creasi\Tests\TestCase;
 use Illuminate\Contracts\Routing\UrlRoutable;
 use Laravel\Sanctum\Sanctum;
 use PHPUnit\Framework\Attributes\Group;
@@ -29,12 +28,7 @@ abstract class StakeholderTestCase extends TestCase
     {
         $route = $this->getRelativeType()->key()->plural();
 
-        $suffixs = \array_map(
-            fn ($suffix) => $suffix instanceof UrlRoutable ? $suffix->getRouteKey() : $suffix,
-            $suffixs
-        );
-
-        return \implode('/', \array_filter(['base', (string) $route, ...$suffixs]));
+        return parent::getRoutePath((string) $route, ...$suffixs);
     }
 
     #[Test]

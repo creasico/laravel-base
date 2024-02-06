@@ -1,6 +1,6 @@
 <?php
 
-namespace Creasi\Base\Contracts;
+namespace Creasi\Base\Models\Contracts;
 
 /**
  * @mixin \Creasi\Base\Models\Entity

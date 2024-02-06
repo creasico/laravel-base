@@ -2,7 +2,6 @@
 
 namespace Creasi\Tests\Http;
 
-use Creasi\Tests\TestCase;
 use Laravel\Sanctum\Sanctum;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Test;
@@ -12,12 +11,14 @@ use PHPUnit\Framework\Attributes\Test;
 #[Group('setting')]
 class SettingTest extends TestCase
 {
+    protected string $apiPath = 'setting';
+
     #[Test]
     public function should_able_to_retrieve_setting_data(): void
     {
         Sanctum::actingAs($this->user());
 
-        $response = $this->getJson('base/setting');
+        $response = $this->getJson($this->getRoutePath());
 
         $response->assertOk();
     }
@@ -27,7 +28,7 @@ class SettingTest extends TestCase
     {
         Sanctum::actingAs($this->user());
 
-        $response = $this->putJson('base/setting');
+        $response = $this->putJson($this->getRoutePath());
 
         $response->assertOk();
     }

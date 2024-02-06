@@ -1,6 +1,6 @@
 <?php
 
-namespace Creasi\Base\Contracts;
+namespace Creasi\Base\Models\Contracts;
 
 use Creasi\Base\Models\Entity;
 use Creasi\Base\Models\Enums\BusinessRelativeType;
@@ -36,7 +36,6 @@ interface Company extends Stakeholder
 
     public function addStakeholder(
         BusinessRelativeType $type,
-        Entity $stakeholder,
-        bool $internal = null,
+        Entity $stakeholder
     ): static;
 }

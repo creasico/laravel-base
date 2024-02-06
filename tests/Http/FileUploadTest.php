@@ -4,7 +4,6 @@ namespace Creasi\Tests\Http;
 
 use Creasi\Base\Models\Enums\FileUploadType;
 use Creasi\Base\Models\FileUpload;
-use Creasi\Tests\TestCase;
 use Illuminate\Http\UploadedFile;
 use Laravel\Sanctum\Sanctum;
 use PHPUnit\Framework\Attributes\Group;
@@ -14,12 +13,14 @@ use PHPUnit\Framework\Attributes\Test;
 #[Group('fileUpload')]
 class FileUploadTest extends TestCase
 {
+    protected string $apiPath = 'files';
+
     #[Test]
     public function should_receive_404_when_no_data_available(): void
     {
         Sanctum::actingAs($this->user());
 
-        $response = $this->getJson('base/files');
+        $response = $this->getJson($this->getRoutePath());
 
         $response->assertNotFound();
     }
@@ -31,7 +32,7 @@ class FileUploadTest extends TestCase
 
         $user->identity->storeFile(FileUploadType::Document, '/doc/file.pdf', 'document');
 
-        $response = $this->getJson('base/files');
+        $response = $this->getJson($this->getRoutePath());
 
         $response->assertOk();
     }
@@ -45,7 +46,7 @@ class FileUploadTest extends TestCase
         $data['upload'] = UploadedFile::fake()->create('file.pdf');
         $data['type'] = FileUploadType::Document->value;
 
-        $response = $this->postJson('base/files', $data);
+        $response = $this->postJson($this->getRoutePath(), $data);
 
         $response->assertCreated();
     }
@@ -57,7 +58,7 @@ class FileUploadTest extends TestCase
 
         $model = $user->identity->storeFile(FileUploadType::Document, '/doc/file.pdf', 'document');
 
-        $response = $this->getJson("base/files/{$model->getRouteKey()}");
+        $response = $this->getJson($this->getRoutePath($model));
 
         $response->assertOk();
     }
@@ -69,7 +70,7 @@ class FileUploadTest extends TestCase
 
         $model = FileUpload::factory()->createOne();
 
-        $response = $this->putJson("base/files/{$model->getRouteKey()}", $model->toArray());
+        $response = $this->putJson($this->getRoutePath($model), $model->toArray());
 
         $response->assertOk();
     }
@@ -81,7 +82,7 @@ class FileUploadTest extends TestCase
 
         $model = $user->identity->storeFile(FileUploadType::Document, '/doc/file.pdf', 'document');
 
-        $response = $this->deleteJson("base/files/{$model->getRouteKey()}");
+        $response = $this->deleteJson($this->getRoutePath($model));
 
         $response->assertNoContent();
     }

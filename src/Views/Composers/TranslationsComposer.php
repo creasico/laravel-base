@@ -1,6 +1,6 @@
 <?php
 
-namespace Creasi\Base\View\Composers;
+namespace Creasi\Base\Views\Composers;
 
 use Illuminate\Contracts\Translation\Loader;
 use Illuminate\Support\Facades\File;

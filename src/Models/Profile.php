@@ -3,7 +3,6 @@
 namespace Creasi\Base\Models;
 
 use Creasi\Base\Models\Concerns\WithTaxInfo;
-use Creasi\Base\Models\Contracts\HasIdentity;
 use Creasi\Base\Models\Contracts\HasTaxInfo;
 use Creasi\Base\Models\Enums\Education;
 use Creasi\Base\Models\Enums\Religion;
@@ -23,7 +22,7 @@ use Creasi\Nusa\Models\Regency;
  *
  * @method static Factories\ProfileFactory<Profile> factory()
  */
-class Profile extends Model implements HasIdentity, HasTaxInfo
+class Profile extends Model implements HasTaxInfo
 {
     use WithRegency {
         regency as birthPlace;

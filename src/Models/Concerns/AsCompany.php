@@ -8,6 +8,9 @@ use Creasi\Base\Models\Employment;
 use Creasi\Base\Models\Entity;
 use Creasi\Base\Models\Enums\BusinessRelativeType;
 use Creasi\Base\Models\Personnel;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\MorphToMany;
 
 /**
  * @property-read \Illuminate\Database\Eloquent\Collection<int, BusinessRelative> $owners
@@ -16,11 +19,11 @@ use Creasi\Base\Models\Personnel;
  * @property-read \Illuminate\Database\Eloquent\Collection<int, BusinessRelative> $suppliers
  * @property-read \Illuminate\Database\Eloquent\Collection<int, BusinessRelative> $vendors
  *
- * @method \Illuminate\Database\Eloquent\Relations\HasMany|BusinessRelative owners()
- * @method \Illuminate\Database\Eloquent\Relations\HasMany|BusinessRelative subsidiaries()
- * @method \Illuminate\Database\Eloquent\Relations\HasMany|BusinessRelative customers()
- * @method \Illuminate\Database\Eloquent\Relations\HasMany|BusinessRelative suppliers()
- * @method \Illuminate\Database\Eloquent\Relations\HasMany|BusinessRelative vendors()
+ * @method HasMany|BusinessRelative owners()
+ * @method HasMany|BusinessRelative subsidiaries()
+ * @method HasMany|BusinessRelative customers()
+ * @method HasMany|BusinessRelative suppliers()
+ * @method HasMany|BusinessRelative vendors()
  *
  * @mixin Company
  */
@@ -50,9 +53,9 @@ trait AsCompany
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany|Personnel
+     * {@inheritdoc}
      */
-    public function employees()
+    public function employees(): BelongsToMany
     {
         return $this->belongsToMany(Personnel::class, 'employments', 'employer_id', 'employee_id')
             ->withPivot('is_primary', 'type', 'status', 'start_date', 'finish_date')
@@ -61,9 +64,9 @@ trait AsCompany
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\MorphToMany|BusinessRelative
+     * {@inheritdoc}
      */
-    protected function relatives(string $relative, bool $forward = true)
+    protected function relatives(string $relative, bool $forward = true): MorphToMany
     {
         $relation = $forward
             ? $this->morphedByMany($relative, 'stakeholder', 'business_relatives', 'business_id')
@@ -72,28 +75,35 @@ trait AsCompany
         return $relation->using(BusinessRelative::class)->withPivot('type', 'code');
     }
 
-    public function companyRelatives()
+    /**
+     * {@inheritdoc}
+     */
+    public function companyRelatives(): MorphToMany
     {
         return $this->relatives(static::class)->as('stakeholder');
     }
 
-    public function individualRelatives()
+    /**
+     * {@inheritdoc}
+     */
+    public function individualRelatives(): MorphToMany
     {
         return $this->relatives(Personnel::class)->as('stakeholder');
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany|BusinessRelative
+     * {@inheritdoc}
      */
-    public function stakeholders()
+    public function stakeholders(): HasMany
     {
         return $this->hasMany(BusinessRelative::class);
     }
 
-    public function addStakeholder(
-        BusinessRelativeType $type,
-        Entity $stakeholder,
-    ): static {
+    /**
+     * {@inheritdoc}
+     */
+    public function addStakeholder(BusinessRelativeType $type, Entity $stakeholder): static
+    {
         $this->relatives(\get_class($stakeholder))->attach($stakeholder, [
             'type' => $type,
         ]);

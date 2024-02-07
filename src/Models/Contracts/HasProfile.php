@@ -2,6 +2,8 @@
 
 namespace Creasi\Base\Models\Contracts;
 
+use Illuminate\Database\Eloquent\Relations\MorphOne;
+
 /**
  * @property-read null|\Creasi\Base\Models\Profile $profile
  *
@@ -10,7 +12,7 @@ namespace Creasi\Base\Models\Contracts;
 interface HasProfile
 {
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\MorphOne|HasIdentity
+     * @return MorphOne|HasIdentity
      */
-    public function profile();
+    public function profile(): MorphOne;
 }

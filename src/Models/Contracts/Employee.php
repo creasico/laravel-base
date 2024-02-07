@@ -2,6 +2,8 @@
 
 namespace Creasi\Base\Models\Contracts;
 
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+
 /**
  * @property null|\Creasi\Base\Models\Enums\Gender $gender
  * @property-read \Creasi\Base\Models\Employment $employment
@@ -11,7 +13,12 @@ namespace Creasi\Base\Models\Contracts;
 interface Employee extends Stakeholder
 {
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany|Company
+     * @return BelongsToMany|Company
      */
-    public function employers();
+    public function employers(): BelongsToMany;
+
+    /**
+     * @return BelongsToMany|Company
+     */
+    public function primaryCompany(): BelongsToMany;
 }

@@ -3,6 +3,7 @@
 namespace Creasi\Base\Models\Concerns;
 
 use Creasi\Base\Models\Personnel;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 /**
  * @mixin \Creasi\Base\Contracts\HasIdentity
@@ -10,9 +11,9 @@ use Creasi\Base\Models\Personnel;
 trait WithIdentity
 {
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasOne|Personnel
+     * {@inheritdoc}
      */
-    public function identity()
+    public function identity(): HasOne
     {
         return $this->hasOne(Personnel::class);
     }

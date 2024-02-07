@@ -3,9 +3,7 @@
 namespace Creasi\Base;
 
 use Creasi\Base\Models\Address;
-use Creasi\Base\Models\Contracts\Company;
-use Creasi\Base\Models\Contracts\Employee;
-use Creasi\Base\Models\Contracts\Stakeholder;
+use Creasi\Base\Models\Contracts;
 use Creasi\Base\Models\Entity;
 use Creasi\Base\Models\Enums\BusinessRelativeType;
 use Creasi\Base\View\Composers\TranslationsComposer;
@@ -121,19 +119,19 @@ class ServiceProvider extends IlluminateServiceProvider
             return $app->call([$repo, 'resolveEntity']);
         });
 
-        $this->app->bind(Company::class, function ($app) {
+        $this->app->bind(Contracts\Company::class, function ($app) {
             $repo = $app->make(Repository::class);
 
             return $app->call([$repo, 'resolveEmployer']);
         });
 
-        $this->app->bind(Employee::class, function ($app) {
+        $this->app->bind(Contracts\Employee::class, function ($app) {
             $repo = $app->make(Repository::class);
 
             return $app->call([$repo, 'resolveEmployee']);
         });
 
-        $this->app->bind(Stakeholder::class, function ($app) {
+        $this->app->bind(Contracts\Stakeholder::class, function ($app) {
             $repo = $app->make(Repository::class);
 
             return $app->call([$repo, 'resolveStakeholder']);

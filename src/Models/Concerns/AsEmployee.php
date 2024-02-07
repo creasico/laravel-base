@@ -5,6 +5,7 @@ namespace Creasi\Base\Models\Concerns;
 use Creasi\Base\Models\Business;
 use Creasi\Base\Models\Employment;
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 /**
  * @mixin \Creasi\Base\Contracts\Employee
@@ -18,13 +19,13 @@ trait AsEmployee
     {
         $this->append('company');
 
-        $this->makeHidden('primaryEmployer');
+        $this->makeHidden('primaryCompany');
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany|Business
+     * {@inheritdoc}
      */
-    public function employers()
+    public function employers(): BelongsToMany
     {
         return $this->belongsToMany(Business::class, 'employments', 'employee_id', 'employer_id')
             ->withPivot('is_primary', 'type', 'status', 'start_date', 'finish_date')
@@ -32,14 +33,20 @@ trait AsEmployee
             ->as('employment');
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function company(): Attribute
     {
-        $this->loadMissing('primaryEmployer');
+        $this->loadMissing('primaryCompany');
 
-        return Attribute::get(fn () => $this->primaryEmployer?->first());
+        return Attribute::get(fn () => $this->primaryCompany?->first());
     }
 
-    public function primaryEmployer()
+    /**
+     * {@inheritdoc}
+     */
+    public function primaryCompany(): BelongsToMany
     {
         return $this->employers()->wherePivot('is_primary', '=', true);
     }

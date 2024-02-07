@@ -2,12 +2,17 @@
 
 namespace Creasi\Base\Models\Contracts;
 
+use Illuminate\Database\Eloquent\Relations\HasOne;
+
 /**
- * @property-read null|\Creasi\Base\Models\Personnel $identity
+ * @property-read null|\Creasi\Base\Models\Contracts\Employee $identity
  *
  * @mixin \Illuminate\Database\Eloquent\Model
  */
 interface HasIdentity
 {
-    public function identity();
+    /**
+     * @return HasOne|\Creasi\Base\Models\Contracts\Employee
+     */
+    public function identity(): HasOne;
 }

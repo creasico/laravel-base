@@ -2,6 +2,8 @@
 
 namespace Creasi\Base\Models\Contracts;
 
+use Illuminate\Database\Eloquent\Relations\HasMany;
+
 /**
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \Creasi\Base\Models\UserDevice> $devices
  *
@@ -10,9 +12,9 @@ namespace Creasi\Base\Models\Contracts;
 interface HasDevices
 {
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return HasMany|\Creasi\Base\Models\UserDevice
      */
-    public function devices();
+    public function devices(): HasMany;
 
     /**
      * @return string[]

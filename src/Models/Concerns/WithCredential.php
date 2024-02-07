@@ -2,6 +2,8 @@
 
 namespace Creasi\Base\Models\Concerns;
 
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+
 /**
  * @mixin \Creasi\Base\Contracts\HasCredential
  */
@@ -20,9 +22,9 @@ trait WithCredential
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo|\Creasi\Base\Models\User
+     * {@inheritdoc}
      */
-    public function user()
+    public function user(): BelongsTo
     {
         return $this->belongsTo(app('creasi.base.user_model'));
     }

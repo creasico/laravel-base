@@ -4,19 +4,20 @@ namespace Creasi\Base\Models\Contracts;
 
 use Creasi\Base\Models\Enums\FileUploadType;
 use Creasi\Base\Models\FileUpload;
+use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Http\UploadedFile;
 
 /**
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \Creasi\Base\Models\FileUpload> $files
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, FileUpload> $files
  *
  * @mixin \Illuminate\Database\Eloquent\Model
  */
 interface HasFileUploads
 {
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\MorphToMany
+     * @return MorphToMany|FileUpload
      */
-    public function files();
+    public function files(): MorphToMany;
 
     public function storeFile(
         FileUploadType $type,

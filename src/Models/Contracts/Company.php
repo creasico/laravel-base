@@ -4,6 +4,9 @@ namespace Creasi\Base\Models\Contracts;
 
 use Creasi\Base\Models\Entity;
 use Creasi\Base\Models\Enums\BusinessRelativeType;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\MorphToMany;
 
 /**
  * @property-read \Creasi\Base\Models\Employment $employment
@@ -15,27 +18,24 @@ use Creasi\Base\Models\Enums\BusinessRelativeType;
 interface Company extends Stakeholder
 {
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany|Employee
+     * @return BelongsToMany|Employee
      */
-    public function employees();
+    public function employees(): BelongsToMany;
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\MorphToMany|BusinessRelative
+     * @return MorphToMany|BusinessRelative
      */
-    public function companyRelatives();
+    public function companyRelatives(): MorphToMany;
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\MorphToMany|BusinessRelative
+     * @return MorphToMany|BusinessRelative
      */
-    public function individualRelatives();
+    public function individualRelatives(): MorphToMany;
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany|BusinessRelative
+     * @return HasMany|BusinessRelative
      */
-    public function stakeholders();
+    public function stakeholders(): HasMany;
 
-    public function addStakeholder(
-        BusinessRelativeType $type,
-        Entity $stakeholder
-    ): static;
+    public function addStakeholder(BusinessRelativeType $type, Entity $stakeholder): static;
 }

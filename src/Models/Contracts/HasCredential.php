@@ -2,6 +2,8 @@
 
 namespace Creasi\Base\Models\Contracts;
 
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+
 /**
  * @property null|int|string $user_id
  * @property-read null|\Illuminate\Foundation\Auth\User $user
@@ -11,7 +13,7 @@ namespace Creasi\Base\Models\Contracts;
 interface HasCredential
 {
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo|\Illuminate\Foundation\Auth\User
+     * @return BelongsTo|\Illuminate\Foundation\Auth\User
      */
-    public function user();
+    public function user(): BelongsTo;
 }

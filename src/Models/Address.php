@@ -6,7 +6,6 @@ use Creasi\Nusa\Models\Address as NusaAddress;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Support\Str;
 
 /**
  * @property-read bool $is_resident
@@ -31,6 +30,16 @@ class Address extends NusaAddress
         return Factories\AddressFactory::new();
     }
 
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::saving(function (Address $address) {
+            $address->rt = $address->rt ? \str_pad($address->rt, 3, '0', \STR_PAD_LEFT) : null;
+            $address->rw = $address->rw ? \str_pad($address->rw, 3, '0', \STR_PAD_LEFT) : null;
+        });
+    }
+
     public function getCasts()
     {
         return \array_merge(parent::getCasts(), [
@@ -40,16 +49,6 @@ class Address extends NusaAddress
 
     public function isResident(): Attribute
     {
-        return Attribute::get(fn () => $this->getAttributeValue('type')->isResident());
-    }
-
-    public function rt(): Attribute
-    {
-        return Attribute::set(fn ($value) => $value ? Str::padLeft($value, 3, '0') : null);
-    }
-
-    public function rw(): Attribute
-    {
-        return Attribute::set(fn ($value) => $value ? Str::padLeft($value, 3, '0') : null);
+        return Attribute::get(fn () => $this->type->isResident());
     }
 }

@@ -3,7 +3,7 @@
 namespace Creasi\Base\Contracts;
 
 /**
- * @method \Creasi\Base\Models\User|null user()
+ * @method \Illuminate\Foundation\Auth\User|null user()
  */
 interface FormRequest
 {

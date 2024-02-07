@@ -6,9 +6,9 @@ use Creasi\Base\Models\Address;
 use Creasi\Base\Models\Contracts;
 use Creasi\Base\Models\Entity;
 use Creasi\Base\Models\Enums\BusinessRelativeType;
-use Creasi\Base\View\Composers\TranslationsComposer;
 use Illuminate\Auth\Events\Authenticated;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
@@ -40,20 +40,20 @@ class ServiceProvider extends IlluminateServiceProvider
 
         $this->loadTranslationsFrom(self::LIB_PATH.'/resources/lang', 'creasico');
 
-        $this->bootViewComposers();
+        $this->registerViews();
 
         $this->defineRoutes();
     }
 
     public function register(): void
     {
-        config([
-            'creasi.nusa' => array_merge([
-                'addressable' => Address::class,
-            ], config('creasi.nusa', [])),
-        ]);
-
         if (! app()->configurationIsCached()) {
+            config([
+                'creasi.nusa' => array_merge([
+                    'addressable' => Address::class,
+                ], config('creasi.nusa', [])),
+            ]);
+
             $this->mergeConfigFrom(self::LIB_PATH.'/config/creasico.php', 'creasi.base');
         }
 
@@ -98,11 +98,11 @@ class ServiceProvider extends IlluminateServiceProvider
             return;
         }
 
-        $prefix = config('creasi.base.routes_prefix', 'base');
+        Route::name('base.')->group(function (): void {
+            $prefix = config('creasi.base.routes_prefix', 'base');
 
-        Route::prefix($prefix)
-            ->name("$prefix.")
-            ->group(self::LIB_PATH.'/routes/base.php');
+            Route::prefix($prefix)->group(self::LIB_PATH.'/routes/base.php');
+        });
     }
 
     protected function registerBindings()
@@ -111,6 +111,14 @@ class ServiceProvider extends IlluminateServiceProvider
             $provider = $app['config']["auth.guards.{$app['auth']->getDefaultDriver()}.provider"];
 
             return $app['config']["auth.providers.$provider.model"];
+        });
+
+        $this->app->bind('creasi.base.route_home', function ($app) {
+            if (\class_exists($intended = 'App\Providers\RouteServiceProvider') && \defined("{$intended}::HOME")) {
+                return $intended::HOME;
+            }
+
+            return '/';
         });
 
         $this->app->bind(Entity::class, function ($app) {
@@ -144,8 +152,28 @@ class ServiceProvider extends IlluminateServiceProvider
         });
     }
 
-    private function bootViewComposers(): void
+    private function registerViews(): void
     {
-        View::composer('*', TranslationsComposer::class);
+        // View::composer('*', TranslationsComposer::class);
+
+        // Blade::componentNamespace('Creasi\\Base\\Views\\Components', 'creasi');
+
+        $this->loadViewsFrom(self::LIB_PATH.'/resources/views', 'creasi');
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function provides()
+    {
+        return [
+            'creasi.base.user_model',
+            'creasi.base.route_home',
+            BusinessRelativeType::class,
+            Contracts\Company::class,
+            Contracts\Employee::class,
+            Contracts\Stakeholder::class,
+            Entity::class,
+        ];
     }
 }

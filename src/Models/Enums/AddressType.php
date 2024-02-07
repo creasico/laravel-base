@@ -23,6 +23,11 @@ enum AddressType: int
 
     public function isResident(): bool
     {
-        return $this->value === self::Resident->value;
+        return $this === self::Resident;
+    }
+
+    public function isLegal(): bool
+    {
+        return $this === self::Legal;
     }
 }

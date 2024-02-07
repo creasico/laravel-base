@@ -41,9 +41,36 @@ enum BusinessRelativeType: int
      */
     public function isInternal(): bool
     {
-        return \in_array($this->value, [
-            self::Owner->value,
-            self::Subsidiary->value,
-        ], true);
+        return \in_array($this, [self::Owner, self::Subsidiary], true);
+    }
+
+    public function isPartner(): bool
+    {
+        return \in_array($this, [self::Supplier, self::Vendor], true);
+    }
+
+    public function isOwner(): bool
+    {
+        return $this === self::Owner;
+    }
+
+    public function isSubsidiary(): bool
+    {
+        return $this === self::Subsidiary;
+    }
+
+    public function isCustomer(): bool
+    {
+        return $this === self::Customer;
+    }
+
+    public function isSupplier(): bool
+    {
+        return $this === self::Supplier;
+    }
+
+    public function isVendor(): bool
+    {
+        return $this === self::Vendor;
     }
 }

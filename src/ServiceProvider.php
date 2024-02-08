@@ -101,6 +101,8 @@ class ServiceProvider extends IlluminateServiceProvider
         Route::name('base.')->group(function (): void {
             $prefix = config('creasi.base.routes_prefix', 'base');
 
+            Route::prefix('auth')->group(self::LIB_PATH.'/routes/auth.php');
+
             Route::prefix($prefix)->group(self::LIB_PATH.'/routes/base.php');
         });
     }

@@ -8,12 +8,15 @@ use Creasi\Nusa\ServiceProvider as NusaServiceProvider;
 use Illuminate\Contracts\Config\Repository;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Laravel\Sanctum\SanctumServiceProvider;
+use Orchestra\Testbench\Concerns\WithWorkbench;
 use Orchestra\Testbench\TestCase as Orchestra;
 use Workbench\App\Models\User;
+use Workbench\App\Providers\WorkbenchServiceProvider;
 
 abstract class TestCase extends Orchestra
 {
     use RefreshDatabase;
+    use WithWorkbench;
 
     private ?User $currentUser = null;
 
@@ -26,6 +29,7 @@ abstract class TestCase extends Orchestra
             ServiceProvider::class,
             NusaServiceProvider::class,
             SanctumServiceProvider::class,
+            WorkbenchServiceProvider::class,
         ];
     }
 

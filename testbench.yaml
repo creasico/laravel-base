@@ -1,0 +1,9 @@
+providers:
+  - Creasi\Nusa\ServiceProvider
+  - Laravel\Sanctum\SanctumServiceProvider
+
+workbench:
+  welcome: true
+  install: true
+  build:
+    - migrate:fresh

@@ -1,9 +1,10 @@
 <?php
 
-namespace Creasi\Tests\Fixtures;
+namespace Workbench\Database\Factories;
 
 use Creasi\Base\Models\Factories\Concerns\WithIdentity;
 use Orchestra\Testbench\Factories\UserFactory as Factory;
+use Workbench\App\Models\User;
 
 /**
  * @extends Factory<User>
@@ -14,6 +15,6 @@ class UserFactory extends Factory
 
     public function modelName()
     {
-        return app('creasi.base.user_model');
+        return User::class;
     }
 }

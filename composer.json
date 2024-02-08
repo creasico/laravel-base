@@ -1,7 +1,14 @@
 {
     "name": "creasi/laravel-base",
     "description": "Laravel Package that aims to provide basic organization directory structures.",
-    "keywords": ["laravel", "package", "base", "accountability", "organization", "directory"],
+    "keywords": [
+        "laravel",
+        "package",
+        "base",
+        "accountability",
+        "organization",
+        "directory"
+    ],
     "license": "MIT",
     "type": "library",
     "authors": [
@@ -23,13 +30,29 @@
     },
     "scripts": {
         "fix": [
-            "pint --preset laravel"
+            "pint"
         ],
         "test": [
-            "testbench package:test --ansi"
+            "@testbench package:test --ansi"
         ],
         "testbench": [
-            "testbench"
+            "@php vendor/bin/testbench"
+        ],
+        "post-autoload-dump": [
+            "@clear",
+            "@prepare"
+        ],
+        "clear": "@php vendor/bin/testbench package:purge-skeleton --ansi",
+        "prepare": "@php vendor/bin/testbench package:discover --ansi",
+        "build": "@php vendor/bin/testbench workbench:build --ansi",
+        "serve": [
+            "Composer\\Config::disableProcessTimeout",
+            "@build",
+            "@php vendor/bin/testbench serve"
+        ],
+        "lint": [
+            "@php vendor/bin/pint",
+            "@php vendor/bin/phpstan analyse"
         ]
     },
     "autoload": {
@@ -39,7 +62,10 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "Creasi\\Tests\\": "tests"
+            "Creasi\\Tests\\": "tests",
+            "Workbench\\App\\": "workbench/app/",
+            "Workbench\\Database\\Factories\\": "workbench/database/factories/",
+            "Workbench\\Database\\Seeders\\": "workbench/database/seeders/"
         }
     },
     "require": {

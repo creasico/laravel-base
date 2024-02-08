@@ -80,6 +80,6 @@ return new class extends Migration
         Schema::dropIfExists('personnel_relatives');
         Schema::dropIfExists('personnels');
         Schema::dropIfExists('business_relatives');
-        Schema::dropIfExists('business');
+        Schema::dropIfExists('businesses');
     }
 };

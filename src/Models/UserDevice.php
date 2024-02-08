@@ -19,6 +19,6 @@ class UserDevice extends EloquentModel
      */
     public function user()
     {
-        return $this->belongsTo(app('creasi.base.user_model'));
+        return $this->belongsTo(config('creasi.base.user_model'));
     }
 }

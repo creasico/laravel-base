@@ -3,6 +3,8 @@
 use Creasi\Base\Models\Enums;
 
 return [
+    'user_model' => env('CREASI_BASE_USER_MODEL', 'App\Models\User'),
+
     'routes_enable' => true,
 
     'routes_prefix' => 'base',

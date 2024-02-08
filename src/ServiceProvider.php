@@ -107,12 +107,6 @@ class ServiceProvider extends IlluminateServiceProvider
 
     protected function registerBindings()
     {
-        $this->app->bind('creasi.base.user_model', function ($app) {
-            $provider = $app['config']["auth.guards.{$app['auth']->getDefaultDriver()}.provider"];
-
-            return $app['config']["auth.providers.$provider.model"];
-        });
-
         $this->app->bind('creasi.base.route_home', function ($app) {
             if (\class_exists($intended = 'App\Providers\RouteServiceProvider') && \defined("{$intended}::HOME")) {
                 return $intended::HOME;

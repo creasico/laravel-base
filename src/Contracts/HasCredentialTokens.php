@@ -2,6 +2,7 @@
 
 namespace Creasi\Base\Contracts;
 
+use Illuminate\Http\Request;
 use Laravel\Sanctum\Contracts\HasApiTokens;
 use Laravel\Sanctum\NewAccessToken;
 
@@ -18,12 +19,12 @@ interface HasCredentialTokens extends HasApiTokens
     /**
      * Refresh the Credential Token.
      */
-    public function refreshCredentialTokens(string $refreshToken): array;
+    public function refreshCredentialTokens(Request $request): array;
 
     /**
      * Destroy existing Credential Token.
      */
-    public function destroyCredential(string $accessToken): ?bool;
+    public function destroyCredential(Request $request): ?bool;
 
     /**
      * Create new Access Token.

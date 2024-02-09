@@ -61,7 +61,7 @@ class AuthenticatedSessionController extends Controller
         $response = UserResource::make($user);
 
         if ($user instanceof HasCredentialTokens) {
-            $response->additional(['auth' => $user->refreshCredentialTokens($request->bearerToken())]);
+            $response->additional(['auth' => $user->refreshCredentialTokens($request)]);
         }
 
         return $response->toResponse($request)->setStatusCode(201);
@@ -78,7 +78,7 @@ class AuthenticatedSessionController extends Controller
             $user = $request->user();
 
             if ($user instanceof HasCredentialTokens) {
-                $user->destroyCredential($request->bearerToken());
+                $user->destroyCredential($request);
             }
 
             return response()->noContent();

@@ -5,6 +5,7 @@ namespace Creasi\Base\Models\Concerns;
 use Creasi\Base\Events\CredentialTokenCreated;
 use Creasi\Base\Events\CredentialTokenDestroyed;
 use Creasi\Base\Events\CredentialTokenRefreshed;
+use Illuminate\Http\Request;
 use Laravel\Sanctum\HasApiTokens;
 use Laravel\Sanctum\NewAccessToken;
 use Laravel\Sanctum\PersonalAccessToken;
@@ -44,7 +45,7 @@ trait WithCredentialTokens
     /**
      * {@inheritdoc}
      */
-    public function refreshCredentialTokens(string $refreshToken): array
+    public function refreshCredentialTokens(Request $request): array
     {
         $this->tokens()
             ->where('name', 'access')
@@ -58,16 +59,17 @@ trait WithCredentialTokens
         return [
             'access_token' => $access->plainTextToken,
             'expires_at' => $access->accessToken->expires_at,
-            'refresh_token' => $refreshToken,
+            'refresh_token' => $request->bearerToken(),
         ];
     }
 
     /**
      * {@inheritdoc}
      */
-    public function destroyCredential(string $accessToken): ?bool
+    public function destroyCredential(Request $request): ?bool
     {
-        $token = PersonalAccessToken::findToken($accessToken);
+        /** @var \Laravel\Sanctum\PersonalAccessToken */
+        $token = PersonalAccessToken::findToken($request->bearerToken());
 
         if ($deleted = $token->delete()) {
             \event(new CredentialTokenDestroyed($this));
@@ -81,8 +83,8 @@ trait WithCredentialTokens
      */
     public function createAccessToken(): NewAccessToken
     {
-        $expiration = \config('sanctum.expiration');
+        $expiration = \config('sanctum.expiration', 120);
 
-        return $this->createToken('access', ['*'], $expiration ? \now()->addMinutes($expiration) : null);
+        return $this->createToken('access', ['*'], \now()->addMinutes($expiration));
     }
 }

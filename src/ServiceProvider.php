@@ -6,12 +6,15 @@ use Creasi\Base\Models\Address;
 use Creasi\Base\Models\Contracts;
 use Creasi\Base\Models\Entity;
 use Creasi\Base\Models\Enums\BusinessRelativeType;
-use Illuminate\Auth\Events\Authenticated;
+use Illuminate\Auth\Events\Login;
+use Illuminate\Auth\Notifications\ResetPassword;
+use Illuminate\Auth\Notifications\VerifyEmail;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider as IlluminateServiceProvider;
 
@@ -66,7 +69,7 @@ class ServiceProvider extends IlluminateServiceProvider
         $this->registerBindings();
 
         $this->booting(function (): void {
-            Event::listen(Authenticated::class, Listeners\RegisterUserDevice::class);
+            Event::listen(Login::class, Listeners\RegisterUserDevice::class);
         });
     }
 
@@ -94,6 +97,22 @@ class ServiceProvider extends IlluminateServiceProvider
 
     protected function defineRoutes(): void
     {
+        ResetPassword::createUrlUsing(function ($user, string $token) {
+            return \route('base.password.reset', [
+                'token' => $token,
+                'email' => $user->getEmailForPasswordReset(),
+            ]);
+        });
+
+        VerifyEmail::createUrlUsing(function ($user) {
+            $expiration = \now()->addMinutes(\config('auth.verification.expire', 60));
+
+            return URL::temporarySignedRoute('base.verification.verify', $expiration, [
+                'id' => $user->getKey(),
+                'hash' => sha1($user->getEmailForVerification()),
+            ]);
+        });
+
         if (app()->routesAreCached() || config('creasi.base.routes_enable') === false) {
             return;
         }

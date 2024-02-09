@@ -3,6 +3,7 @@
 namespace Creasi\Base\Http\Controllers\Auth;
 
 use Creasi\Base\Http\Controllers\Controller;
+use Creasi\Base\Http\Requests\Auth\ForgotPasswordRequest;
 use Creasi\Base\Http\Requests\Auth\NewPasswordRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Password;
@@ -16,7 +17,10 @@ class ResetPasswordController extends Controller
      */
     public function create(Request $request)
     {
-        return view('creasi::auth.reset-password', ['request' => $request]);
+        // return view('creasi::auth.reset-password', ['request' => $request]);
+        return \response()->json([
+            'token' => $request->token,
+        ]);
     }
 
     /**
@@ -26,17 +30,18 @@ class ResetPasswordController extends Controller
      *
      * @throws \Illuminate\Validation\ValidationException
      */
-    public function store(Request $request)
+    public function store(ForgotPasswordRequest $request)
     {
         $status = $request->fulfill();
 
         if ($request->expectsJson()) {
-            return response()->json([
-                'message' => __($status),
-                'errors' => $status != Password::RESET_LINK_SENT ?: [
-                    'email' => [__($status)],
-                ],
-            ]);
+            $json = ['message' => __($status)];
+
+            if ($status != Password::RESET_LINK_SENT) {
+                $json['errors'] = ['email' => [__($status)]];
+            }
+
+            return response()->json($json);
         }
 
         return $status == Password::RESET_LINK_SENT
@@ -57,12 +62,13 @@ class ResetPasswordController extends Controller
         $status = $request->fulfill();
 
         if ($request->expectsJson()) {
-            return \response()->json([
-                'message' => __($status),
-                'errors' => $status != Password::PASSWORD_RESET ?: [
-                    'email' => [__($status)],
-                ],
-            ]);
+            $json = ['message' => __($status)];
+
+            if ($status != Password::PASSWORD_RESET) {
+                $json['errors'] = ['email' => [__($status)]];
+            }
+
+            return response()->json($json);
         }
 
         // If the password was successfully reset, we will redirect the user back to

@@ -6,6 +6,7 @@ use Creasi\Base\Contracts\HasCredentialTokens;
 use Creasi\Base\Models\Concerns\WithCredentialTokens;
 use Creasi\Base\Models\Concerns\WithDevices;
 use Creasi\Base\Models\Concerns\WithIdentity;
+use Creasi\Base\Models\Contracts\HasDevices;
 use Creasi\Base\Models\Contracts\HasIdentity;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -21,7 +22,7 @@ use Workbench\Database\Factories\UserFactory;
  *
  * @method static UserFactory<static> factory()
  */
-class User extends Authenticatable implements HasCredentialTokens, HasIdentity
+class User extends Authenticatable implements HasCredentialTokens, HasDevices, HasIdentity
 {
     use HasFactory;
     use Notifiable;

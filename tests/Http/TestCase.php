@@ -9,9 +9,11 @@ abstract class TestCase extends BaseTestCase
 {
     protected string $apiPath = '';
 
+    protected ?string $apiRoutePrefix = null;
+
     protected function getRoutePath(string|UrlRoutable ...$suffixs): string
     {
-        $base = config('creasi.base.routes_prefix');
+        $base = $this->apiRoutePrefix ?: config('creasi.base.routes_prefix');
         $suffixs = \array_map(
             fn ($suffix) => $suffix instanceof UrlRoutable ? $suffix->getRouteKey() : $suffix,
             $suffixs

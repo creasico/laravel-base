@@ -3,7 +3,6 @@
 namespace Workbench\App\Providers;
 
 use Illuminate\Support\ServiceProvider;
-use Workbench\App\Models\User;
 
 class WorkbenchServiceProvider extends ServiceProvider
 {

@@ -3,8 +3,8 @@
 namespace Creasi\Base\Http\Requests\Auth;
 
 use Illuminate\Auth\Events\Registered;
+use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rules\Password;
 
 class RegistrationRequest extends FormRequest
@@ -38,7 +38,7 @@ class RegistrationRequest extends FormRequest
      *
      * @return mixed
      */
-    public function fulfill()
+    public function fulfill(): Authenticatable
     {
         $model = config('creasi.base.user_model');
         $user = $model::create([
@@ -49,6 +49,6 @@ class RegistrationRequest extends FormRequest
 
         event(new Registered($user));
 
-        Auth::login($user);
+        return $user;
     }
 }

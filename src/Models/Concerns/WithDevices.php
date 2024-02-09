@@ -3,6 +3,7 @@
 namespace Creasi\Base\Models\Concerns;
 
 use Creasi\Base\Models\UserDevice;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
  * @mixin \Illuminate\Foundation\Auth\User
@@ -12,7 +13,7 @@ trait WithDevices
     /**
      * {@inheritdoc}
      */
-    public function devices()
+    public function devices(): HasMany
     {
         return $this->hasMany(UserDevice::class);
     }

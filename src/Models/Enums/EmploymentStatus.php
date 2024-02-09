@@ -8,9 +8,15 @@ enum EmploymentStatus: int
 {
     use KeyableEnum;
 
-    case Probation = 0;
-    case Contract = 1;
-    case Permanent = 2;
+    case Candidate = 0;
+    case Probation = 1;
+    case Contract = 2;
+    case Permanent = 3;
+
+    public function isCandidate(): bool
+    {
+        return $this === self::Candidate;
+    }
 
     public function isProbation(): bool
     {

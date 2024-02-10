@@ -321,9 +321,10 @@ classDiagram
 - Freelance
 
 **Employment Statuses**
-- Permanent
-- Contract
+- Candidate
 - Probation
+- Contract
+- Permanent
 
 **Note :**
 Field `type` and `status` shouldn't be detachable so we can maintain historical changes of the personnel in the company.

@@ -83,7 +83,7 @@ trait WithCredentialTokens
      */
     public function createAccessToken(): NewAccessToken
     {
-        $expiration = \config('sanctum.expiration', 120);
+        $expiration = (int) (\config('sanctum.expiration') ?: \config('session.lifetime', 120));
 
         return $this->createToken('access', ['*'], \now()->addMinutes($expiration));
     }

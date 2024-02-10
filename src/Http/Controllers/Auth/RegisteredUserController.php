@@ -4,6 +4,7 @@ namespace Creasi\Base\Http\Controllers\Auth;
 
 use Creasi\Base\Http\Controllers\Controller;
 use Creasi\Base\Http\Requests\Auth\RegistrationRequest;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Support\Facades\Auth;
 
 class RegisteredUserController extends Controller
@@ -27,14 +28,16 @@ class RegisteredUserController extends Controller
     {
         $user = $request->fulfill();
 
+        $message = $user instanceof MustVerifyEmail
+            ? __('creasico::auth.registered-needs-verify')
+            : __('creasico::auth.registered-no-verify');
+
         if ($request->expectsJson()) {
-            return response()->json([
-                'message' => __('auth.notices.verify-email'),
-            ], 201);
+            return response()->json(['message' => $message], 201);
         }
 
         Auth::login($user);
 
-        return redirect(app('creasi.base.route_home'));
+        return redirect(app('creasi.base.route_home'))->with('message', $message);
     }
 }

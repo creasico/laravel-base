@@ -8,7 +8,6 @@ use Creasi\Base\Events\CredentialTokenRefreshed;
 use Illuminate\Http\Request;
 use Laravel\Sanctum\HasApiTokens;
 use Laravel\Sanctum\NewAccessToken;
-use Laravel\Sanctum\PersonalAccessToken;
 
 /**
  * @mixin \Creasi\Base\Contracts\HasCredential
@@ -69,7 +68,7 @@ trait WithCredentialTokens
     public function destroyCredential(Request $request): ?bool
     {
         /** @var \Laravel\Sanctum\PersonalAccessToken */
-        $token = PersonalAccessToken::findToken($request->bearerToken());
+        $token = $this->tokens()->getRelated()->findToken($request->bearerToken());
 
         if ($deleted = $token->delete()) {
             \event(new CredentialTokenDestroyed($this));

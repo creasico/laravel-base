@@ -8,6 +8,7 @@ use Creasi\Base\Events\CredentialTokenRefreshed;
 use Illuminate\Http\Request;
 use Laravel\Sanctum\HasApiTokens;
 use Laravel\Sanctum\NewAccessToken;
+use Laravel\Sanctum\Sanctum;
 
 /**
  * @mixin \Creasi\Base\Contracts\HasCredential
@@ -58,7 +59,7 @@ trait WithCredentialTokens
         return [
             'access_token' => $access->plainTextToken,
             'expires_at' => $access->accessToken->expires_at,
-            'refresh_token' => $request->bearerToken(),
+            'refresh_token' => $this->getTokenFromRequest($request),
         ];
     }
 
@@ -67,10 +68,9 @@ trait WithCredentialTokens
      */
     public function destroyCredential(Request $request): ?bool
     {
-        /** @var \Laravel\Sanctum\PersonalAccessToken */
-        $token = $this->tokens()->getRelated()->findToken($request->bearerToken());
+        $accessToken = $this->getCurrentAccessToken($request);
 
-        if ($deleted = $token->delete()) {
+        if ($deleted = $accessToken->delete()) {
             \event(new CredentialTokenDestroyed($this));
         }
 
@@ -85,5 +85,31 @@ trait WithCredentialTokens
         $expiration = (int) (\config('sanctum.expiration') ?: \config('session.lifetime', 120));
 
         return $this->createToken('access', ['*'], \now()->addMinutes($expiration));
+    }
+
+    /**
+     * Return the current access token for the user.
+     *
+     * @return null|\Laravel\Sanctum\PersonalAccessToken
+     */
+    protected function getCurrentAccessToken(Request $request)
+    {
+        if (\is_null($tokenString = $this->getTokenFromRequest($request))) {
+            return null;
+        }
+
+        return $this->tokens()->getRelated()->findToken($tokenString);
+    }
+
+    /**
+     * Get the token from the request.
+     */
+    protected function getTokenFromRequest(Request $request): ?string
+    {
+        if (is_callable(Sanctum::$accessTokenRetrievalCallback)) {
+            return (Sanctum::$accessTokenRetrievalCallback)($request);
+        }
+
+        return $request->bearerToken();
     }
 }

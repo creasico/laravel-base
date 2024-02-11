@@ -10,6 +10,7 @@ use Illuminate\Auth\Events\Login;
 use Illuminate\Auth\Notifications\ResetPassword;
 use Illuminate\Auth\Notifications\VerifyEmail;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Mail;
@@ -17,6 +18,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider as IlluminateServiceProvider;
+use Laravel\Sanctum\Sanctum;
 
 class ServiceProvider extends IlluminateServiceProvider
 {
@@ -111,6 +113,17 @@ class ServiceProvider extends IlluminateServiceProvider
                 'id' => $user->getKey(),
                 'hash' => sha1($user->getEmailForVerification()),
             ]);
+        });
+
+        // Customize the way sanctum retrieves the access token.
+        Sanctum::getAccessTokenFromRequestUsing(function (Request $request): ?string {
+            // We'll check for the `Authorization` header first.
+            if ($token = $request->bearerToken()) {
+                return $token;
+            }
+
+            // If the header is not present, we'll check for the `api_token` query string.
+            return $request->isMethodCacheable() ? $request->query('api_token') : null;
         });
 
         if (app()->routesAreCached() || config('creasi.base.routes_enable') === false) {

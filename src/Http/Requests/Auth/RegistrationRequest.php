@@ -41,11 +41,7 @@ class RegistrationRequest extends FormRequest
     public function fulfill(): Authenticatable
     {
         $model = config('creasi.base.user_model');
-        try {
-            $user = $model::create($this->only('name', 'email', 'password'));
-        } catch (\Throwable $e) {
-            dd($e);
-        }
+        $user = $model::create($this->only('name', 'email', 'password'));
 
         event(new Registered($user));
 

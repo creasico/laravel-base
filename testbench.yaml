@@ -1,3 +1,8 @@
+providers:
+  - Creasi\Nusa\ServiceProvider
+  - Laravel\Sanctum\SanctumServiceProvider
+  - Workbench\App\Providers\WorkbenchServiceProvider
+
 workbench:
   # welcome: true
   install: true

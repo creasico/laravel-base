@@ -7,7 +7,7 @@ use Creasi\Base\Models\UserDevice;
 class UserDeviceRegistered
 {
     public function __construct(
-        public UserDevice $device
+        public readonly UserDevice $device
     ) {
         // .
     }

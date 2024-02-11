@@ -6,6 +6,7 @@ namespace Creasi\Tests;
 
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Facades\Route;
+use Orchestra\Testbench\Attributes\DefineEnvironment;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Test;
 
@@ -22,11 +23,9 @@ class ServiceProviderTest extends TestCase
         $app->config->set('creasi.base.routes_enable', false);
     }
 
-    /**
-     * @define-env disableRoute
-     */
     #[Test]
     #[Group('routes')]
+    #[DefineEnvironment('disableRoute')]
     public function should_able_to_disable_routes()
     {
         $prefix = config('creasi.base.routes_prefix');

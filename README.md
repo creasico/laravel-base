@@ -4,7 +4,14 @@
 
 # Creasi Base
 
-Laravel Package that aims to provide basic organization directory structures for most of our projects.
+Laravel Package that aims to provide most commont features for our projects, including: 
+
+- [ ] Authentication, see #85
+- [ ] Authorization
+- [ ] Audits
+- [ ] Organization Structure, see #21 and [here](https://github.com/creasico/laravel-base/blob/main/database/README.md)
+- [ ] Notifications
+- [ ] Settings
 
 ## Requirements
 
@@ -12,6 +19,8 @@ Laravel Package that aims to provide basic organization directory structures for
 - Laravel `>=10.0`
 
 ## Why?
+
+As an agency, having to deals with common features in every single project is a pain and we need a library that can solve that issue, and also provide a good starting point for new projects. So, we can just focus on the business logic and not worry about the boilerplate code.
 
 ## Installation
 

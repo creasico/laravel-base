@@ -2,15 +2,16 @@
 
 namespace Workbench\App\Models;
 
+use Creasi\Base\Contracts\HasCredentialTokens;
+use Creasi\Base\Models\Concerns\WithCredentialTokens;
 use Creasi\Base\Models\Concerns\WithDevices;
 use Creasi\Base\Models\Concerns\WithIdentity;
+use Creasi\Base\Models\Contracts\HasDevices;
 use Creasi\Base\Models\Contracts\HasIdentity;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Laravel\Sanctum\Contracts\HasApiTokens as HasApiTokensContract;
-use Laravel\Sanctum\HasApiTokens;
 use Workbench\Database\Factories\UserFactory;
 
 /**
@@ -21,15 +22,21 @@ use Workbench\Database\Factories\UserFactory;
  *
  * @method static UserFactory<static> factory()
  */
-class User extends Authenticatable implements HasApiTokensContract, HasIdentity
+class User extends Authenticatable implements HasCredentialTokens, HasDevices, HasIdentity
 {
-    use HasApiTokens;
     use HasFactory;
     use Notifiable;
+    use WithCredentialTokens;
     use WithDevices;
     use WithIdentity;
 
     protected $fillable = ['name', 'email', 'password'];
+
+    protected $hidden = ['password', 'remember_token'];
+
+    protected $casts = [
+        'email_verified_at' => 'immutable_datetime',
+    ];
 
     protected static function newFactory()
     {

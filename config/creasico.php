@@ -9,6 +9,19 @@ return [
 
     'routes_prefix' => 'base',
 
+    /*
+    |--------------------------------------------------------------------------
+    | Credential keys
+    |--------------------------------------------------------------------------
+    |
+    | This option controls the way user authenticate with the application, and
+    | the values that will be used to retrieve the credential from the request.
+    | So please make sure that the values are available in your `users` model.
+    |
+    */
+
+    'credentials' => ['email'],
+
     'address' => [
 
         /*

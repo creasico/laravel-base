@@ -25,7 +25,7 @@ class AuthenticationTest extends TestCase
         $user = $this->user();
 
         $response = $this->postJson('auth/login', [
-            'username' => $user->name,
+            'credential' => $user->email,
             'password' => 'wrong-password',
         ]);
 
@@ -43,7 +43,7 @@ class AuthenticationTest extends TestCase
 
         for ($i = 0; $i < 6; $i++) {
             $response = $this->postJson('auth/login', [
-                'username' => $user->name,
+                'credential' => $user->email,
                 'password' => 'wrong-password',
             ]);
 
@@ -64,7 +64,7 @@ class AuthenticationTest extends TestCase
         $user = $this->user(['password' => $password = 'secret']);
 
         $response = $this->postJson('auth/login', [
-            'username' => $user->name,
+            'credential' => $user->email,
             'password' => $password,
         ]);
 
@@ -86,7 +86,7 @@ class AuthenticationTest extends TestCase
         $token = Str::random();
 
         $response = $this->postJson('auth/login', [
-            'username' => $user->name,
+            'credential' => $user->email,
             'password' => $password,
             'device_token' => $token,
         ]);

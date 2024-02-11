@@ -4,6 +4,7 @@ namespace Creasi\Base\Http\Requests\Auth;
 
 use Illuminate\Auth\Events\Lockout;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Str;
@@ -32,8 +33,9 @@ class LoginRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'username' => ['required', 'string'],
+            'credential' => ['required', 'string'],
             'password' => ['required', 'string'],
+            'remember' => ['boolean'],
             'device_token' => ['nullable', 'string'],
         ];
     }
@@ -47,16 +49,21 @@ class LoginRequest extends FormRequest
     {
         $this->ensureIsNotRateLimited();
 
-        $credentials = tap($this->only('username', 'password'), function (&$credentials) {
-            $credentials['name'] = $credentials['username'];
-            unset($credentials['username']);
+        $credentials = tap($this->only('credential', 'password'), function (&$credentials) {
+            $keys = Arr::wrap(\config('creasi.base.credentials', ['email']));
+
+            foreach ($keys as $key) {
+                $credentials[$key] = $credentials['credential'];
+            }
+
+            unset($credentials['credential']);
         });
 
         if (! Auth::attempt($credentials, $this->boolean('remember'))) {
             RateLimiter::hit($this->throttleKey());
 
             throw ValidationException::withMessages([
-                'username' => trans('auth.failed'),
+                'credential' => trans('auth.failed'),
             ]);
         }
 
@@ -79,7 +86,7 @@ class LoginRequest extends FormRequest
         $seconds = RateLimiter::availableIn($this->throttleKey());
 
         throw ValidationException::withMessages([
-            'username' => trans('auth.throttle', [
+            'credential' => trans('auth.throttle', [
                 'seconds' => $seconds,
                 'minutes' => ceil($seconds / 60),
             ]),
@@ -91,6 +98,6 @@ class LoginRequest extends FormRequest
      */
     public function throttleKey(): string
     {
-        return Str::lower($this->input('username')).'|'.$this->ip();
+        return Str::lower($this->input('credential')).'|'.$this->ip();
     }
 }

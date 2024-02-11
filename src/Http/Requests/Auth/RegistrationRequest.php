@@ -27,7 +27,7 @@ class RegistrationRequest extends FormRequest
     public function rules()
     {
         return [
-            'username' => ['required', 'string', 'unique:users,name'],
+            'name' => ['required', 'string', 'min:2', 'max:150'],
             'email' => ['required', 'email', 'unique:users,email'],
             'password' => ['required', 'confirmed', Password::defaults()],
         ];
@@ -41,11 +41,11 @@ class RegistrationRequest extends FormRequest
     public function fulfill(): Authenticatable
     {
         $model = config('creasi.base.user_model');
-        $user = $model::create([
-            'name' => $this->username,
-            'email' => $this->email,
-            'password' => $this->password,
-        ]);
+        try {
+            $user = $model::create($this->only('name', 'email', 'password'));
+        } catch (\Throwable $e) {
+            dd($e);
+        }
 
         event(new Registered($user));
 

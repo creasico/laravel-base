@@ -25,17 +25,19 @@ enum StakeholderType: int
     case Employee = 3;
 
     /**
-     * A company or individual that act as customer of the business.
+     * A company or individual that act as purchase goods from the business.
      */
     case Customer = 4;
 
     /**
-     * A company or individual that act as supplier of the business.
+     * A company or individual who provides raw materials for the business
+     * so they can produce their goods.
      */
     case Supplier = 5;
 
     /**
-     * A company or individual that act as vendor of the business.
+     * A company or individual who provides pre-made or even ready-made goods
+     * for the business so they can proceed the raw materials into goods.
      */
     case Vendor = 6;
 

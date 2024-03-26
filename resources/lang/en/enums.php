@@ -28,18 +28,13 @@ return [
         'document' => 'Document',
     ],
 
-    'employment-type' => [
+    'employment-status' => [
         'unemployeed' => 'Unemploeed',
         'fulltime' => 'Full-time',
         'parttime' => 'Part-time',
+        'probation' => 'Probation',
         'internship' => 'Internship',
         'freelance' => 'Freelance',
-    ],
-
-    'employment-status' => [
-        'permanent' => 'Permanent',
-        'contract' => 'Contract',
-        'probation' => 'Probation',
     ],
 
     'tax-status' => [
@@ -69,9 +64,16 @@ return [
         'cousin' => 'Cousin',
     ],
 
-    'business-relative-type' => [
+    'stakeholder-status' => [
+        'permanent' => 'Permanent',
+        'contract' => 'Contract',
+        'candidate' => 'Candidate',
+    ],
+
+    'stakeholder-type' => [
         'owner' => 'Owner',
         'subsidiary' => 'Subsidiary',
+        'employee' => 'Employee',
         'customer' => 'Customer',
         'supplier' => 'Supplier',
         'vendor' => 'Vendor',

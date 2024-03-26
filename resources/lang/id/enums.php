@@ -28,18 +28,13 @@ return [
         'document' => 'Document',
     ],
 
-    'employment-type' => [
+    'employment-status' => [
         'unemployeed' => 'Tidak Dipekerjakan',
         'fulltime' => 'Full-time',
         'parttime' => 'Part-time',
+        'probation' => 'Probation',
         'internship' => 'Internship',
         'freelance' => 'Freelance',
-    ],
-
-    'employment-status' => [
-        'permanent' => 'Permanent',
-        'contract' => 'Contract',
-        'probation' => 'Probation',
     ],
 
     'tax-status' => [
@@ -69,9 +64,16 @@ return [
         'cousin' => 'Sepupu',
     ],
 
-    'business-relative-type' => [
+    'stakeholder-status' => [
+        'permanent' => 'Permanen',
+        'contract' => 'Kontrak',
+        'candidate' => 'Calon',
+    ],
+
+    'stakeholder-type' => [
         'owner' => 'Pemilik',
         'subsidiary' => 'Anak Perusahaan',
+        'employee' => 'Karyawan',
         'customer' => 'Pelanggan',
         'supplier' => 'Pemasok',
         'vendor' => 'Vendor',

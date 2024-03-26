@@ -1,0 +1,13 @@
+parameters:
+  paths:
+    - src
+
+  level: 0
+
+  ignoreErrors:
+    -
+      messages:
+        - '#Call to an undefined method [a-zA-Z0-9\\_]+::key\(\)#'
+        - '#Call to an undefined method [a-zA-Z0-9\\_]+::label\(\)#'
+      paths:
+        - src/Support/Enums/*

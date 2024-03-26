@@ -11,6 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
+        if (Schema::hasTable(config('queue.failed.table'))) {
+            return;
+        }
+
         Schema::create(config('queue.failed.table'), function (Blueprint $table) {
             $table->id();
             $table->string('uuid')->unique();

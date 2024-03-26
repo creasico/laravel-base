@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        if (config('session.driver') === 'database') {
+        if (config('session.driver') === 'database' && ! Schema::hasTable(config('session.table'))) {
             Schema::create(config('session.table'), function (Blueprint $table) {
                 $table->string('id')->primary();
                 $table->foreignId('user_id')->nullable()->constrained()->nullOnDelete();
@@ -23,28 +23,32 @@ return new class extends Migration
         }
 
         if (config('queue.default') === 'database') {
-            Schema::create(config('queue.connections.database.table'), function (Blueprint $table) {
-                $table->id();
-                $table->string('queue')->index();
-                $table->longText('payload');
-                $table->unsignedTinyInteger('attempts');
-                $table->unsignedInteger('reserved_at')->nullable();
-                $table->unsignedInteger('available_at');
-                $table->unsignedInteger('created_at');
-            });
+            if (! Schema::hasTable(config('queue.connections.database.table'))) {
+                Schema::create(config('queue.connections.database.table'), function (Blueprint $table) {
+                    $table->id();
+                    $table->string('queue')->index();
+                    $table->longText('payload');
+                    $table->unsignedTinyInteger('attempts');
+                    $table->unsignedInteger('reserved_at')->nullable();
+                    $table->unsignedInteger('available_at');
+                    $table->unsignedInteger('created_at');
+                });
+            }
 
-            Schema::create('job_batches', function (Blueprint $table) {
-                $table->string('id')->primary();
-                $table->string('name');
-                $table->integer('total_jobs');
-                $table->integer('pending_jobs');
-                $table->integer('failed_jobs');
-                $table->text('failed_job_ids');
-                $table->mediumText('options')->nullable();
-                $table->integer('cancelled_at')->nullable();
-                $table->integer('created_at');
-                $table->integer('finished_at')->nullable();
-            });
+            if (! Schema::hasTable('job_batches')) {
+                Schema::create('job_batches', function (Blueprint $table) {
+                    $table->string('id')->primary();
+                    $table->string('name');
+                    $table->integer('total_jobs');
+                    $table->integer('pending_jobs');
+                    $table->integer('failed_jobs');
+                    $table->text('failed_job_ids');
+                    $table->mediumText('options')->nullable();
+                    $table->integer('cancelled_at')->nullable();
+                    $table->integer('created_at');
+                    $table->integer('finished_at')->nullable();
+                });
+            }
         }
 
         Schema::create('notifications', function (Blueprint $table) {

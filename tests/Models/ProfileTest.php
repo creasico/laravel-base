@@ -3,10 +3,10 @@
 namespace Creasi\Tests\Models;
 
 use Carbon\CarbonImmutable;
-use Creasi\Base\Models\Enums\Education;
-use Creasi\Base\Models\Enums\Religion;
-use Creasi\Base\Models\Personnel;
-use Creasi\Base\Models\Profile;
+use Creasi\Base\Database\Models\Personnel;
+use Creasi\Base\Database\Models\Profile;
+use Creasi\Base\Enums\Education;
+use Creasi\Base\Enums\Religion;
 use Creasi\Nusa\Models\Regency;
 use Creasi\Tests\TestCase;
 use PHPUnit\Framework\Attributes\Group;

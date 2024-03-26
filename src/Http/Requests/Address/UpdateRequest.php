@@ -3,8 +3,8 @@
 namespace Creasi\Base\Http\Requests\Address;
 
 use Creasi\Base\Contracts\FormRequest as FormRequestContract;
-use Creasi\Base\Models\Address;
-use Creasi\Base\Models\Enums\AddressType;
+use Creasi\Base\Database\Models\Address;
+use Creasi\Base\Enums\AddressType;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 

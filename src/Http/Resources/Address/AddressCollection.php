@@ -7,7 +7,7 @@ use Creasi\Base\Http\Resources\Collection;
 use Illuminate\Http\Request;
 
 /**
- * @property-read \Illuminate\Support\Collection<int, \Creasi\Base\Models\Address> $collection
+ * @property-read \Illuminate\Support\Collection<int, \Creasi\Base\Database\Models\Address> $collection
  */
 class AddressCollection extends Collection
 {

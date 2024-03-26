@@ -3,8 +3,8 @@
 namespace Creasi\Base\Http\Requests\Employee;
 
 use Creasi\Base\Contracts\FormRequest as FormRequestContract;
-use Creasi\Base\Models\Contracts\Company;
-use Creasi\Base\Models\Enums\Gender;
+use Creasi\Base\Database\Models\Contracts\Company;
+use Creasi\Base\Enums\Gender;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 

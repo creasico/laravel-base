@@ -2,7 +2,7 @@
 
 namespace Workbench\Database\Factories;
 
-use Creasi\Base\Models\Factories\Concerns\WithIdentity;
+use Creasi\Base\Database\Factories\Concerns\WithIdentity;
 use Orchestra\Testbench\Factories\UserFactory as Factory;
 use Workbench\App\Models\User;
 

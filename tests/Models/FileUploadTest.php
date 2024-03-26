@@ -2,10 +2,10 @@
 
 namespace Creasi\Tests\Models;
 
-use Creasi\Base\Models\Business;
-use Creasi\Base\Models\Enums\FileUploadType;
-use Creasi\Base\Models\FileUpload;
-use Creasi\Base\Models\Personnel;
+use Creasi\Base\Database\Models\Business;
+use Creasi\Base\Database\Models\FileUpload;
+use Creasi\Base\Database\Models\Personnel;
+use Creasi\Base\Enums\FileUploadType;
 use Creasi\Tests\TestCase;
 use Illuminate\Http\UploadedFile;
 use PHPUnit\Framework\Attributes\Group;

@@ -2,9 +2,9 @@
 
 namespace Creasi\Tests\Http;
 
-use Creasi\Base\Models\Business;
-use Creasi\Base\Models\Enums\BusinessRelativeType;
-use Creasi\Base\Models\Personnel;
+use Creasi\Base\Database\Models\Business;
+use Creasi\Base\Database\Models\Personnel;
+use Creasi\Base\Enums\BusinessRelativeType;
 use Illuminate\Contracts\Routing\UrlRoutable;
 use Laravel\Sanctum\Sanctum;
 use PHPUnit\Framework\Attributes\Group;

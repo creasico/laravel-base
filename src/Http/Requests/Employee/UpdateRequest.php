@@ -3,7 +3,7 @@
 namespace Creasi\Base\Http\Requests\Employee;
 
 use Creasi\Base\Contracts\FormRequest as FormRequestContract;
-use Creasi\Base\Models\Contracts\Employee;
+use Creasi\Base\Database\Models\Contracts\Employee;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateRequest extends FormRequest implements FormRequestContract

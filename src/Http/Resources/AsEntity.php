@@ -2,11 +2,11 @@
 
 namespace Creasi\Base\Http\Resources;
 
-use Creasi\Base\Models\BusinessRelative;
-use Creasi\Base\Models\Contracts\Company;
-use Creasi\Base\Models\Contracts\Employee;
-use Creasi\Base\Models\Contracts\Stakeholder;
-use Creasi\Base\Models\Profile;
+use Creasi\Base\Database\Models\BusinessRelative;
+use Creasi\Base\Database\Models\Contracts\Company;
+use Creasi\Base\Database\Models\Contracts\Employee;
+use Creasi\Base\Database\Models\Contracts\Stakeholder;
+use Creasi\Base\Database\Models\Profile;
 
 trait AsEntity
 {
@@ -21,7 +21,7 @@ trait AsEntity
     }
 
     /**
-     * @param  \Creasi\Base\Models\Personnel|null  $entity
+     * @param  \Creasi\Base\Database\Models\Personnel|null  $entity
      */
     final protected function forPersonnel(?Employee $entity = null, bool $showProfile = true): array
     {
@@ -44,7 +44,7 @@ trait AsEntity
     }
 
     /**
-     * @param  \Creasi\Base\Models\Business|null  $entity
+     * @param  \Creasi\Base\Database\Models\Business|null  $entity
      */
     final protected function forCompany(?Company $entity = null): array
     {

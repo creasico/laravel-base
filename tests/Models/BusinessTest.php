@@ -2,13 +2,13 @@
 
 namespace Creasi\Tests\Models;
 
-use Creasi\Base\Models\Address;
-use Creasi\Base\Models\Business;
-use Creasi\Base\Models\Enums\BusinessRelativeType;
-use Creasi\Base\Models\Enums\EmploymentStatus;
-use Creasi\Base\Models\Enums\EmploymentType;
-use Creasi\Base\Models\FileUpload;
-use Creasi\Base\Models\Personnel;
+use Creasi\Base\Database\Models\Address;
+use Creasi\Base\Database\Models\Business;
+use Creasi\Base\Database\Models\FileUpload;
+use Creasi\Base\Database\Models\Personnel;
+use Creasi\Base\Enums\BusinessRelativeType;
+use Creasi\Base\Enums\EmploymentStatus;
+use Creasi\Base\Enums\EmploymentType;
 use Creasi\Tests\TestCase;
 use Illuminate\Http\UploadedFile;
 use PHPUnit\Framework\Attributes\Group;

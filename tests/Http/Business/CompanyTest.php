@@ -2,11 +2,11 @@
 
 namespace Creasi\Tests\Http\Business;
 
-use Creasi\Base\Models\Address;
-use Creasi\Base\Models\Business;
-use Creasi\Base\Models\Enums\BusinessRelativeType;
-use Creasi\Base\Models\Enums\FileUploadType;
-use Creasi\Base\Models\FileUpload;
+use Creasi\Base\Database\Models\Address;
+use Creasi\Base\Database\Models\Business;
+use Creasi\Base\Database\Models\FileUpload;
+use Creasi\Base\Enums\BusinessRelativeType;
+use Creasi\Base\Enums\FileUploadType;
 use Creasi\Tests\Http\TestCase;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;

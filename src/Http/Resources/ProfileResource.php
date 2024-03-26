@@ -2,13 +2,13 @@
 
 namespace Creasi\Base\Http\Resources;
 
-use Creasi\Base\Models\Enums\Education;
-use Creasi\Base\Models\Enums\TaxStatus;
+use Creasi\Base\Enums\Education;
+use Creasi\Base\Enums\TaxStatus;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 /**
- * @mixin \Creasi\Base\Models\User
+ * @mixin \Creasi\Base\Database\Models\User
  */
 class ProfileResource extends JsonResource
 {

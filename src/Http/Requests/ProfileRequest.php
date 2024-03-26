@@ -3,8 +3,8 @@
 namespace Creasi\Base\Http\Requests;
 
 use Creasi\Base\Contracts\FormRequest as FormRequestContract;
-use Creasi\Base\Models\Enums\Education;
-use Creasi\Base\Models\Enums\TaxStatus;
+use Creasi\Base\Enums\Education;
+use Creasi\Base\Enums\TaxStatus;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 

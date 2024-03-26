@@ -2,10 +2,10 @@
 
 namespace Creasi\Base;
 
-use Creasi\Base\Models\Address;
-use Creasi\Base\Models\Contracts;
-use Creasi\Base\Models\Entity;
-use Creasi\Base\Models\Enums\BusinessRelativeType;
+use Creasi\Base\Database\Models\Address;
+use Creasi\Base\Database\Models\Contracts;
+use Creasi\Base\Database\Models\Entity;
+use Creasi\Base\Enums\BusinessRelativeType;
 use Illuminate\Auth\Events\Login;
 use Illuminate\Auth\Notifications\ResetPassword;
 use Illuminate\Auth\Notifications\VerifyEmail;

@@ -1,0 +1,31 @@
+<?php
+
+namespace Creasi\Base\Enums;
+
+/**
+ * Only binary-type genders are supported here.
+ */
+enum AddressType: int
+{
+    use KeyableEnum;
+
+    /**
+     * Determine whether the address is actualy their residential address.
+     */
+    case Resident = 0;
+
+    /**
+     * Determine whether the address is as described in their legal document.
+     */
+    case Legal = 1;
+
+    public function isResident(): bool
+    {
+        return $this === self::Resident;
+    }
+
+    public function isLegal(): bool
+    {
+        return $this === self::Legal;
+    }
+}

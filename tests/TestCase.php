@@ -25,12 +25,4 @@ abstract class TestCase extends Orchestra
 
         return $this->currentUser;
     }
-
-    /**
-     * @param  \Illuminate\Foundation\Application  $app
-     */
-    protected function getEnvironmentSetUp($app): void
-    {
-        $app->useEnvironmentPath(\dirname(__DIR__));
-    }
 }

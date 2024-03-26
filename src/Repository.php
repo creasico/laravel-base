@@ -2,12 +2,12 @@
 
 namespace Creasi\Base;
 
-use Creasi\Base\Models\Contracts\Company;
-use Creasi\Base\Models\Contracts\Employee;
-use Creasi\Base\Models\Contracts\HasIdentity;
-use Creasi\Base\Models\Contracts\Stakeholder;
-use Creasi\Base\Models\Entity;
-use Creasi\Base\Models\Enums\BusinessRelativeType;
+use Creasi\Base\Database\Models\Contracts\Company;
+use Creasi\Base\Database\Models\Contracts\Employee;
+use Creasi\Base\Database\Models\Contracts\HasIdentity;
+use Creasi\Base\Database\Models\Contracts\Stakeholder;
+use Creasi\Base\Database\Models\Entity;
+use Creasi\Base\Enums\BusinessRelativeType;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Routing\Router;
 
@@ -61,7 +61,7 @@ class Repository
 
     public function resolveStakeholder(Company $company, BusinessRelativeType $type): Stakeholder
     {
-        /** @var \Creasi\Base\Models\BusinessRelative */
+        /** @var \Creasi\Base\Database\Models\BusinessRelative */
         $relative = $company->stakeholders()->newQuery()->with('stakeholder')->where([
             'type' => $type,
             'stakeholder_id' => (int) $this->router->input('stakeholder'),

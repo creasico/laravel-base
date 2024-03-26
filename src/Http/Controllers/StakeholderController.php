@@ -2,13 +2,13 @@
 
 namespace Creasi\Base\Http\Controllers;
 
+use Creasi\Base\Database\Models\Contracts\Company;
+use Creasi\Base\Database\Models\Contracts\Stakeholder;
+use Creasi\Base\Enums\BusinessRelativeType;
 use Creasi\Base\Http\Requests\Stakeholder\StoreRequest;
 use Creasi\Base\Http\Requests\Stakeholder\UpdateRequest;
 use Creasi\Base\Http\Resources\Stakeholder\StakeholderCollection;
 use Creasi\Base\Http\Resources\Stakeholder\StakeholderResource;
-use Creasi\Base\Models\Contracts\Company;
-use Creasi\Base\Models\Contracts\Stakeholder;
-use Creasi\Base\Models\Enums\BusinessRelativeType;
 use Illuminate\Http\Request;
 
 class StakeholderController extends Controller

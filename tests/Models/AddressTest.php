@@ -2,7 +2,7 @@
 
 namespace Creasi\Tests\Models;
 
-use Creasi\Base\Models\Address;
+use Creasi\Base\Database\Models\Address;
 use Creasi\Tests\TestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;

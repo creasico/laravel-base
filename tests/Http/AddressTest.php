@@ -2,7 +2,7 @@
 
 namespace Creasi\Tests\Http;
 
-use Creasi\Base\Models\Address;
+use Creasi\Base\Database\Models\Address;
 use Laravel\Sanctum\Sanctum;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Test;

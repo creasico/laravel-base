@@ -2,12 +2,12 @@
 
 namespace Creasi\Base\Http\Controllers;
 
+use Creasi\Base\Database\Models\Contracts\Company;
+use Creasi\Base\Database\Models\Contracts\Employee;
 use Creasi\Base\Http\Requests\Employee\StoreRequest;
 use Creasi\Base\Http\Requests\Employee\UpdateRequest;
 use Creasi\Base\Http\Resources\Employee\EmployeeCollection;
 use Creasi\Base\Http\Resources\Employee\EmployeeResource;
-use Creasi\Base\Models\Contracts\Company;
-use Creasi\Base\Models\Contracts\Employee;
 use Illuminate\Http\Request;
 
 class EmployeeController extends Controller

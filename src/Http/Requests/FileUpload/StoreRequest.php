@@ -3,8 +3,8 @@
 namespace Creasi\Base\Http\Requests\FileUpload;
 
 use Creasi\Base\Contracts\FormRequest as FormRequestContract;
-use Creasi\Base\Models\Contracts\HasFileUploads;
-use Creasi\Base\Models\Enums\FileUploadType;
+use Creasi\Base\Database\Models\Contracts\HasFileUploads;
+use Creasi\Base\Enums\FileUploadType;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 

@@ -1,7 +1,7 @@
 <?php
 
+use Creasi\Base\Enums\BusinessRelativeType;
 use Creasi\Base\Http\Controllers;
-use Creasi\Base\Models\Enums\BusinessRelativeType;
 use Illuminate\Support\Facades\Route;
 
 /*

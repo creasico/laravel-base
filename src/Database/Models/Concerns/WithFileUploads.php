@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Http\UploadedFile;
 
 /**
- * @mixin \Creasi\Base\Contracts\HasFileUploads
+ * @mixin \Creasi\Base\Database\Models\Contracts\HasFileUploads
  */
 trait WithFileUploads
 {

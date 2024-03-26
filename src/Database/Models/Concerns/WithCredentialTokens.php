@@ -11,7 +11,7 @@ use Laravel\Sanctum\NewAccessToken;
 use Laravel\Sanctum\Sanctum;
 
 /**
- * @mixin \Creasi\Base\Contracts\HasCredential
+ * @mixin \Creasi\Base\Database\Models\Contracts\HasCredential
  */
 trait WithCredentialTokens
 {

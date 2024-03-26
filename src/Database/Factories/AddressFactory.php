@@ -21,17 +21,19 @@ class AddressFactory extends Factory
     public function definition(): array
     {
         /** @var Village */
-        $village = Village::with('district', 'regency')->whereHas('province', function (Builder $query) {
-            $query->where('code', 33);
-        })->inRandomOrder()->first();
+        $village = Village::with('district', 'regency')
+            ->whereHas('province', fn (Builder $query) => $query->where('code', 33))
+            ->inRandomOrder()
+            ->first();
 
+        /** @var string */
         $types = config('creasi.base.address.types', AddressType::class);
 
         return [
             'type' => $this->faker->randomElement($types::cases()),
             'line' => $this->faker->streetAddress(),
             'rt' => $this->faker->numberBetween(1, 15),
-            'rw' => $this->faker->numerify(1, 10),
+            'rw' => $this->faker->numberBetween(1, 10),
             'village_code' => $village->code,
             'district_code' => $village->district->code,
             'regency_code' => $village->regency->code,

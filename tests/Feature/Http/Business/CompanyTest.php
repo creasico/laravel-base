@@ -1,12 +1,13 @@
 <?php
 
-namespace Creasi\Tests\Http\Business;
+namespace Creasi\Tests\Feature\Http\Business;
 
 use Creasi\Base\Database\Models\Address;
+use Creasi\Base\Database\Models\Business;
 use Creasi\Base\Database\Models\FileUpload;
-use Creasi\Base\Database\Models\Personnel;
 use Creasi\Base\Enums\FileUploadType;
-use Creasi\Tests\Http\TestCase;
+use Creasi\Base\Enums\StakeholderType;
+use Creasi\Tests\Feature\TestCase;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use Laravel\Sanctum\Sanctum;
@@ -14,26 +15,39 @@ use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Test;
 
 #[Group('api')]
-#[Group('employee')]
-class EmployeeTest extends TestCase
+#[Group('company')]
+class CompanyTest extends TestCase
 {
-    protected string $apiPath = 'employees';
+    protected string $apiPath = 'companies';
 
     private array $dataStructure = [
         'id',
         'avatar',
-        'fullname',
-        'nickname',
+        'legalname',
+        'aliasname',
         'email',
         'phone',
         'summary',
     ];
 
     #[Test]
-    public function should_able_to_retrieve_all_data(): void
+    public function should_receive_404_when_no_data_available(): void
     {
         Sanctum::actingAs($this->user());
-        Personnel::factory(2)->create();
+
+        $response = $this->getJson($this->getRoutePath());
+
+        $response->assertNotFound();
+    }
+
+    #[Test]
+    public function should_able_to_retrieve_all_data(): void
+    {
+        Sanctum::actingAs($user = $this->user());
+
+        $external = Business::factory()->createOne(['name' => 'Internal Company']);
+
+        $user->identity->employer->addStakeholder(StakeholderType::Subsidiary, $external);
 
         $response = $this->getJson($this->getRoutePath());
 
@@ -48,7 +62,8 @@ class EmployeeTest extends TestCase
     public function should_able_to_store_new_data(): void
     {
         Sanctum::actingAs($this->user());
-        $data = Personnel::factory()->raw();
+
+        $data = Business::factory()->raw();
 
         $response = $this->postJson($this->getRoutePath(), $data);
 
@@ -63,7 +78,7 @@ class EmployeeTest extends TestCase
     {
         Sanctum::actingAs($this->user());
 
-        $model = Personnel::factory()->createOne();
+        $model = Business::factory()->createOne();
 
         $response = $this->getJson($this->getRoutePath($model));
 
@@ -78,7 +93,7 @@ class EmployeeTest extends TestCase
     {
         Sanctum::actingAs($this->user());
 
-        $model = Personnel::factory()->createOne();
+        $model = Business::factory()->createOne();
 
         $response = $this->getJson($this->getRoutePath($model, 'addresses'));
 
@@ -90,8 +105,8 @@ class EmployeeTest extends TestCase
     {
         Sanctum::actingAs($this->user());
 
-        $model = Personnel::factory()->createOne();
         $data = Address::factory()->raw();
+        $model = Business::factory()->createOne();
 
         $response = $this->postJson($this->getRoutePath($model, 'addresses'), $data);
 
@@ -103,9 +118,7 @@ class EmployeeTest extends TestCase
     {
         Sanctum::actingAs($this->user());
 
-        $model = Personnel::factory()->createOne();
-
-        $model->addresses()->saveMany(Address::factory(2)->create());
+        $model = Business::factory()->withAddress()->createOne();
 
         $response = $this->getJson($this->getRoutePath($model, 'addresses'));
 
@@ -117,7 +130,7 @@ class EmployeeTest extends TestCase
     {
         Sanctum::actingAs($this->user());
 
-        $model = Personnel::factory()->createOne();
+        $model = Business::factory()->createOne();
 
         $response = $this->getJson($this->getRoutePath($model, 'files'));
 
@@ -130,7 +143,7 @@ class EmployeeTest extends TestCase
         Storage::fake();
         Sanctum::actingAs($this->user());
 
-        $model = Personnel::factory()->createOne();
+        $model = Business::factory()->createOne();
         $data = FileUpload::factory()->withoutFile()->raw();
         $data['upload'] = UploadedFile::fake()->create('file.pdf');
         $data['type'] = FileUploadType::Document->value;
@@ -145,7 +158,7 @@ class EmployeeTest extends TestCase
     {
         Sanctum::actingAs($this->user());
 
-        $model = Personnel::factory()->withFileUpload(FileUploadType::Document)->createOne();
+        $model = Business::factory()->withFileUpload(FileUploadType::Document)->createOne();
 
         $response = $this->getJson($this->getRoutePath($model, 'files'));
 
@@ -157,7 +170,7 @@ class EmployeeTest extends TestCase
     {
         Sanctum::actingAs($this->user());
 
-        $model = Personnel::factory()->createOne();
+        $model = Business::factory()->createOne();
 
         $response = $this->putJson($this->getRoutePath($model), $model->toArray());
 
@@ -172,7 +185,7 @@ class EmployeeTest extends TestCase
     {
         Sanctum::actingAs($this->user());
 
-        $model = Personnel::factory()->createOne();
+        $model = Business::factory()->createOne();
 
         $response = $this->deleteJson($this->getRoutePath($model));
 

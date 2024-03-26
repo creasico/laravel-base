@@ -38,9 +38,6 @@ class ProfileRequest extends FormRequest implements FormRequestContract
             'alias' => $data['nickname'],
             'phone' => $data['phone'],
             'summary' => $data['summary'],
-        ]);
-
-        $user->identity->profile()->update([
             'prefix' => $data['prefix'],
             'suffix' => $data['suffix'],
             'education' => $this->enum('education', Education::class),
@@ -48,7 +45,7 @@ class ProfileRequest extends FormRequest implements FormRequestContract
             'tax_id' => $data['tax_id'],
         ]);
 
-        $user->load('identity.profile');
+        $user->load('identity');
 
         return $user;
     }

@@ -6,14 +6,49 @@ enum EmploymentStatus: int
 {
     use KeyableEnum;
 
-    case Candidate = 0;
-    case Probation = 1;
-    case Contract = 2;
-    case Permanent = 3;
+    /**
+     * Whether the personnel is not employeed.
+     */
+    case Unemployeed = 0;
 
-    public function isCandidate(): bool
+    /**
+     * Whether the personnel still active as fulltime employee.
+     */
+    case Fulltime = 1;
+
+    /**
+     * Whether the personnel still active as partime employee.
+     */
+    case Parttime = 2;
+
+    /**
+     * Whether the personnel still being probation.
+     */
+    case Probation = 3;
+
+    /**
+     * Whether the personnel still being probation.
+     */
+    case Internship = 4;
+
+    /**
+     * Whether the personnel is a freelancer.
+     */
+    case Freelance = 5;
+
+    public function isUnemployeed(): bool
     {
-        return $this === self::Candidate;
+        return $this === self::Unemployeed;
+    }
+
+    public function isFulltime(): bool
+    {
+        return $this === self::Fulltime;
+    }
+
+    public function isParttime(): bool
+    {
+        return $this === self::Parttime;
     }
 
     public function isProbation(): bool
@@ -21,13 +56,13 @@ enum EmploymentStatus: int
         return $this === self::Probation;
     }
 
-    public function isContract(): bool
+    public function isInternship(): bool
     {
-        return $this === self::Contract;
+        return $this === self::Internship;
     }
 
-    public function isPermanent(): bool
+    public function isFreelance(): bool
     {
-        return $this === self::Permanent;
+        return $this === self::Freelance;
     }
 }

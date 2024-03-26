@@ -46,29 +46,20 @@ erDiagram
         unsignedBigInt id PK
         unsignedBigInt user_id FK
         varchar(150) name
+        varchar(20) prefix
+        varchar(20) suffix
         varchar(50) alias
+        char(16) nik UK
         varchar email UK
         varchar(20) phone
-        char(1) gender
-        varchar(200) summary
-        timestamp created_at
-        timestamp updated_at
-        timestamp deleted_at
-    }
-    
-    personnels ||..|| profiles : identity
-    profiles {
-        unsignedBigInt id PK
-        morphs identity
-        char(16) nik UK
-        varchar prefix
-        varchar suffix
         date birth_date
         char(4) birth_place_code
+        char(1) gender
         unsignedSmallInt education
         unsignedSmallInt religion
         unsignedSmallInt tax_status
         varchar(16) tax_id
+        varchar(200) summary
         timestamp created_at
         timestamp updated_at
         timestamp deleted_at
@@ -329,7 +320,7 @@ classDiagram
 **Note :**
 Field `type` and `status` shouldn't be detachable so we can maintain historical changes of the personnel in the company.
 
-## Personnel and its Profile
+## Personnel and Profile
 
 Every individuals should have their own identity, it also can helps a business to identify better of their individuals. But there's a circumstance that a business doesn't really care about that, all they need is just a way to communicate with the individuals, and that's it.
 
@@ -337,17 +328,12 @@ Meanwhile, a business might want to be able to also communicate with their perso
 
 ```mermaid
 classDiagram
-    Personnel .. Profile : identity
     Personnel ..> PersonnelRelative : relative
     PersonnelRelative --> Personnel : personnel
 
     class Personnel {
         int id
         profile() null|Profile
-    }
-    class Profile {
-        int id
-        identity() Personnel
     }
     class PersonnelRelative {
         int personnel_id

@@ -1,6 +1,6 @@
 <?php
 
-namespace Creasi\Tests\Models;
+namespace Creasi\Tests\Unit\Models;
 
 use Creasi\Base\Database\Models\Business;
 use Creasi\Base\Database\Models\FileUpload;

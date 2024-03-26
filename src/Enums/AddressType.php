@@ -2,20 +2,17 @@
 
 namespace Creasi\Base\Enums;
 
-/**
- * Only binary-type genders are supported here.
- */
 enum AddressType: int
 {
     use KeyableEnum;
 
     /**
-     * Determine whether the address is actualy their residential address.
+     * Whether the address is actual residential address.
      */
     case Resident = 0;
 
     /**
-     * Determine whether the address is as described in their legal document.
+     * Whether the address is actual legal document.
      */
     case Legal = 1;
 

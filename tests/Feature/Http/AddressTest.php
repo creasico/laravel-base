@@ -1,35 +1,32 @@
 <?php
 
-namespace Creasi\Tests\Http;
+namespace Creasi\Tests\Feature\Http;
 
-use Creasi\Base\Database\Models\Business;
-use Creasi\Base\Database\Models\Personnel;
-use Creasi\Base\Enums\BusinessRelativeType;
-use Illuminate\Contracts\Routing\UrlRoutable;
+use Creasi\Base\Database\Models\Address;
+use Creasi\Tests\Feature\TestCase;
 use Laravel\Sanctum\Sanctum;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Test;
 
 #[Group('api')]
-#[Group('stakeholder')]
-abstract class StakeholderTestCase extends TestCase
+#[Group('address')]
+class AddressTest extends TestCase
 {
+    protected string $apiPath = 'addresses';
+
     private array $dataStructure = [
         'id',
-        'avatar',
-        'email',
-        'phone',
+        'type',
+        'line',
+        'rt',
+        'rw',
+        'village' => ['code', 'name'],
+        'district' => ['code', 'name'],
+        'regency' => ['code', 'name'],
+        'province' => ['code', 'name'],
+        'postal_code',
         'summary',
     ];
-
-    abstract protected function getRelativeType(): BusinessRelativeType;
-
-    final protected function getRoutePath(string|UrlRoutable ...$suffixs): string
-    {
-        $route = $this->getRelativeType()->key()->plural();
-
-        return parent::getRoutePath((string) $route, ...$suffixs);
-    }
 
     #[Test]
     public function should_receive_404_when_no_data_available(): void
@@ -46,18 +43,15 @@ abstract class StakeholderTestCase extends TestCase
     {
         Sanctum::actingAs($user = $this->user());
 
-        $company = Business::factory()->createOne(['name' => 'External Company']);
-        $personal = Personnel::factory()->createOne(['name' => 'External Personal']);
-
-        $user->identity->company->addStakeholder($this->getRelativeType(), $company);
-        $user->identity->company->addStakeholder($this->getRelativeType(), $personal);
+        $model = Address::factory()->createOne();
+        $user->identity->addresses()->save($model);
 
         $response = $this->getJson($this->getRoutePath());
 
         $response->assertOk()->assertJsonStructure([
             'data' => [$this->dataStructure],
             'links' => [],
-            'meta' => [],
+            'meta' => ['types'],
         ]);
     }
 
@@ -66,13 +60,13 @@ abstract class StakeholderTestCase extends TestCase
     {
         Sanctum::actingAs($this->user());
 
-        $data = Business::factory()->raw();
+        $data = Address::factory()->raw();
 
         $response = $this->postJson($this->getRoutePath(), $data);
 
         $response->assertCreated()->assertJsonStructure([
             'data' => $this->dataStructure,
-            'meta' => [],
+            'meta' => ['types'],
         ]);
     }
 
@@ -81,32 +75,29 @@ abstract class StakeholderTestCase extends TestCase
     {
         Sanctum::actingAs($user = $this->user());
 
-        $model = Business::factory()->createOne();
-
-        $user->identity->company->addStakeholder($this->getRelativeType(), $model);
+        $model = Address::factory()->createOne();
+        $user->identity->addresses()->save($model);
 
         $response = $this->getJson($this->getRoutePath($model));
 
         $response->assertOk()->assertJsonStructure([
             'data' => $this->dataStructure,
-            'meta' => [],
+            'meta' => ['types'],
         ]);
     }
 
     #[Test]
     public function should_able_to_update_existing_data(): void
     {
-        Sanctum::actingAs($user = $this->user());
+        Sanctum::actingAs($this->user());
 
-        $model = Business::factory()->createOne();
-
-        $user->identity->company->addStakeholder($this->getRelativeType(), $model);
+        $model = Address::factory()->createOne();
 
         $response = $this->putJson($this->getRoutePath($model), $model->toArray());
 
         $response->assertOk()->assertJsonStructure([
             'data' => $this->dataStructure,
-            'meta' => [],
+            'meta' => ['types'],
         ]);
     }
 
@@ -115,9 +106,8 @@ abstract class StakeholderTestCase extends TestCase
     {
         Sanctum::actingAs($user = $this->user());
 
-        $model = Business::factory()->createOne();
-
-        $user->identity->company->addStakeholder($this->getRelativeType(), $model);
+        $model = Address::factory()->createOne();
+        $user->identity->addresses()->save($model);
 
         $response = $this->deleteJson($this->getRoutePath($model));
 

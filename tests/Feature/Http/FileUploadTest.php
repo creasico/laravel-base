@@ -1,9 +1,10 @@
 <?php
 
-namespace Creasi\Tests\Http;
+namespace Creasi\Tests\Feature\Http;
 
 use Creasi\Base\Database\Models\FileUpload;
 use Creasi\Base\Enums\FileUploadType;
+use Creasi\Tests\Feature\TestCase;
 use Illuminate\Http\UploadedFile;
 use Laravel\Sanctum\Sanctum;
 use PHPUnit\Framework\Attributes\Group;

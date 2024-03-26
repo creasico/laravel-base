@@ -6,7 +6,7 @@ use Creasi\Base\Database\Models\Personnel;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
 /**
- * @mixin \Creasi\Base\Contracts\HasIdentity
+ * @mixin \Creasi\Base\Database\Models\Contracts\HasIdentity
  */
 trait WithIdentity
 {

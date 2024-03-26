@@ -1,7 +1,8 @@
 <?php
 
-namespace Creasi\Tests\Http;
+namespace Creasi\Tests\Feature\Http;
 
+use Creasi\Tests\Feature\TestCase;
 use Laravel\Sanctum\Sanctum;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Test;

@@ -9,7 +9,7 @@ use Illuminate\Http\UploadedFile;
 /**
  * @property-read null|\Creasi\Base\Database\Models\FileUpload $avatar
  *
- * @mixin \Creasi\Base\Contracts\HasFileUploads
+ * @mixin \Creasi\Base\Database\Models\Contracts\HasFileUploads
  */
 trait WithAvatar
 {
@@ -40,6 +40,8 @@ trait WithAvatar
 
     public function avatarFile()
     {
-        return $this->files()->wherePivot('type', '=', FileUploadType::Avatar);
+        return $this->files()
+            ->wherePivot('type', '=', FileUploadType::Avatar)
+            ->latest();
     }
 }

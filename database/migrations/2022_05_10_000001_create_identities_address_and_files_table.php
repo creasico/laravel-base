@@ -11,24 +11,6 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('profiles', function (Blueprint $table) {
-            $table->id();
-            $table->nullableMorphs('identity');
-
-            $table->char('nik', 16)->unique()->nullable();
-            $table->string('prefix', 20)->nullable();
-            $table->string('suffix', 20)->nullable();
-            $table->date('birth_date')->nullable();
-            $table->char('birth_place_code', 4)->nullable();
-            $table->string('education', 3)->nullable();
-            $table->unsignedTinyInteger('religion')->nullable();
-            $table->unsignedSmallInteger('tax_status')->nullable();
-            $table->string('tax_id', 16)->nullable();
-
-            $table->timestamps();
-            $table->softDeletes();
-        });
-
         Schema::create('addresses', function (Blueprint $table) {
             $table->id();
             $table->nullableMorphs('addressable');
@@ -81,6 +63,5 @@ return new class extends Migration
         Schema::dropIfExists('file_attached');
         Schema::dropIfExists('file_uploads');
         Schema::dropIfExists('addresses');
-        Schema::dropIfExists('profiles');
     }
 };

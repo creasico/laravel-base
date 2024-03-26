@@ -1,31 +1,36 @@
 <?php
 
-namespace Creasi\Tests\Http;
+namespace Creasi\Tests\Feature\Http;
 
-use Creasi\Base\Database\Models\Address;
+use Creasi\Base\Database\Models\Business;
+use Creasi\Base\Database\Models\Personnel;
+use Creasi\Base\Enums\StakeholderType;
+use Creasi\Tests\Feature\TestCase;
+use Illuminate\Contracts\Routing\UrlRoutable;
 use Laravel\Sanctum\Sanctum;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Test;
 
 #[Group('api')]
-#[Group('address')]
-class AddressTest extends TestCase
+#[Group('stakeholder')]
+abstract class StakeholderTestCase extends TestCase
 {
-    protected string $apiPath = 'addresses';
-
     private array $dataStructure = [
         'id',
-        'type',
-        'line',
-        'rt',
-        'rw',
-        'village' => ['code', 'name'],
-        'district' => ['code', 'name'],
-        'regency' => ['code', 'name'],
-        'province' => ['code', 'name'],
-        'postal_code',
+        'avatar',
+        'email',
+        'phone',
         'summary',
     ];
+
+    abstract protected function getRelativeType(): StakeholderType;
+
+    final protected function getRoutePath(string|UrlRoutable ...$suffixs): string
+    {
+        $route = $this->getRelativeType()->key()->plural();
+
+        return parent::getRoutePath((string) $route, ...$suffixs);
+    }
 
     #[Test]
     public function should_receive_404_when_no_data_available(): void
@@ -42,15 +47,18 @@ class AddressTest extends TestCase
     {
         Sanctum::actingAs($user = $this->user());
 
-        $model = Address::factory()->createOne();
-        $user->identity->addresses()->save($model);
+        $company = Business::factory()->createOne(['name' => 'External Company']);
+        $personal = Personnel::factory()->createOne(['name' => 'External Personal']);
+
+        $user->identity->employer->addStakeholder($this->getRelativeType(), $company);
+        $user->identity->employer->addStakeholder($this->getRelativeType(), $personal);
 
         $response = $this->getJson($this->getRoutePath());
 
         $response->assertOk()->assertJsonStructure([
             'data' => [$this->dataStructure],
             'links' => [],
-            'meta' => ['types'],
+            'meta' => [],
         ]);
     }
 
@@ -59,13 +67,13 @@ class AddressTest extends TestCase
     {
         Sanctum::actingAs($this->user());
 
-        $data = Address::factory()->raw();
+        $data = Business::factory()->raw();
 
         $response = $this->postJson($this->getRoutePath(), $data);
 
         $response->assertCreated()->assertJsonStructure([
             'data' => $this->dataStructure,
-            'meta' => ['types'],
+            'meta' => [],
         ]);
     }
 
@@ -74,29 +82,32 @@ class AddressTest extends TestCase
     {
         Sanctum::actingAs($user = $this->user());
 
-        $model = Address::factory()->createOne();
-        $user->identity->addresses()->save($model);
+        $model = Business::factory()->createOne();
+
+        $user->identity->employer->addStakeholder($this->getRelativeType(), $model);
 
         $response = $this->getJson($this->getRoutePath($model));
 
         $response->assertOk()->assertJsonStructure([
             'data' => $this->dataStructure,
-            'meta' => ['types'],
+            'meta' => [],
         ]);
     }
 
     #[Test]
     public function should_able_to_update_existing_data(): void
     {
-        Sanctum::actingAs($this->user());
+        Sanctum::actingAs($user = $this->user());
 
-        $model = Address::factory()->createOne();
+        $model = Business::factory()->createOne();
+
+        $user->identity->employer->addStakeholder($this->getRelativeType(), $model);
 
         $response = $this->putJson($this->getRoutePath($model), $model->toArray());
 
         $response->assertOk()->assertJsonStructure([
             'data' => $this->dataStructure,
-            'meta' => ['types'],
+            'meta' => [],
         ]);
     }
 
@@ -105,8 +116,9 @@ class AddressTest extends TestCase
     {
         Sanctum::actingAs($user = $this->user());
 
-        $model = Address::factory()->createOne();
-        $user->identity->addresses()->save($model);
+        $model = Business::factory()->createOne();
+
+        $user->identity->employer->addStakeholder($this->getRelativeType(), $model);
 
         $response = $this->deleteJson($this->getRoutePath($model));
 

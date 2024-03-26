@@ -24,4 +24,12 @@ enum Gender: string
             self::Female => Person::GENDER_FEMALE,
         };
     }
+
+    public function inverted(): self
+    {
+        return match ($this) {
+            self::Male => self::Female,
+            self::Female => self::Male,
+        };
+    }
 }

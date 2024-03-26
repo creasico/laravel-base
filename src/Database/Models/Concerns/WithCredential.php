@@ -5,7 +5,7 @@ namespace Creasi\Base\Database\Models\Concerns;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
- * @mixin \Creasi\Base\Contracts\HasCredential
+ * @mixin \Creasi\Base\Database\Models\Contracts\HasCredential
  */
 trait WithCredential
 {

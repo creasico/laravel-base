@@ -1,6 +1,6 @@
 <?php
 
-namespace Creasi\Tests\Models;
+namespace Creasi\Tests\Unit\Models;
 
 use Creasi\Base\Database\Models\Address;
 use Creasi\Base\Database\Models\FileUpload;
@@ -19,6 +19,7 @@ class PersonnelTest extends TestCase
     #[Test]
     public function should_have_addresses()
     {
+        /** @var Personnel */
         $person = Personnel::factory()->withAddress()->createOne();
 
         $this->assertCount(1, $person->addresses);
@@ -29,6 +30,7 @@ class PersonnelTest extends TestCase
     #[Test]
     public function should_have_avatar_image()
     {
+        /** @var Personnel */
         $person = Personnel::factory()->createOne();
 
         $avatar = $person->setAvatar(
@@ -42,7 +44,9 @@ class PersonnelTest extends TestCase
     #[Test]
     public function should_have_relatives()
     {
+        /** @var Personnel */
         $person = Personnel::factory()->createOne();
+        /** @var Personnel */
         $relative = Personnel::factory()->createOne();
 
         $person->addRelative($relative, PersonnelRelativeStatus::Parent);

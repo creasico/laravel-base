@@ -2,8 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Creasi\Tests;
+namespace Creasi\Tests\Unit;
 
+use Creasi\Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Facades\Route;
 use Orchestra\Testbench\Attributes\DefineEnvironment;

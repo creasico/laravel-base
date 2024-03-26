@@ -4,7 +4,7 @@ namespace Creasi\Base\Http\Requests\Stakeholder;
 
 use Creasi\Base\Contracts\FormRequest as FormRequestContract;
 use Creasi\Base\Database\Models\Contracts\Company;
-use Creasi\Base\Enums\BusinessRelativeType;
+use Creasi\Base\Enums\StakeholderType;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -24,7 +24,7 @@ class StoreRequest extends FormRequest implements FormRequestContract
         ];
     }
 
-    public function fulfill(Company $company, BusinessRelativeType $type)
+    public function fulfill(Company $company, StakeholderType $type)
     {
         /** @var \Creasi\Base\Database\Models\Entity */
         $entity = $company->newInstance($this->validated());

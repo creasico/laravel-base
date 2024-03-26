@@ -1,6 +1,6 @@
 <?php
 
-namespace Creasi\Tests\Http;
+namespace Creasi\Tests\Feature;
 
 use Creasi\Tests\TestCase as BaseTestCase;
 use Illuminate\Contracts\Routing\UrlRoutable;

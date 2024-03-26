@@ -3,12 +3,13 @@
 namespace Creasi\Base\Database\Models\Concerns;
 
 use Creasi\Base\Database\Models\Business;
-use Creasi\Base\Database\Models\Employment;
+use Creasi\Base\Database\Models\BusinessRelative;
+use Creasi\Base\Enums\StakeholderType;
 use Illuminate\Database\Eloquent\Casts\Attribute;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\MorphToMany;
 
 /**
- * @mixin \Creasi\Base\Contracts\Employee
+ * @mixin \Creasi\Base\Database\Models\Contracts\Employee
  */
 trait AsEmployee
 {
@@ -17,37 +18,59 @@ trait AsEmployee
      */
     final protected function initializeAsEmployee(): void
     {
-        $this->append('company');
+        $this->append('employer');
 
-        $this->makeHidden('primaryCompany');
+        $this->makeHidden('primaryEmployer');
     }
 
     /**
      * {@inheritdoc}
      */
-    public function employers(): BelongsToMany
+    public function employer(): Attribute
     {
-        return $this->belongsToMany(Business::class, 'employments', 'employee_id', 'employer_id')
-            ->withPivot('is_primary', 'type', 'status', 'start_date', 'finish_date')
-            ->using(Employment::class)
+        $this->loadMissing('primaryEmployer');
+
+        return Attribute::get(fn () => $this->primaryEmployer?->first());
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function businessRelatives()
+    {
+        return $this->morphToMany(Business::class, 'stakeholder', 'business_relatives', 'business_id', 'stakeholder_id')
+            ->using(BusinessRelative::class)
+            ->withPivot('type', 'code', 'status', 'start_date', 'finish_date');
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function companies(): MorphToMany
+    {
+        return $this->businessRelatives()
+            ->wherePivot('type', '=', StakeholderType::Owner)
+            ->as('ownership');
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function employers(): MorphToMany
+    {
+        return $this->businessRelatives()
+            ->wherePivot('type', '=', StakeholderType::Employee)
+            ->withPivot('is_primary', 'employment_status')
             ->as('employment');
     }
 
     /**
      * {@inheritdoc}
      */
-    public function company(): Attribute
+    public function primaryEmployer(): MorphToMany
     {
-        $this->loadMissing('primaryCompany');
-
-        return Attribute::get(fn () => $this->primaryCompany?->first());
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function primaryCompany(): BelongsToMany
-    {
-        return $this->employers()->wherePivot('is_primary', '=', true);
+        return $this->employers()
+            ->wherePivot('is_primary', '=', true)
+            ->latest();
     }
 }

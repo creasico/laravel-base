@@ -4,31 +4,62 @@ namespace Creasi\Base\Database\Models;
 
 use Creasi\Base\Database\Models\Concerns\AsEmployee;
 use Creasi\Base\Database\Models\Concerns\WithCredential;
-use Creasi\Base\Database\Models\Concerns\WithProfile;
+use Creasi\Base\Database\Models\Concerns\WithTaxInfo;
 use Creasi\Base\Database\Models\Contracts\Employee;
 use Creasi\Base\Database\Models\Contracts\HasCredential;
-use Creasi\Base\Database\Models\Contracts\HasProfile;
+use Creasi\Base\Database\Models\Contracts\HasTaxInfo;
+use Creasi\Base\Enums\Education;
 use Creasi\Base\Enums\Gender;
 use Creasi\Base\Enums\PersonnelRelativeStatus;
+use Creasi\Base\Enums\Religion;
+use Creasi\Nusa\Models\Concerns\WithRegency;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 /**
+ * @property null|string $nik
+ * @property null|string $prefix
+ * @property null|string $suffix
+ * @property null|\Carbon\CarbonImmutable $birth_date
+ * @property null|int $birth_place_code
+ * @property null|Education $education
+ * @property null|Religion $religion
+ * @property null|string $summary
+ * @property-read null|Regency $birthPlace
  * @property-read ?PersonnelRelative $relative
  * @property-read \Illuminate\Database\Eloquent\Collection<int, Personnel> $relatives
  * @property-read BusinessRelative $stakeholder
  *
  * @method static \Creasi\Base\Database\Factories\PersonnelFactory<Personnel> factory()
  */
-class Personnel extends Entity implements Employee, HasCredential, HasProfile
+class Personnel extends Entity implements Employee, HasCredential, HasTaxInfo
 {
     use AsEmployee;
     use WithCredential;
-    use WithProfile;
+    use WithRegency {
+        regency as birthPlace;
+    }
+    use WithTaxInfo;
 
-    protected $fillable = ['gender'];
+    protected $fillable = [
+        'nik',
+        'prefix',
+        'suffix',
+        'birth_date',
+        'birth_place_code',
+        'education',
+        'religion',
+        'gender',
+    ];
 
     protected $casts = [
+        'birth_date' => 'immutable_date',
+        'birth_place_code' => 'int',
+        'education' => Education::class,
         'gender' => Gender::class,
+        'religion' => Religion::class,
     ];
+
+    protected $regencyKey = 'birth_place_code';
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany|static
@@ -48,13 +79,58 @@ class Personnel extends Entity implements Employee, HasCredential, HasProfile
         ]);
     }
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\MorphToMany|BusinessRelative
-     */
-    public function stakeholders()
+    public function parents(): BelongsToMany
     {
-        return $this->morphToMany(Business::class, 'stakeholder', 'company_relatives', 'company_id', 'stakeholder_id')
-            ->withPivot('type')
-            ->as('stakeholder');
+        return $this->relatives()
+            ->wherePivot('status', PersonnelRelativeStatus::Parent);
+    }
+
+    public function children(): BelongsToMany
+    {
+        return $this->relatives()
+            ->wherePivot('status', PersonnelRelativeStatus::Child);
+    }
+
+    public function spouse(): BelongsToMany
+    {
+        return $this->relatives()
+            ->wherePivot('status', PersonnelRelativeStatus::Spouse)
+            ->where('gender', '=', $this->gender->inverted());
+    }
+
+    public function siblings(): BelongsToMany
+    {
+        return $this->relatives()
+            ->wherePivot('status', PersonnelRelativeStatus::Sibling);
+    }
+
+    public function siblingsChildren(): BelongsToMany
+    {
+        return $this->relatives()
+            ->wherePivot('status', PersonnelRelativeStatus::SiblingsChild);
+    }
+
+    public function parentsSiblings(): BelongsToMany
+    {
+        return $this->relatives()
+            ->wherePivot('status', PersonnelRelativeStatus::ParentsSibling);
+    }
+
+    public function grandParents(): BelongsToMany
+    {
+        return $this->relatives()
+            ->wherePivot('status', PersonnelRelativeStatus::Grandparent);
+    }
+
+    public function grandChildren(): BelongsToMany
+    {
+        return $this->relatives()
+            ->wherePivot('status', PersonnelRelativeStatus::Grandchild);
+    }
+
+    public function cousins(): BelongsToMany
+    {
+        return $this->relatives()
+            ->wherePivot('status', PersonnelRelativeStatus::Cousin);
     }
 }

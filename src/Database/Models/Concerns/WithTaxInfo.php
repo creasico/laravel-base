@@ -5,7 +5,7 @@ namespace Creasi\Base\Database\Models\Concerns;
 use Creasi\Base\Enums\TaxStatus;
 
 /**
- * @mixin \Creasi\Base\Contracts\HasTaxInfo
+ * @mixin \Creasi\Base\Database\Models\Contracts\HasTaxInfo
  */
 trait WithTaxInfo
 {

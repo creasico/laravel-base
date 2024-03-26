@@ -30,6 +30,6 @@ class EmployeeResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        return $this->forPersonnel($this->resource, $this->resource->relationLoaded('profile'));
+        return $this->forPersonnel($this->resource);
     }
 }

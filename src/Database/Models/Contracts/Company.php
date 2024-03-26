@@ -3,13 +3,11 @@
 namespace Creasi\Base\Database\Models\Contracts;
 
 use Creasi\Base\Database\Models\Entity;
-use Creasi\Base\Enums\BusinessRelativeType;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Creasi\Base\Enums\StakeholderType;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 
 /**
- * @property-read \Creasi\Base\Database\Models\Employment $employment
  * @property-read \Illuminate\Database\Eloquent\Collection<int, Employee> $employees
  * @property-read \Illuminate\Database\Eloquent\Collection<int, Personnel> $individualRelatives
  * @property-read \Illuminate\Database\Eloquent\Collection<int, static> $companyRelatives
@@ -18,9 +16,9 @@ use Illuminate\Database\Eloquent\Relations\MorphToMany;
 interface Company extends Stakeholder
 {
     /**
-     * @return BelongsToMany|Employee
+     * @return MorphToMany|Employee
      */
-    public function employees(): BelongsToMany;
+    public function employees(): MorphToMany;
 
     /**
      * @return MorphToMany|BusinessRelative
@@ -37,5 +35,5 @@ interface Company extends Stakeholder
      */
     public function stakeholders(): HasMany;
 
-    public function addStakeholder(BusinessRelativeType $type, Entity $stakeholder): static;
+    public function addStakeholder(StakeholderType $type, Entity $stakeholder): static;
 }

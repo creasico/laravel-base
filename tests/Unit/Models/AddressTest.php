@@ -1,6 +1,6 @@
 <?php
 
-namespace Creasi\Tests\Models;
+namespace Creasi\Tests\Unit\Models;
 
 use Creasi\Base\Database\Models\Address;
 use Creasi\Tests\TestCase;
@@ -23,6 +23,7 @@ class AddressTest extends TestCase
     #[DataProvider('sampleData')]
     public function should_normalize_rt_rw_value(int $rt, int $rw, array $expected): void
     {
+        /** @var Address */
         $model = Address::factory()->createOne([
             'rt' => $rt,
             'rw' => $rw,

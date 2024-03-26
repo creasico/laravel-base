@@ -5,7 +5,7 @@ namespace Creasi\Base;
 use Creasi\Base\Database\Models\Address;
 use Creasi\Base\Database\Models\Contracts;
 use Creasi\Base\Database\Models\Entity;
-use Creasi\Base\Enums\BusinessRelativeType;
+use Creasi\Base\Enums\StakeholderType;
 use Illuminate\Auth\Events\Login;
 use Illuminate\Auth\Notifications\ResetPassword;
 use Illuminate\Auth\Notifications\VerifyEmail;
@@ -173,7 +173,7 @@ class ServiceProvider extends IlluminateServiceProvider
             return $app->call([$repo, 'resolveStakeholder']);
         });
 
-        $this->app->bind(BusinessRelativeType::class, function ($app) {
+        $this->app->bind(StakeholderType::class, function ($app) {
             $repo = $app->make(Repository::class);
 
             return $app->call([$repo, 'resolveBusinessRelativeType']);
@@ -197,7 +197,7 @@ class ServiceProvider extends IlluminateServiceProvider
         return [
             'creasi.base.user_model',
             'creasi.base.route_home',
-            BusinessRelativeType::class,
+            StakeholderType::class,
             Contracts\Company::class,
             Contracts\Employee::class,
             Contracts\Stakeholder::class,

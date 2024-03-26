@@ -12,7 +12,7 @@ trait WithIdentity
     public function withIdentity(?\Closure $cb = null): static
     {
         if ($cb === null) {
-            $cb = fn ($identity) => $identity->withProfile();
+            $cb = fn ($identity) => $identity;
         }
 
         return $this->has($cb(Personnel::factory()), 'identity');

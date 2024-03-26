@@ -6,7 +6,6 @@ use Creasi\Base\Database\Models\BusinessRelative;
 use Creasi\Base\Database\Models\Contracts\Company;
 use Creasi\Base\Database\Models\Contracts\Employee;
 use Creasi\Base\Database\Models\Contracts\Stakeholder;
-use Creasi\Base\Database\Models\Profile;
 
 trait AsEntity
 {
@@ -23,24 +22,31 @@ trait AsEntity
     /**
      * @param  \Creasi\Base\Database\Models\Personnel|null  $entity
      */
-    final protected function forPersonnel(?Employee $entity = null, bool $showProfile = true): array
+    final protected function forPersonnel(?Employee $entity = null): array
     {
-        $arr = [
-            $entity->getKeyName() => $entity->getKey(),
-            'avatar' => $entity?->avatar?->only('url', 'title'),
-            'fullname' => $entity?->name,
-            'nickname' => $entity?->alias,
-            'gender' => $entity?->gender?->toArray(),
-            'email' => $entity?->email,
-            'phone' => $entity?->phone,
-            'summary' => $entity?->summary,
-        ];
-
-        if ($showProfile && $profile = $entity?->profile) {
-            $arr = \array_merge($arr, $this->forProfile($profile));
+        if (! $entity) {
+            return [];
         }
 
-        return $arr;
+        return [
+            $entity->getKeyName() => $entity->getKey(),
+            'avatar' => $entity->avatar?->only('url', 'title'),
+            'fullname' => $entity->name,
+            'nickname' => $entity->alias,
+            'gender' => $entity->gender?->toArray(),
+            'email' => $entity->email,
+            'phone' => $entity->phone,
+            'summary' => $entity->summary,
+            'nik' => $entity->nik,
+            'prefix' => $entity->prefix,
+            'suffix' => $entity->suffix,
+            'birth_date' => $entity->birth_date,
+            'birth_place' => $entity->birthPlace?->only('code', 'name'),
+            'education' => $entity->education?->value,
+            'religion' => $entity->religion?->toArray(),
+            'tax_status' => $entity->tax_status?->toArray(),
+            'tax_id' => $entity->tax_id,
+        ];
     }
 
     /**
@@ -48,17 +54,19 @@ trait AsEntity
      */
     final protected function forCompany(?Company $entity = null): array
     {
-        $arr = [
-            $entity->getKeyName() => $entity->getKey(),
-            'avatar' => $entity?->avatar?->only('url', 'title'),
-            'legalname' => $entity?->name,
-            'aliasname' => $entity?->alias,
-            'email' => $entity?->email,
-            'phone' => $entity?->phone,
-            'summary' => $entity?->summary,
-        ];
+        if (! $entity) {
+            return [];
+        }
 
-        return $arr;
+        return [
+            $entity->getKeyName() => $entity->getKey(),
+            'avatar' => $entity->avatar?->only('url', 'title'),
+            'legalname' => $entity->name,
+            'aliasname' => $entity->alias,
+            'email' => $entity->email,
+            'phone' => $entity->phone,
+            'summary' => $entity->summary,
+        ];
     }
 
     final protected function forStakeholder(BusinessRelative|Stakeholder $entity): array
@@ -76,24 +84,5 @@ trait AsEntity
         // $arr['type'] = \class_basename($entity);
 
         return $arr;
-    }
-
-    final protected function forProfile(Profile $profile): array
-    {
-        if (empty($profile)) {
-            return [];
-        }
-
-        return [
-            'nik' => $profile->nik,
-            'prefix' => $profile->prefix,
-            'suffix' => $profile->suffix,
-            'birth_date' => $profile->birth_date,
-            'birth_place' => $profile->birthPlace?->only('code', 'name'),
-            'education' => $profile->education?->value,
-            'religion' => $profile->religion?->toArray(),
-            'tax_status' => $profile->tax_status?->toArray(),
-            'tax_id' => $profile->tax_id,
-        ];
     }
 }

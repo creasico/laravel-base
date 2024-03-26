@@ -1,7 +1,8 @@
 <?php
 
-namespace Creasi\Tests\Http;
+namespace Creasi\Tests\Feature\Http;
 
+use Creasi\Tests\Feature\TestCase;
 use Laravel\Sanctum\Sanctum;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Test;
@@ -57,7 +58,7 @@ class ProfileTest extends TestCase
     {
         Sanctum::actingAs($user = $this->user());
 
-        $user->load('identity.profile');
+        $user->load('identity');
 
         $response = $this->putJson($this->getRoutePath(), [
             'fullname' => $user->identity->name,
@@ -66,9 +67,9 @@ class ProfileTest extends TestCase
             'summary' => null,
             'prefix' => null,
             'suffix' => null,
-            'education' => $user->identity->profile?->education->value,
-            'tax_status' => $user->identity->profile?->tax_status->value,
-            'tax_id' => $user->identity->profile?->tax_id,
+            'education' => $user->identity->education->value,
+            'tax_status' => $user->identity->tax_status->value,
+            'tax_id' => $user->identity->tax_id,
         ]);
 
         $response->assertOk()->assertJsonStructure($this->responseStructure);

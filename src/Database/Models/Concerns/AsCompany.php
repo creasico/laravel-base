@@ -2,13 +2,13 @@
 
 namespace Creasi\Base\Database\Models\Concerns;
 
+use Carbon\CarbonInterface;
 use Creasi\Base\Database\Models\BusinessRelative;
 use Creasi\Base\Database\Models\Contracts\Company;
-use Creasi\Base\Database\Models\Employment;
 use Creasi\Base\Database\Models\Entity;
 use Creasi\Base\Database\Models\Personnel;
-use Creasi\Base\Enums\BusinessRelativeType;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Creasi\Base\Enums\EmploymentStatus;
+use Creasi\Base\Enums\StakeholderType;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 
@@ -34,7 +34,7 @@ trait AsCompany
      */
     final protected static function bootAsCompany(): void
     {
-        foreach (BusinessRelativeType::cases() as $stakeholder) {
+        foreach (StakeholderType::cases() as $stakeholder) {
             static::resolveRelationUsing(
                 (string) $stakeholder->key()->plural(),
                 fn (Company $model) => $model->stakeholders()->where([
@@ -55,24 +55,14 @@ trait AsCompany
     /**
      * {@inheritdoc}
      */
-    public function employees(): BelongsToMany
-    {
-        return $this->belongsToMany(Personnel::class, 'employments', 'employer_id', 'employee_id')
-            ->withPivot('is_primary', 'type', 'status', 'start_date', 'finish_date')
-            ->using(Employment::class)
-            ->as('employment');
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     protected function relatives(string $relative, bool $forward = true): MorphToMany
     {
         $relation = $forward
             ? $this->morphedByMany($relative, 'stakeholder', 'business_relatives', 'business_id')
             : $this->morphToMany(static::class, 'stakeholder', 'business_relatives', null, 'business_id');
 
-        return $relation->using(BusinessRelative::class)->withPivot('type', 'code');
+        return $relation->using(BusinessRelative::class)
+            ->withPivot('type', 'code', 'status', 'start_date', 'finish_date');
     }
 
     /**
@@ -80,7 +70,8 @@ trait AsCompany
      */
     public function companyRelatives(): MorphToMany
     {
-        return $this->relatives(static::class)->as('stakeholder');
+        return $this->relatives(static::class)
+            ->as('stakeholder');
     }
 
     /**
@@ -88,7 +79,33 @@ trait AsCompany
      */
     public function individualRelatives(): MorphToMany
     {
-        return $this->relatives(Personnel::class)->as('stakeholder');
+        return $this->relatives(Personnel::class)
+            ->as('stakeholder');
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function employees(): MorphToMany
+    {
+        return $this->relatives(Personnel::class)
+            ->withPivot('is_primary', 'employment_status')
+            ->wherePivot('type', '=', StakeholderType::Employee)
+            ->as('employment');
+    }
+
+    public function addEmployee(
+        Personnel $employee,
+        EmploymentStatus $status,
+        CarbonInterface $startDate,
+        bool $isPrimary = false
+    ) {
+        return $this->employees()->attach($employee, [
+            'is_primary' => $isPrimary,
+            'type' => StakeholderType::Employee,
+            'employment_status' => $status,
+            'start_date' => $startDate,
+        ]);
     }
 
     /**
@@ -102,9 +119,9 @@ trait AsCompany
     /**
      * {@inheritdoc}
      */
-    public function addStakeholder(BusinessRelativeType $type, Entity $stakeholder): static
+    public function addStakeholder(StakeholderType $type, Entity $stakeholder): static
     {
-        $this->relatives(\get_class($stakeholder))->attach($stakeholder, [
+        $this->relatives($stakeholder::class)->attach($stakeholder, [
             'type' => $type,
         ]);
 

@@ -1,10 +1,13 @@
 providers:
+  - Creasi\Base\ServiceProvider
   - Creasi\Nusa\ServiceProvider
   - Laravel\Sanctum\SanctumServiceProvider
   - Workbench\App\Providers\WorkbenchServiceProvider
 
 workbench:
-  # welcome: true
+  welcome: true
   install: true
+  # assets:
   build:
+    - asset-publish
     - migrate:fresh

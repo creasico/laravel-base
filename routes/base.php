@@ -15,7 +15,11 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->group(function () {
+Route::middleware(['web', 'auth:sanctum'])->group(function () {
+    Route::get('supports', Controllers\SupportController::class)->name('supports.home');
+});
+
+Route::middleware(['api', 'auth:sanctum'])->group(function () {
     Route::apiResource('companies', Controllers\CompanyController::class);
     // Route::prefix('companies')->controller(Controllers\CompanyController::class)->group(function () {
     //     Route::put('{company}/restore', 'restore')->name('companies.restore')->withTrashed();
@@ -38,8 +42,6 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::apiSingleton('profile', Controllers\ProfileController::class);
     Route::apiSingleton('setting', Controllers\SettingController::class);
-
-    Route::get('supports', Controllers\SupportController::class)->name('supports.home');
 
     foreach (['companies', 'employees'] as $entity) {
         Route::apiResources([

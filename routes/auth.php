@@ -20,7 +20,7 @@ Route::middleware('guest')->group(function () {
     });
 });
 
-Route::middleware('auth:sanctum')->group(function () {
+Route::middleware(['web', 'auth:sanctum'])->group(function () {
     Route::controller(Auth\AuthenticatedSessionController::class)->group(function () {
         Route::get('', 'verify')->name('verify');
         Route::delete('', 'destroy')->name('logout');

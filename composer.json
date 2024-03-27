@@ -33,6 +33,7 @@
             "pint"
         ],
         "test": [
+            "Composer\\Config::disableProcessTimeout",
             "@testbench package:test --ansi"
         ],
         "testbench": [

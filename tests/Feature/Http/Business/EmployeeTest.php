@@ -178,4 +178,23 @@ class EmployeeTest extends TestCase
 
         $response->assertNoContent();
     }
+
+    #[Test]
+    public function should_able_to_restore_deleted_data(): void
+    {
+        $this->markTestIncomplete();
+
+        Sanctum::actingAs($user = $this->user());
+
+        $model = Personnel::factory()->createOne();
+
+        $model->delete();
+
+        $response = $this->putJson($this->getRoutePath($model, 'restore'));
+
+        $response->dump()->assertOk()->assertJsonStructure([
+            'data' => $this->dataStructure,
+            'meta' => [],
+        ]);
+    }
 }

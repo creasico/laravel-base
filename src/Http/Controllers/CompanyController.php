@@ -3,11 +3,14 @@
 namespace Creasi\Base\Http\Controllers;
 
 use Creasi\Base\Database\Models\Contracts\Company;
+use Creasi\Base\Http\Requests\Company\DeleteRequest;
+use Creasi\Base\Http\Requests\Company\IndexRequest;
 use Creasi\Base\Http\Requests\Company\StoreRequest;
 use Creasi\Base\Http\Requests\Company\UpdateRequest;
 use Creasi\Base\Http\Resources\Company\CompanyCollection;
 use Creasi\Base\Http\Resources\Company\CompanyResource;
-use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Response;
 
 class CompanyController extends Controller
 {
@@ -17,52 +20,60 @@ class CompanyController extends Controller
     }
 
     /**
-     * @return CompanyCollection
+     * Index endpoint for companies.
      */
-    public function index(Company $company)
+    public function index(Company $company, IndexRequest $request): CompanyCollection
     {
-        $items = $company->subsidiaries()->latest('id');
-
-        $items->with('stakeholder');
-
-        return new CompanyCollection($items->paginate());
+        return new CompanyCollection(
+            $request->fulfill($company)->paginate()
+        );
     }
 
     /**
-     * @return CompanyResource
+     * Create endpoint for company.
      */
-    public function store(StoreRequest $request, Company $company)
+    public function store(Company $company, StoreRequest $request): JsonResponse
     {
-        $item = $request->fulfill($company);
+        $company = $request->fulfill($company);
 
-        return $this->show($item, $request)->setStatusCode(201);
+        return $this->show($company)->toResponse($request)->setStatusCode(201);
     }
 
     /**
-     * @return CompanyResource
+     * Show endpoint for a single company.
      */
-    public function show(Company $company, Request $request)
+    public function show(Company $company): CompanyResource
     {
-        return CompanyResource::make($company)->toResponse($request);
+        return new CompanyResource($company);
     }
 
     /**
-     * @return CompanyResource
+     * Update endpoint for a single company.
      */
-    public function update(UpdateRequest $request, Company $company)
+    public function update(Company $company, UpdateRequest $request): CompanyResource
     {
         $request->fulfill($company);
 
-        return $this->show($company, $request);
+        return $this->show($company);
     }
 
     /**
-     * @return \Illuminate\Http\Response
+     * Delete endpoint for a single company.
      */
-    public function destroy(Company $company)
+    public function destroy(Company $company, DeleteRequest $request): Response
     {
-        $company->delete();
+        $request->fulfill($company);
 
         return response()->noContent();
+    }
+
+    /**
+     * Restore endpoint for a single company.
+     */
+    public function restore(Company $company): CompanyResource
+    {
+        $company->restore();
+
+        return $this->show($company);
     }
 }

@@ -36,6 +36,8 @@ class StoreRequest extends FormRequest implements FormRequestContract
     {
         $address = Address::query()->make($this->validated());
 
-        return $entity->addresses()->save($address);
+        $created = $entity->addresses()->save($address);
+
+        return $created;
     }
 }

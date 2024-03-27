@@ -113,4 +113,23 @@ class AddressTest extends TestCase
 
         $response->assertNoContent();
     }
+
+    #[Test]
+    public function should_able_to_restore_deleted_data(): void
+    {
+        Sanctum::actingAs($user = $this->user());
+
+        $model = Address::factory()->createOne();
+        $user->identity->addresses()->save($model);
+
+        $deleted = clone $model;
+        $model->delete();
+
+        $response = $this->putJson($this->getRoutePath($deleted, 'restore'));
+
+        $response->assertOk()->assertJsonStructure([
+            'data' => $this->dataStructure,
+            'meta' => ['types'],
+        ]);
+    }
 }

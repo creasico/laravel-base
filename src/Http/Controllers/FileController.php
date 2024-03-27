@@ -4,11 +4,14 @@ namespace Creasi\Base\Http\Controllers;
 
 use Creasi\Base\Database\Models\Entity;
 use Creasi\Base\Database\Models\File;
+use Creasi\Base\Http\Requests\File\DeleteRequest;
+use Creasi\Base\Http\Requests\File\IndexRequest;
 use Creasi\Base\Http\Requests\File\StoreRequest;
 use Creasi\Base\Http\Requests\File\UpdateRequest;
 use Creasi\Base\Http\Resources\File\FileCollection;
 use Creasi\Base\Http\Resources\File\FileResource;
-use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Response;
 
 class FileController extends Controller
 {
@@ -18,50 +21,60 @@ class FileController extends Controller
     }
 
     /**
-     * @return FileCollection
+     * Index endpoint for files.
      */
-    public function index(Entity $entity)
+    public function index(Entity $entity, IndexRequest $request): FileCollection
     {
-        $items = $entity->files()->latest();
-
-        return new FileCollection($items->paginate());
+        return new FileCollection(
+            $request->fulfill($entity)->paginate()
+        );
     }
 
     /**
-     * @return \Illuminate\Http\Response
+     * Create endpoint for file.
      */
-    public function store(StoreRequest $request, Entity $entity)
+    public function store(Entity $entity, StoreRequest $request): JsonResponse
     {
-        $item = $request->fulfill($entity);
+        $file = $request->fulfill($entity);
 
-        return $this->show($item, $request)->setStatusCode(201);
+        return $this->show($file)->toResponse($request)->setStatusCode(201);
     }
 
     /**
-     * @return \Illuminate\Http\Response
+     * Show endpoint for a single file.
      */
-    public function show(File $file, Request $request)
+    public function show(File $file): FileResource
     {
-        return FileResource::make($file)->toResponse($request);
+        return new FileResource($file);
     }
 
     /**
-     * @return \Illuminate\Http\Response
+     * Update endpoint for a single file.
      */
-    public function update(UpdateRequest $request, File $file)
+    public function update(File $file, UpdateRequest $request): FileResource
     {
         $request->fulfill($file);
 
-        return $this->show($file, $request);
+        return $this->show($file);
     }
 
     /**
-     * @return \Illuminate\Http\Response
+     * Delete endpoint for a single file.
      */
-    public function destroy(File $file)
+    public function destroy(File $file, DeleteRequest $request): Response
     {
-        $file->delete();
+        $request->fulfill($file);
 
         return response()->noContent();
+    }
+
+    /**
+     * Restore endpoint for a single file.
+     */
+    public function restore(File $file): FileResource
+    {
+        $file->restore();
+
+        return $this->show($file);
     }
 }

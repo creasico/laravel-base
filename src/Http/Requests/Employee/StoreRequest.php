@@ -28,6 +28,8 @@ class StoreRequest extends FormRequest implements FormRequestContract
 
     public function fulfill(Company $company)
     {
-        return $company->employees()->create($this->validated());
+        $employee = $company->employees()->create($this->validated());
+
+        return $employee;
     }
 }

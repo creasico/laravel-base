@@ -4,11 +4,14 @@ namespace Creasi\Base\Http\Controllers;
 
 use Creasi\Base\Database\Models\Address;
 use Creasi\Base\Database\Models\Entity;
+use Creasi\Base\Http\Requests\Address\DeleteRequest;
+use Creasi\Base\Http\Requests\Address\IndexRequest;
 use Creasi\Base\Http\Requests\Address\StoreRequest;
 use Creasi\Base\Http\Requests\Address\UpdateRequest;
 use Creasi\Base\Http\Resources\Address\AddressCollection;
 use Creasi\Base\Http\Resources\Address\AddressResource;
-use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Response;
 
 class AddressController extends Controller
 {
@@ -18,50 +21,60 @@ class AddressController extends Controller
     }
 
     /**
-     * @return AddressCollection
+     * Index endpoint for addresses.
      */
-    public function index(Entity $entity)
+    public function index(Entity $entity, IndexRequest $request): AddressCollection
     {
-        $items = $entity->addresses()->latest();
-
-        return new AddressCollection($items->paginate());
+        return new AddressCollection(
+            $request->fulfill($entity)->paginate()
+        );
     }
 
     /**
-     * @return \Illuminate\Http\Response
+     * Create endpoint for address.
      */
-    public function store(StoreRequest $request, Entity $entity)
+    public function store(Entity $entity, StoreRequest $request): JsonResponse
     {
-        $item = $request->fulfill($entity);
+        $address = $request->fulfill($entity);
 
-        return $this->show($item, $request)->setStatusCode(201);
+        return $this->show($address)->toResponse($request)->setStatusCode(201);
     }
 
     /**
-     * @return \Illuminate\Http\Response
+     * Show endpoint for a single address.
      */
-    public function show(Address $address, Request $request)
+    public function show(Address $address): AddressResource
     {
-        return AddressResource::make($address)->toResponse($request);
+        return new AddressResource($address);
     }
 
     /**
-     * @return \Illuminate\Http\Response
+     * Update endpoint for a single address.
      */
-    public function update(UpdateRequest $request, Address $address)
+    public function update(Address $address, UpdateRequest $request): AddressResource
     {
         $request->fulfill($address);
 
-        return $this->show($address, $request);
+        return $this->show($address);
     }
 
     /**
-     * @return \Illuminate\Http\Response
+     * Delete endpoint for a single address.
      */
-    public function destroy(Address $address)
+    public function destroy(Address $address, DeleteRequest $request): Response
     {
-        $address->delete();
+        $request->fulfill($address);
 
         return response()->noContent();
+    }
+
+    /**
+     * Restore endpoint for a single address.
+     */
+    public function restore(Address $address): AddressResource
+    {
+        $address->restore();
+
+        return $this->show($address);
     }
 }

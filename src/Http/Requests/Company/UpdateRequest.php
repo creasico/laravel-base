@@ -28,6 +28,8 @@ class UpdateRequest extends FormRequest implements FormRequestContract
 
     public function fulfill(Company $company)
     {
-        return $company->update($this->validated());
+        $updated = $company->update($this->validated());
+
+        return $updated;
     }
 }

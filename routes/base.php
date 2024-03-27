@@ -17,9 +17,24 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('companies', Controllers\CompanyController::class);
+    // Route::prefix('companies')->controller(Controllers\CompanyController::class)->group(function () {
+    //     Route::put('{company}/restore', 'restore')->name('companies.restore')->withTrashed();
+    // });
+
     Route::apiResource('employees', Controllers\EmployeeController::class);
+    // Route::prefix('employees')->controller(Controllers\EmployeeController::class)->group(function () {
+    //     Route::put('{employee}/restore', 'restore')->name('employees.restore')->withTrashed();
+    // });
+
     Route::apiResource('addresses', Controllers\AddressController::class);
+    Route::prefix('addresses')->controller(Controllers\AddressController::class)->group(function () {
+        Route::put('{address}/restore', 'restore')->name('addresses.restore')->withTrashed();
+    });
+
     Route::apiResource('files', Controllers\FileController::class);
+    Route::prefix('files')->controller(Controllers\FileController::class)->group(function () {
+        Route::put('{file}/restore', 'restore')->name('files.restore')->withTrashed();
+    });
 
     Route::apiSingleton('profile', Controllers\ProfileController::class);
     Route::apiSingleton('setting', Controllers\SettingController::class);
@@ -45,5 +60,9 @@ Route::middleware('auth:sanctum')->group(function () {
 
         Route::apiResource($route, Controllers\StakeholderController::class)
             ->parameter((string) $route, 'stakeholder');
+
+        // Route::prefix($route)->controller(Controllers\StakeholderController::class)->group(function () use ($route) {
+        //     Route::put('{stakeholder}/restore', 'restore')->name($route.'.restore')->withTrashed();
+        // });
     }
 });

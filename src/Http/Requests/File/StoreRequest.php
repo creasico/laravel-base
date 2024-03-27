@@ -25,14 +25,13 @@ class StoreRequest extends FormRequest implements FormRequestContract
 
     public function fulfill(HasFiles $entity)
     {
-        /** @var FileType */
-        $type = $this->enum('type', FileType::class);
-
-        return $entity->storeFile(
-            $type,
+        $file = $entity->storeFile(
+            $this->enum('type', FileType::class),
             $this->file('upload'),
             $this->input('name'),
             $this->input('title'),
         );
+
+        return $file;
     }
 }

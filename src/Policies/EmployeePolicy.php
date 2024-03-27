@@ -69,14 +69,4 @@ class EmployeePolicy
     {
         return true;
     }
-
-    /**
-     * Determine whether the user can permanently delete the model.
-     *
-     * @return \Illuminate\Auth\Access\Response|bool
-     */
-    public function forceDelete(Authenticatable $user, Employee $model)
-    {
-        return true;
-    }
 }

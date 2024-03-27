@@ -15,7 +15,6 @@ abstract class Controller extends BaseController
     {
         $abilities = [
             'restore' => 'restore',
-            'forceDestroy' => 'forceDelete',
         ];
 
         return \array_merge(

@@ -5,11 +5,14 @@ namespace Creasi\Base\Http\Controllers;
 use Creasi\Base\Database\Models\Contracts\Company;
 use Creasi\Base\Database\Models\Contracts\Stakeholder;
 use Creasi\Base\Enums\StakeholderType;
+use Creasi\Base\Http\Requests\Stakeholder\DeleteRequest;
+use Creasi\Base\Http\Requests\Stakeholder\IndexRequest;
 use Creasi\Base\Http\Requests\Stakeholder\StoreRequest;
 use Creasi\Base\Http\Requests\Stakeholder\UpdateRequest;
 use Creasi\Base\Http\Resources\Stakeholder\StakeholderCollection;
 use Creasi\Base\Http\Resources\Stakeholder\StakeholderResource;
-use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Response;
 
 class StakeholderController extends Controller
 {
@@ -19,54 +22,60 @@ class StakeholderController extends Controller
     }
 
     /**
-     * @return StakeholderCollection
+     * Index endpoint for stakeholders.
      */
-    public function index(Company $company, StakeholderType $type)
+    public function index(Company $company, StakeholderType $type, IndexRequest $request): StakeholderCollection
     {
-        $items = $company->stakeholders()->where([
-            'type' => $type,
-        ])->latest('id');
-
-        $items->with('stakeholder');
-
-        return new StakeholderCollection($items->paginate());
+        return new StakeholderCollection(
+            $request->fulfill($company, $type)->paginate()
+        );
     }
 
     /**
-     * @return StakeholderResource
+     * Create endpoint for stakeholder.
      */
-    public function store(StoreRequest $request, Company $company, StakeholderType $type)
+    public function store(Company $company, StakeholderType $type, StoreRequest $request): JsonResponse
     {
-        $item = $request->fulfill($company, $type);
+        $stakeholder = $request->fulfill($company, $type);
 
-        return $this->show($item, $request)->setStatusCode(201);
+        return $this->show($stakeholder)->toResponse($request)->setStatusCode(201);
     }
 
     /**
-     * @return StakeholderResource
+     * Show endpoint for a single stakeholder.
      */
-    public function show(Stakeholder $stakeholder, Request $request)
+    public function show(Stakeholder $stakeholder): StakeholderResource
     {
-        return StakeholderResource::make($stakeholder)->toResponse($request);
+        return new StakeholderResource($stakeholder);
     }
 
     /**
-     * @return StakeholderResource
+     * Update endpoint for a single stakeholder.
      */
-    public function update(UpdateRequest $request, Stakeholder $stakeholder)
+    public function update(Stakeholder $stakeholder, UpdateRequest $request): StakeholderResource
     {
         $request->fulfill($stakeholder);
 
-        return $this->show($stakeholder, $request);
+        return $this->show($stakeholder);
     }
 
     /**
-     * @return \Illuminate\Http\Response
+     * Delete endpoint for a single stakeholder.
      */
-    public function destroy(Stakeholder $stakeholder)
+    public function destroy(Stakeholder $stakeholder, DeleteRequest $request): Response
     {
-        $stakeholder->delete();
+        $request->fulfill($stakeholder);
 
         return response()->noContent();
+    }
+
+    /**
+     * Restore endpoint for a single stakeholder.
+     */
+    public function restore(Stakeholder $stakeholder): StakeholderResource
+    {
+        $stakeholder->restore();
+
+        return $this->show($stakeholder);
     }
 }

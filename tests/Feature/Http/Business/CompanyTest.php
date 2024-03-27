@@ -191,4 +191,23 @@ class CompanyTest extends TestCase
 
         $response->assertNoContent();
     }
+
+    #[Test]
+    public function should_able_to_restore_deleted_data(): void
+    {
+        $this->markTestIncomplete();
+
+        Sanctum::actingAs($user = $this->user());
+
+        $model = Business::factory()->createOne();
+
+        $model->delete();
+
+        $response = $this->putJson($this->getRoutePath($model, 'restore'));
+
+        $response->assertOk()->assertJsonStructure([
+            'data' => $this->dataStructure,
+            'meta' => [],
+        ]);
+    }
 }

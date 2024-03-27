@@ -152,15 +152,15 @@ class ServiceProvider extends IlluminateServiceProvider
         });
 
         Route::bind('company', function (string $value) {
-            return app(Contracts\Company::class)->resolveRouteBinding((int) $value);
+            return app(Contracts\Company::class)->resolveRouteBinding($value);
         });
 
         Route::bind('employee', function (string $value) {
-            return app(Contracts\Employee::class)->resolveRouteBinding((int) $value);
+            return app(Contracts\Employee::class)->resolveRouteBinding($value);
         });
 
         Route::bind('stakeholder', function (string $value) {
-            return app(Contracts\Stakeholder::class)->resolveRouteBinding((int) $value);
+            return app(Contracts\Stakeholder::class)->resolveRouteBinding($value);
         });
 
         if (app()->routesAreCached() || config('creasi.base.routes_enable') === false) {

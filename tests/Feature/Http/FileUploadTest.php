@@ -87,4 +87,18 @@ class FileUploadTest extends TestCase
 
         $response->assertNoContent();
     }
+
+    #[Test]
+    public function should_able_to_restore_deleted_data(): void
+    {
+        Sanctum::actingAs($user = $this->user());
+
+        $model = $user->identity->storeFile(FileType::Document, '/doc/file.pdf', 'document');
+
+        $model->delete();
+
+        $response = $this->putJson($this->getRoutePath($model, 'restore'));
+
+        $response->assertOk();
+    }
 }

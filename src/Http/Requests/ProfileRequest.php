@@ -3,8 +3,7 @@
 namespace Creasi\Base\Http\Requests;
 
 use Creasi\Base\Contracts\FormRequest as FormRequestContract;
-use Creasi\Base\Models\Enums\Education;
-use Creasi\Base\Models\Enums\TaxStatus;
+use Creasi\Base\Database\Models\Personnel;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -15,40 +14,27 @@ class ProfileRequest extends FormRequest implements FormRequestContract
      */
     public function rules(): array
     {
+        $key = $this->user()->identity->getKey();
+
         return [
-            'fullname' => ['required', 'string'],
-            'nickname' => ['nullable', 'string'],
-            'phone' => ['required', 'string'],
+            'name' => ['required', 'string', 'max:150'],
+            'alias' => ['nullable', 'string', 'max:50', Rule::unique(Personnel::class, 'alias')->ignore($key)],
+            'email' => ['required', 'email', 'max:150', Rule::unique(Personnel::class, 'email')->ignore($key)],
+            'phone' => ['nullable', 'numeric', 'max_digits:20'],
+            'prefix' => ['nullable', 'string', 'max:20'],
+            'suffix' => ['nullable', 'string', 'max:20'],
             'summary' => ['nullable', 'string', 'max:200'],
-            'prefix' => ['nullable', 'string'],
-            'suffix' => ['nullable', 'string'],
-            'education' => ['nullable', Rule::enum(Education::class)],
-            'tax_status' => ['nullable', Rule::enum(TaxStatus::class)],
-            'tax_id' => ['nullable', 'string'],
         ];
     }
 
     public function fulfill()
     {
+        /** @var \App\Models\User */
         $user = $this->user();
-        $data = $this->validated();
 
-        $user->identity()->update([
-            'name' => $data['fullname'],
-            'alias' => $data['nickname'],
-            'phone' => $data['phone'],
-            'summary' => $data['summary'],
-        ]);
+        $user->identity()->update($this->validated());
 
-        $user->identity->profile()->update([
-            'prefix' => $data['prefix'],
-            'suffix' => $data['suffix'],
-            'education' => $this->enum('education', Education::class),
-            'tax_status' => $this->enum('tax_status', TaxStatus::class),
-            'tax_id' => $data['tax_id'],
-        ]);
-
-        $user->load('identity.profile');
+        $user->load('identity');
 
         return $user;
     }

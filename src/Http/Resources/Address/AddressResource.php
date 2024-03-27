@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 /**
- * @property-read \Creasi\Base\Models\Address $resource
+ * @property-read \Creasi\Base\Database\Models\Address $resource
  */
 class AddressResource extends JsonResource
 {

@@ -2,12 +2,12 @@
 
 namespace Creasi\Base\Http\Controllers;
 
+use Creasi\Base\Database\Models\Entity;
+use Creasi\Base\Database\Models\FileUpload;
 use Creasi\Base\Http\Requests\FileUpload\StoreRequest;
 use Creasi\Base\Http\Requests\FileUpload\UpdateRequest;
 use Creasi\Base\Http\Resources\FileUpload\FileUploadCollection;
 use Creasi\Base\Http\Resources\FileUpload\FileUploadResource;
-use Creasi\Base\Models\Entity;
-use Creasi\Base\Models\FileUpload;
 use Illuminate\Http\Request;
 
 class FileUploadController extends Controller

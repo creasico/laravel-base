@@ -2,12 +2,12 @@
 
 namespace Creasi\Base;
 
-use Creasi\Base\Models\Contracts\Company;
-use Creasi\Base\Models\Contracts\Employee;
-use Creasi\Base\Models\Contracts\HasIdentity;
-use Creasi\Base\Models\Contracts\Stakeholder;
-use Creasi\Base\Models\Entity;
-use Creasi\Base\Models\Enums\BusinessRelativeType;
+use Creasi\Base\Database\Models\Contracts\Company;
+use Creasi\Base\Database\Models\Contracts\Employee;
+use Creasi\Base\Database\Models\Contracts\HasIdentity;
+use Creasi\Base\Database\Models\Contracts\Stakeholder;
+use Creasi\Base\Database\Models\Entity;
+use Creasi\Base\Enums\StakeholderType;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Routing\Router;
 
@@ -20,7 +20,7 @@ class Repository
 
     public function __construct(protected Router $router)
     {
-        foreach (BusinessRelativeType::cases() as $stakeholder) {
+        foreach (StakeholderType::cases() as $stakeholder) {
             $this->stakeholders[(string) $stakeholder->key()->plural()] = $stakeholder;
         }
     }
@@ -46,7 +46,7 @@ class Repository
 
         $key = $this->router->input('company');
 
-        return $key ? $user->identity->company->resolveRouteBinding($key) : $user->identity->company;
+        return $key ? $user->identity->employer->resolveRouteBinding($key) : $user->identity->employer;
     }
 
     public function resolveEntity(Company $company, Employee $employee): Entity
@@ -59,9 +59,9 @@ class Repository
         return $entity->resolveRouteBinding($key) ?: $entity;
     }
 
-    public function resolveStakeholder(Company $company, BusinessRelativeType $type): Stakeholder
+    public function resolveStakeholder(Company $company, StakeholderType $type): Stakeholder
     {
-        /** @var \Creasi\Base\Models\BusinessRelative */
+        /** @var \Creasi\Base\Database\Models\BusinessRelative */
         $relative = $company->stakeholders()->newQuery()->with('stakeholder')->where([
             'type' => $type,
             'stakeholder_id' => (int) $this->router->input('stakeholder'),
@@ -70,7 +70,7 @@ class Repository
         return $relative?->stakeholder ?: $company->newInstance();
     }
 
-    public function resolveBusinessRelativeType(): BusinessRelativeType
+    public function resolveBusinessRelativeType(): StakeholderType
     {
         return $this->stakeholders[$this->currentRoutePrefix()];
     }

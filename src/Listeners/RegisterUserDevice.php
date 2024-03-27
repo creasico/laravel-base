@@ -2,8 +2,8 @@
 
 namespace Creasi\Base\Listeners;
 
+use Creasi\Base\Database\Models\Contracts\HasDevices;
 use Creasi\Base\Events\UserDeviceRegistered;
-use Creasi\Base\Models\Contracts\HasDevices;
 use Illuminate\Auth\Events\Login;
 use Illuminate\Http\Request;
 

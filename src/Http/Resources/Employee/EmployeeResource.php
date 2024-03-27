@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 /**
- * @property-read \Creasi\Base\Models\Personnel $resource
+ * @property-read \Creasi\Base\Database\Models\Personnel $resource
  */
 class EmployeeResource extends JsonResource
 {
@@ -30,6 +30,6 @@ class EmployeeResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        return $this->forPersonnel($this->resource, $this->resource->relationLoaded('profile'));
+        return $this->forPersonnel($this->resource);
     }
 }

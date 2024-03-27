@@ -2,12 +2,12 @@
 
 namespace Creasi\Base\Http\Controllers;
 
+use Creasi\Base\Database\Models\Address;
+use Creasi\Base\Database\Models\Entity;
 use Creasi\Base\Http\Requests\Address\StoreRequest;
 use Creasi\Base\Http\Requests\Address\UpdateRequest;
 use Creasi\Base\Http\Resources\Address\AddressCollection;
 use Creasi\Base\Http\Resources\Address\AddressResource;
-use Creasi\Base\Models\Address;
-use Creasi\Base\Models\Entity;
 use Illuminate\Http\Request;
 
 class AddressController extends Controller

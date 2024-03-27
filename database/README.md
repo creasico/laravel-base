@@ -23,21 +23,11 @@ erDiagram
         unsignedBigInt id PK
         unsignedBigInt business_id FK
         morph stakeholder
-        boolean is_internal
         varchar(100) code UK
-        unsignedSmallInt type
-    }
-
-    businesses ||--o{ employments : employees
-    employments }o..|| personnels : employees
-    employments {
-        unsignedBigInt id PK
-        unsignedBigInt employer_id FK
-        unsignedBigInt employee_id FK
         boolean is_primary
-        varchar(100) code UK
         unsignedSmallInt type
         unsignedSmallInt status
+        unsignedSmallInt employment_status
         date start_date
         date finish_date
     }
@@ -46,29 +36,20 @@ erDiagram
         unsignedBigInt id PK
         unsignedBigInt user_id FK
         varchar(150) name
+        varchar(20) prefix
+        varchar(20) suffix
         varchar(50) alias
+        char(16) nik UK
         varchar email UK
         varchar(20) phone
-        char(1) gender
-        varchar(200) summary
-        timestamp created_at
-        timestamp updated_at
-        timestamp deleted_at
-    }
-    
-    personnels ||..|| profiles : identity
-    profiles {
-        unsignedBigInt id PK
-        morphs identity
-        char(16) nik UK
-        varchar prefix
-        varchar suffix
         date birth_date
         char(4) birth_place_code
+        char(1) gender
         unsignedSmallInt education
         unsignedSmallInt religion
         unsignedSmallInt tax_status
         varchar(16) tax_id
+        varchar(200) summary
         timestamp created_at
         timestamp updated_at
         timestamp deleted_at
@@ -185,25 +166,29 @@ In this implementation we try to cover 5 most basic and common business relation
 
 - **Owner**
 
-  Cover business relation between the company to a individual(s) who own the business.
+  A company or individual stackholder who own the business.
 
 - **Subsidiary**
 
-  Cover business relation between the company to other businesses that act as a child company. The parent company can be called parent or holding company, and the child company can be called child company or operating company.
+  A company that act as subsidiary or child business.
+
+- **Employee**
+
+  A individual that act as employee of the business. 
 
 - **Customer**
 
-  Cover business relation between the company either to individual or business who makes a business its money. 
+  A company or individual that act as purchase goods from the business.
 
 - **Supplier**
 
-  Cover business relation between the company either to individual or business who provide the raw materials to the business so the can produce their goods.
+  A company or individual that provides raw materials for the business so they can produce their goods.
 
 - **Vendor**
 
-  Cover business relation between the company either to individual or business who provide the tangible assets to the business so they can proceed the raw materials into goods.
+  A company or individual who provides pre-made or even ready-made goods for the business so they can proceed the raw materials into goods.
 
-The term "stakeholders" itself is actually covers a lot more than that, even employees are counted as stakeholders. But at this stage we can't afford to comply those types of relationship, simply because that's beyond of our cababilities to handle them at the moment.
+The term "stakeholders" itself is actually covers a lot more than that. But at this stage we can't afford to comply those types of relationship, simply because that's beyond of our cababilities to handle them at the moment.
 
 ```mermaid
 classDiagram
@@ -255,9 +240,11 @@ classDiagram
 | `id` | `unsignedBigInt`, `incrementing` | `primary` | |
 | `business_id` | `unsignedBigInt` | `foreign` | |
 | `stakeholder` | `morphs`, `nullable` | | |
-| `is_internal` | `boolean` | | Determine whether the stakeholder is actually from internal business, default: `false` |
-| `code` | `varchar(100)`, `nullable` | `unique` | |
+| `code` | `varchar(100)`, `nullable` | `unique` | Unique identifier of business relationship |
 | `type` | `unsignedSmallInt`, `nullable` | | |
+| `status` | `unsignedSmallInt`, `nullable` | | |
+| `start_date` | `date`, `nullable` | | |
+| `finish_date` | `date`, `nullable` | | |
 
 **Relation Properties**
 - `business_id` : reference `businesses`
@@ -282,16 +269,6 @@ classDiagram
     }
     class Employments {
         int id
-        int employer_id
-        int employee_id
-        boolean is_primary
-        null|string code
-        int type
-        int status
-        null|date start_date
-        null|date finish_date
-        null|bool is_started
-        null|bool is_finished
     }
 ```
 
@@ -300,12 +277,13 @@ classDiagram
 | Field | Attribute | Key | Description |
 | --- | --- | :---: | --- |
 | `id` | `unsignedBigInt`, `incrementing` | `primary` | |
-| `employer_id` | `unsignedBigInt` | `foreign` | ID of the company |
-| `employee_id` | `unsignedBigInt` | `foreign` | ID of the personnel |
-| `is_primary` | `boolean` | | Determine whether it's the personnel's primary company, default: `false` |
-| `code` | `varchar(100)`, `nullable` | `unique` | An identification that given by the company to employee |
-| `type` | `unsignedSmallInt`, `nullable` | | Define the employment type of the personnel in the company |
+| `business_id` | `unsignedBigInt` | `foreign` | |
+| `stakeholder` | `morphs`, `nullable` | | |
+| `is_primary` | `boolean` | | In some circumstance, a business might have multiple `business_relative` with the same `type` in this case they should be able to decide which one is mark as primary relative. default: `false` |
+| `code` | `varchar(100)`, `nullable` | `unique` | Unique identifier of business relationship |
+| `type` | `unsignedSmallInt`, `nullable` | | |
 | `status` | `unsignedSmallInt`, `nullable` | | |
+| `employment_status` | `unsignedSmallInt`, `nullable` | | At this stage, this fields will only be available for `employment` relative, which is `business` to `personnel` that has `type` of `employee` |
 | `start_date` | `date`, `nullable` | | |
 | `finish_date` | `date`, `nullable` | | |
 
@@ -313,23 +291,19 @@ classDiagram
 - `employer_id` : reference `businesses`
 - `employee_id` : reference `personnels`
 
-**Employment Types**
+**Employment Statuses**
 - Unemployeed
 - Fulltime
 - Parttime
+- Probation
 - Internship
 - Freelance
 
-**Employment Statuses**
-- Candidate
-- Probation
-- Contract
-- Permanent
+> **NOTE**
+> 
+> Field `type` and `status` shouldn't be detachable so we can maintain historical changes of the personnel in the company.
 
-**Note :**
-Field `type` and `status` shouldn't be detachable so we can maintain historical changes of the personnel in the company.
-
-## Personnel and its Profile
+## Personnel and Profile
 
 Every individuals should have their own identity, it also can helps a business to identify better of their individuals. But there's a circumstance that a business doesn't really care about that, all they need is just a way to communicate with the individuals, and that's it.
 
@@ -337,17 +311,12 @@ Meanwhile, a business might want to be able to also communicate with their perso
 
 ```mermaid
 classDiagram
-    Personnel .. Profile : identity
     Personnel ..> PersonnelRelative : relative
     PersonnelRelative --> Personnel : personnel
 
     class Personnel {
         int id
         profile() null|Profile
-    }
-    class Profile {
-        int id
-        identity() Personnel
     }
     class PersonnelRelative {
         int personnel_id
@@ -363,10 +332,19 @@ classDiagram
 | `id` | `unsignedBigInt`, `incrementing` | `primary` | |
 | `user_id` | `unsignedBigInt`, `nullable` | `foreign` | |
 | `name` | `varchar(150)` | | |
+| `prefix` | `varchar(10)`, `nullable` | | |
+| `suffix` | `varchar(10)`, `nullable` | | |
 | `alias` | `varchar(50)`, `nullable` | | |
+| `nik` | `char(16)`, `nullable` | | |
 | `email` | `varchar`, `nullable` | `unique` | |
 | `phone` | `varchar(20)`, `nullable` | | |
+| `birth_date` | `date`, `nullable` | | |
+| `birth_place_code` | `char(4)`, `nullable` | `foreign` | |
 | `gender` | `char(1)` | | |
+| `education` | `varchar(3)`, `nullable` | | |
+| `religion` | `unsignedTinyInt`, `nullable` | | |
+| `tax_status` | `unsignedSmallInt`, `nullable` | | |
+| `tax_id` | `varchar(16)`, `nullable` | | |
 | `summary` | `varchar(200)`, `nullable` | | |
 
 **Model Attributes**
@@ -399,22 +377,6 @@ classDiagram
 - Grandchild
 - Cousin
 
-### `profiles`
-
-| Field | Attribute | Key | Description |
-| --- | --- | :---: | --- |
-| `id` | `unsignedBigInt`, `incrementing` | `primary` | |
-| `identity` | `morphs`, `nullable` | | |
-| `nik` | `char(16)`, `nullable` | | |
-| `prefix` | `varchar(10)`, `nullable` | | |
-| `suffix` | `varchar(10)`, `nullable` | | |
-| `birth_date` | `date`, `nullable` | | |
-| `birth_place_code` | `char(4)`, `nullable` | `foreign` | |
-| `education` | `varchar(3)`, `nullable` | | |
-| `religion` | `unsignedTinyInt`, `nullable` | | |
-| `tax_status` | `unsignedSmallInt`, `nullable` | | |
-| `tax_id` | `varchar(16)`, `nullable` | | |
-
 **Model Attributes**
 - `timestamps`
 - `softDeletes`
@@ -422,7 +384,7 @@ classDiagram
 **Relation Properties**
 - `birth_place_code` : reference `regencies`
 
-**Profile Educations**
+**Personnel Educations**
 - Uneducated
 - SD
 - SMP
@@ -434,7 +396,7 @@ classDiagram
 - S2
 - S3
 
-**Profile Religions**
+**Personnel Religions**
 - Other
 - Islam
 - Christian
@@ -456,22 +418,7 @@ classDiagram
 
     class Address {
         int id
-        string line
-        null|int type
-        boolean is_resident
-        null|string rt
-        null|string rw
-        null|int village_code
-        null|int district_code
-        null|int regency_code
-        null|int province_code
-        null|int postal_code
-        null|string summary
         addressable() Entity
-        village() null|Village
-        district() null|District
-        regency() null|Regency
-        province() null|Province
     }
     class Business~Entity~ {
         int id

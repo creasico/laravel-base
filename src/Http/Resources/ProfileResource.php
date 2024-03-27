@@ -2,13 +2,13 @@
 
 namespace Creasi\Base\Http\Resources;
 
-use Creasi\Base\Models\Enums\Education;
-use Creasi\Base\Models\Enums\TaxStatus;
+use Creasi\Base\Enums\Education;
+use Creasi\Base\Enums\TaxStatus;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 /**
- * @mixin \Creasi\Base\Models\User
+ * @mixin \Creasi\Base\Database\Models\User
  */
 class ProfileResource extends JsonResource
 {
@@ -20,8 +20,8 @@ class ProfileResource extends JsonResource
 
         $this->additional([
             'meta' => [
-                'educations' => Education::toOptions(),
-                'tax_statuses' => TaxStatus::toOptions(),
+                // 'educations' => Education::toOptions(),
+                // 'tax_statuses' => TaxStatus::toOptions(),
             ],
             'links' => $this->links(),
         ]);
@@ -34,9 +34,9 @@ class ProfileResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        $resource = $this->forPersonnel($this->identity);
+        $resource = $this->forPersonnel($this->resource->identity);
 
-        $resource[$this->getKeyName()] = $this->getKey();
+        $resource[$this->resource->getKeyName()] = $this->resource->getKey();
 
         return $resource;
     }

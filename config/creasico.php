@@ -1,6 +1,6 @@
 <?php
 
-use Creasi\Base\Models\Enums;
+use Creasi\Base\Enums;
 
 return [
     'user_model' => env('CREASI_BASE_USER_MODEL', 'App\Models\User'),

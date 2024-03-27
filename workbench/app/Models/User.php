@@ -3,11 +3,11 @@
 namespace Workbench\App\Models;
 
 use Creasi\Base\Contracts\HasCredentialTokens;
-use Creasi\Base\Models\Concerns\WithCredentialTokens;
-use Creasi\Base\Models\Concerns\WithDevices;
-use Creasi\Base\Models\Concerns\WithIdentity;
-use Creasi\Base\Models\Contracts\HasDevices;
-use Creasi\Base\Models\Contracts\HasIdentity;
+use Creasi\Base\Database\Models\Concerns\WithCredentialTokens;
+use Creasi\Base\Database\Models\Concerns\WithDevices;
+use Creasi\Base\Database\Models\Concerns\WithIdentity;
+use Creasi\Base\Database\Models\Contracts\HasDevices;
+use Creasi\Base\Database\Models\Contracts\HasIdentity;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;

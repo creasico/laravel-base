@@ -48,7 +48,7 @@ class NewPasswordRequest extends FormRequest
             $this->only('email', 'password', 'password_confirmation', 'token'),
             function ($user) {
                 $user->forceFill([
-                    'password' => $this->password,
+                    'password' => $this->input('password'),
                     'remember_token' => Str::random(60),
                 ])->save();
 

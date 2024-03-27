@@ -2,7 +2,7 @@
 
 namespace Creasi\Base\Events;
 
-use Creasi\Base\Models\UserDevice;
+use Creasi\Base\Database\Models\UserDevice;
 
 class UserDeviceRegistered
 {

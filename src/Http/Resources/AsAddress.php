@@ -2,8 +2,8 @@
 
 namespace Creasi\Base\Http\Resources;
 
-use Creasi\Base\Models\Address;
-use Creasi\Base\Models\Enums\AddressType;
+use Creasi\Base\Database\Models\Address;
+use Creasi\Base\Enums\AddressType;
 
 trait AsAddress
 {

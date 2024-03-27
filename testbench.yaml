@@ -4,10 +4,10 @@ providers:
   - Laravel\Sanctum\SanctumServiceProvider
   - Workbench\App\Providers\WorkbenchServiceProvider
 
+seeders:
+  - Workbench\Database\Seeders\DatabaseSeeder
+
 workbench:
-  welcome: true
   install: true
-  # assets:
   build:
-    - asset-publish
     - migrate:fresh

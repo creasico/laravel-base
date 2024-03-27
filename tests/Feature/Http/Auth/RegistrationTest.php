@@ -1,6 +1,6 @@
 <?php
 
-namespace Creasi\Tests\Http\Auth;
+namespace Creasi\Tests\Feature\Http\Auth;
 
 use Creasi\Tests\TestCase;
 use Illuminate\Auth\Events\Registered;

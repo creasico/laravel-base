@@ -2,18 +2,18 @@
 
 namespace Creasi\Base\Database\Factories\Concerns;
 
-use Creasi\Base\Database\Models\FileUpload;
-use Creasi\Base\Enums\FileUploadType;
+use Creasi\Base\Database\Models\File;
+use Creasi\Base\Enums\FileType;
 
 /**
  * @mixin \Illuminate\Database\Eloquent\Factories\Factory
  */
 trait WithFileUpload
 {
-    public function withFileUpload(?FileUploadType $type = null): static
+    public function withFileUpload(?FileType $type = null): static
     {
-        return $this->hasAttached(FileUpload::factory(), [
-            'type' => $type ?? \fake()->randomElement(FileUploadType::cases()),
+        return $this->hasAttached(File::factory(), [
+            'type' => $type ?? \fake()->randomElement(FileType::cases()),
         ], 'files');
     }
 }

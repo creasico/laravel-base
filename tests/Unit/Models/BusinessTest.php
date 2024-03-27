@@ -4,7 +4,7 @@ namespace Creasi\Tests\Unit\Models;
 
 use Creasi\Base\Database\Models\Address;
 use Creasi\Base\Database\Models\Business;
-use Creasi\Base\Database\Models\FileUpload;
+use Creasi\Base\Database\Models\File;
 use Creasi\Base\Database\Models\Personnel;
 use Creasi\Base\Enums\EmploymentStatus;
 use Creasi\Base\Enums\StakeholderType;
@@ -41,7 +41,7 @@ class BusinessTest extends TestCase
             UploadedFile::fake()->image('logo.png')
         );
 
-        $this->assertInstanceOf(FileUpload::class, $business->avatar);
+        $this->assertInstanceOf(File::class, $business->avatar);
         $this->assertTrue($business->avatar->is_internal);
     }
 

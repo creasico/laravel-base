@@ -2,14 +2,14 @@
 
 namespace Creasi\Base\Database\Models;
 
-use Creasi\Base\Enums\FileUploadType;
+use Creasi\Base\Enums\FileType;
 use Illuminate\Database\Eloquent\Relations\MorphPivot;
 
 /**
- * @property string $file_upload_id
+ * @property string $file_id
  * @property int $attachable_id
  * @property string $attachable_type
- * @property null|FileUploadType $type
+ * @property null|FileType $type
  * @property-read \Creasi\Base\Contracts\HasFileUploads $attachable
  */
 class FileAttached extends MorphPivot
@@ -18,11 +18,11 @@ class FileAttached extends MorphPivot
 
     public $timestamps = false;
 
-    protected $fillable = ['type', 'file_upload_id'];
+    protected $fillable = ['type', 'file_id'];
 
     protected $casts = [
         'attachable_id' => 'int',
-        'type' => FileUploadType::class,
+        'type' => FileType::class,
     ];
 
     /**

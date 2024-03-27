@@ -19,7 +19,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('companies', Controllers\CompanyController::class);
     Route::apiResource('employees', Controllers\EmployeeController::class);
     Route::apiResource('addresses', Controllers\AddressController::class);
-    Route::apiResource('files', Controllers\FileUploadController::class);
+    Route::apiResource('files', Controllers\FileController::class);
 
     Route::apiSingleton('profile', Controllers\ProfileController::class);
     Route::apiSingleton('setting', Controllers\SettingController::class);
@@ -29,7 +29,7 @@ Route::middleware('auth:sanctum')->group(function () {
     foreach (['companies', 'employees'] as $entity) {
         Route::apiResources([
             "{$entity}.addresses" => Controllers\AddressController::class,
-            "{$entity}.files" => Controllers\FileUploadController::class,
+            "{$entity}.files" => Controllers\FileController::class,
         ], [
             'only' => ['index', 'store'],
             // 'parameters' => [$entity => 'entity'],

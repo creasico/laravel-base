@@ -7,5 +7,22 @@ use Illuminate\Routing\Controller as BaseController;
 
 abstract class Controller extends BaseController
 {
-    use AuthorizesRequests;
+    use AuthorizesRequests {
+        resourceAbilityMap as abilityMap;
+    }
+
+    protected function resourceAbilityMap()
+    {
+        $abilities = [
+            'restore' => 'restore',
+            'forceDestroy' => 'forceDelete',
+        ];
+
+        return \array_merge(
+            $this->abilityMap(),
+            \array_filter($abilities, function (string $method) {
+                return \method_exists($this, $method);
+            }, \ARRAY_FILTER_USE_KEY)
+        );
+    }
 }

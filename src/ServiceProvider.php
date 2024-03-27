@@ -2,9 +2,8 @@
 
 namespace Creasi\Base;
 
-use Creasi\Base\Database\Models\Address;
+use Creasi\Base\Database\Models;
 use Creasi\Base\Database\Models\Contracts;
-use Creasi\Base\Database\Models\Entity;
 use Creasi\Base\Enums\StakeholderType;
 use Illuminate\Auth\Events\Login;
 use Illuminate\Auth\Notifications\ResetPassword;
@@ -13,6 +12,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Event;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\URL;
@@ -22,6 +22,19 @@ use Laravel\Sanctum\Sanctum;
 
 class ServiceProvider extends IlluminateServiceProvider
 {
+    /**
+     * The policy mappings for the application.
+     *
+     * @var array<class-string, class-string>
+     */
+    protected $policies = [
+        Contracts\Company::class => Policies\CompanyPolicy::class,
+        Contracts\Employee::class => Policies\EmployeePolicy::class,
+        Contracts\Stakeholder::class => Policies\StakeholderPolicy::class,
+        Models\Address::class => Policies\AddressPolicy::class,
+        Models\File::class => Policies\FilePolicy::class,
+    ];
+
     private const LIB_PATH = __DIR__.'/..';
 
     public function boot(): void
@@ -55,7 +68,7 @@ class ServiceProvider extends IlluminateServiceProvider
         if (! app()->configurationIsCached()) {
             config([
                 'creasi.nusa' => array_merge([
-                    'addressable' => Address::class,
+                    'addressable' => Models\Address::class,
                 ], config('creasi.nusa', [])),
             ]);
 
@@ -72,6 +85,8 @@ class ServiceProvider extends IlluminateServiceProvider
 
         $this->booting(function (): void {
             Event::listen(Login::class, Listeners\RegisterUserDevice::class);
+
+            $this->registerPolicies();
         });
     }
 
@@ -95,6 +110,16 @@ class ServiceProvider extends IlluminateServiceProvider
         $this->commands([
             // .
         ]);
+    }
+
+    /**
+     * Register the application's policies.
+     */
+    protected function registerPolicies(): void
+    {
+        foreach ($this->policies as $model => $policy) {
+            Gate::policy($model, $policy);
+        }
     }
 
     protected function defineRoutes(): void
@@ -126,11 +151,23 @@ class ServiceProvider extends IlluminateServiceProvider
             return $request->isMethodCacheable() ? $request->query('api_token') : null;
         });
 
+        Route::bind('company', function (string $value) {
+            return app(Contracts\Company::class)->resolveRouteBinding((int) $value);
+        });
+
+        Route::bind('employee', function (string $value) {
+            return app(Contracts\Employee::class)->resolveRouteBinding((int) $value);
+        });
+
+        Route::bind('stakeholder', function (string $value) {
+            return app(Contracts\Stakeholder::class)->resolveRouteBinding((int) $value);
+        });
+
         if (app()->routesAreCached() || config('creasi.base.routes_enable') === false) {
             return;
         }
 
-        Route::name('base.')->group(function (): void {
+        Route::name('base.')->middleware('api')->group(function (): void {
             $prefix = config('creasi.base.routes_prefix', 'base');
 
             Route::prefix('auth')->group(self::LIB_PATH.'/routes/auth.php');
@@ -149,7 +186,7 @@ class ServiceProvider extends IlluminateServiceProvider
             return '/';
         });
 
-        $this->app->bind(Entity::class, function ($app) {
+        $this->app->bind(Models\Entity::class, function ($app) {
             $repo = $app->make(Repository::class);
 
             return $app->call([$repo, 'resolveEntity']);
@@ -191,6 +228,8 @@ class ServiceProvider extends IlluminateServiceProvider
 
     /**
      * {@inheritdoc}
+     *
+     *  @codeCoverageIgnore
      */
     public function provides()
     {
@@ -201,7 +240,7 @@ class ServiceProvider extends IlluminateServiceProvider
             Contracts\Company::class,
             Contracts\Employee::class,
             Contracts\Stakeholder::class,
-            Entity::class,
+            Models\Entity::class,
         ];
     }
 }

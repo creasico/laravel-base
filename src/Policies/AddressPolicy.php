@@ -2,7 +2,7 @@
 
 namespace Creasi\Base\Policies;
 
-use Creasi\Base\Models\Address;
+use Creasi\Base\Database\Models\Address;
 use Illuminate\Auth\Access\HandlesAuthorization;
 use Illuminate\Contracts\Auth\Authenticatable;
 
@@ -13,6 +13,7 @@ class AddressPolicy
     /**
      * Determine whether the user can view any models.
      *
+     * @param  Address  $model
      * @return \Illuminate\Auth\Access\Response|bool
      */
     public function viewAny(Authenticatable $user)
@@ -33,6 +34,7 @@ class AddressPolicy
     /**
      * Determine whether the user can create models.
      *
+     * @param  Address  $model
      * @return \Illuminate\Auth\Access\Response|bool
      */
     public function create(Authenticatable $user)

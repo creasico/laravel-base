@@ -2,7 +2,7 @@
 
 namespace Creasi\Base\Policies;
 
-use Creasi\Base\Contracts\Stakeholder;
+use Creasi\Base\Database\Models\Contracts\Stakeholder;
 use Illuminate\Auth\Access\HandlesAuthorization;
 use Illuminate\Contracts\Auth\Authenticatable;
 

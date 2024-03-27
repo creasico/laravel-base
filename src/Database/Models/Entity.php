@@ -4,8 +4,8 @@ namespace Creasi\Base\Database\Models;
 
 use Creasi\Base\Database\Model;
 use Creasi\Base\Database\Models\Concerns\WithAvatar;
-use Creasi\Base\Database\Models\Concerns\WithFileUploads;
-use Creasi\Base\Database\Models\Contracts\HasFileUploads;
+use Creasi\Base\Database\Models\Concerns\WithFiles;
+use Creasi\Base\Database\Models\Contracts\HasFiles;
 use Creasi\Base\Database\Models\Contracts\Stakeholder;
 use Creasi\Nusa\Contracts\HasAddresses;
 use Creasi\Nusa\Models\Concerns\WithAddresses;
@@ -17,11 +17,11 @@ use Creasi\Nusa\Models\Concerns\WithAddresses;
  * @property null|string $phone
  * @property null|string $summary
  */
-abstract class Entity extends Model implements HasAddresses, HasFileUploads, Stakeholder
+abstract class Entity extends Model implements HasAddresses, HasFiles, Stakeholder
 {
     use WithAddresses;
     use WithAvatar;
-    use WithFileUploads;
+    use WithFiles;
 
     public function getFillable()
     {

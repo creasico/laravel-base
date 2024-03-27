@@ -3,7 +3,7 @@
 namespace Creasi\Tests\Unit\Models;
 
 use Creasi\Base\Database\Models\Address;
-use Creasi\Base\Database\Models\FileUpload;
+use Creasi\Base\Database\Models\File;
 use Creasi\Base\Database\Models\Personnel;
 use Creasi\Base\Enums\Gender;
 use Creasi\Base\Enums\PersonnelRelativeStatus;
@@ -37,7 +37,7 @@ class PersonnelTest extends TestCase
             UploadedFile::fake()->image('avatar.png')
         );
 
-        $this->assertInstanceOf(FileUpload::class, $person->avatar);
+        $this->assertInstanceOf(File::class, $person->avatar);
         $this->assertTrue($person->avatar->is_internal);
     }
 

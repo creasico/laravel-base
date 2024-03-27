@@ -1,9 +1,9 @@
 <?php
 
-namespace Creasi\Base\Http\Requests\FileUpload;
+namespace Creasi\Base\Http\Requests\File;
 
 use Creasi\Base\Contracts\FormRequest as FormRequestContract;
-use Creasi\Base\Database\Models\FileUpload;
+use Creasi\Base\Database\Models\File;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateRequest extends FormRequest implements FormRequestContract
@@ -21,7 +21,7 @@ class UpdateRequest extends FormRequest implements FormRequestContract
         ];
     }
 
-    public function fulfill(FileUpload $file)
+    public function fulfill(File $file)
     {
         return $file->update($this->validated());
     }

@@ -40,21 +40,17 @@ class AddressController extends Controller
     /**
      * @return \Illuminate\Http\Response
      */
-    public function show(Address $model, Request $request, ?int $address = null)
+    public function show(Address $address, Request $request)
     {
-        $address = $model->exists ? $model : $model->newQuery()->findOrFail($address);
-
         return AddressResource::make($address)->toResponse($request);
     }
 
     /**
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateRequest $request, Address $model, ?int $address = null)
+    public function update(UpdateRequest $request, Address $address)
     {
-        $request->fulfill(
-            $address = $model->newQuery()->findOrFail($address)
-        );
+        $request->fulfill($address);
 
         return $this->show($address, $request);
     }
@@ -62,10 +58,8 @@ class AddressController extends Controller
     /**
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Address $model, ?int $address = null)
+    public function destroy(Address $address)
     {
-        $address = $model->newQuery()->findOrFail($address);
-
         $address->delete();
 
         return response()->noContent();

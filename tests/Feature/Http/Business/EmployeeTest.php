@@ -3,9 +3,9 @@
 namespace Creasi\Tests\Feature\Http\Business;
 
 use Creasi\Base\Database\Models\Address;
-use Creasi\Base\Database\Models\FileUpload;
+use Creasi\Base\Database\Models\File;
 use Creasi\Base\Database\Models\Personnel;
-use Creasi\Base\Enums\FileUploadType;
+use Creasi\Base\Enums\FileType;
 use Creasi\Tests\Feature\TestCase;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
@@ -131,9 +131,9 @@ class EmployeeTest extends TestCase
         Sanctum::actingAs($this->user());
 
         $model = Personnel::factory()->createOne();
-        $data = FileUpload::factory()->withoutFile()->raw();
+        $data = File::factory()->withoutFile()->raw();
         $data['upload'] = UploadedFile::fake()->create('file.pdf');
-        $data['type'] = FileUploadType::Document->value;
+        $data['type'] = FileType::Document->value;
 
         $response = $this->postJson($this->getRoutePath($model, 'files'), $data);
 
@@ -145,7 +145,7 @@ class EmployeeTest extends TestCase
     {
         Sanctum::actingAs($this->user());
 
-        $model = Personnel::factory()->withFileUpload(FileUploadType::Document)->createOne();
+        $model = Personnel::factory()->withFileUpload(FileType::Document)->createOne();
 
         $response = $this->getJson($this->getRoutePath($model, 'files'));
 

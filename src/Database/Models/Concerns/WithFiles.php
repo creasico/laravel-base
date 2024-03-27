@@ -2,23 +2,23 @@
 
 namespace Creasi\Base\Database\Models\Concerns;
 
+use Creasi\Base\Database\Models\File;
 use Creasi\Base\Database\Models\FileAttached;
-use Creasi\Base\Database\Models\FileUpload;
-use Creasi\Base\Enums\FileUploadType;
+use Creasi\Base\Enums\FileType;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Http\UploadedFile;
 
 /**
- * @mixin \Creasi\Base\Database\Models\Contracts\HasFileUploads
+ * @mixin \Creasi\Base\Database\Models\Contracts\HasFiles
  */
-trait WithFileUploads
+trait WithFiles
 {
     /**
      * {@inheritdoc}
      */
     public function files(): MorphToMany
     {
-        return $this->morphToMany(FileUpload::class, 'attachable', 'file_attached', null, 'file_upload_id')
+        return $this->morphToMany(File::class, 'attachable', 'file_attached', null, 'file_id')
             ->using(FileAttached::class)
             ->withPivot('type')
             ->as('attachment');
@@ -28,14 +28,14 @@ trait WithFileUploads
      * {@inheritdoc}
      */
     public function storeFile(
-        FileUploadType $type,
+        FileType $type,
         string|UploadedFile $path,
         string $name,
         ?string $title = null,
         ?string $summary = null,
         ?string $disk = null,
-    ): FileUpload {
-        $file = FileUpload::store($path, $name, $title, $summary, $disk);
+    ): File {
+        $file = File::store($path, $name, $title, $summary, $disk);
 
         $this->files()->syncWithPivotValues($file, ['type' => $type], false);
 

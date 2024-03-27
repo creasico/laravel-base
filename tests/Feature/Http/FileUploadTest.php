@@ -2,8 +2,8 @@
 
 namespace Creasi\Tests\Feature\Http;
 
-use Creasi\Base\Database\Models\FileUpload;
-use Creasi\Base\Enums\FileUploadType;
+use Creasi\Base\Database\Models\File;
+use Creasi\Base\Enums\FileType;
 use Creasi\Tests\Feature\TestCase;
 use Illuminate\Http\UploadedFile;
 use Laravel\Sanctum\Sanctum;
@@ -31,7 +31,7 @@ class FileUploadTest extends TestCase
     {
         Sanctum::actingAs($user = $this->user());
 
-        $user->identity->storeFile(FileUploadType::Document, '/doc/file.pdf', 'document');
+        $user->identity->storeFile(FileType::Document, '/doc/file.pdf', 'document');
 
         $response = $this->getJson($this->getRoutePath());
 
@@ -43,9 +43,9 @@ class FileUploadTest extends TestCase
     {
         Sanctum::actingAs($this->user());
 
-        $data = FileUpload::factory()->raw();
+        $data = File::factory()->raw();
         $data['upload'] = UploadedFile::fake()->create('file.pdf');
-        $data['type'] = FileUploadType::Document->value;
+        $data['type'] = FileType::Document->value;
 
         $response = $this->postJson($this->getRoutePath(), $data);
 
@@ -57,7 +57,7 @@ class FileUploadTest extends TestCase
     {
         Sanctum::actingAs($user = $this->user());
 
-        $model = $user->identity->storeFile(FileUploadType::Document, '/doc/file.pdf', 'document');
+        $model = $user->identity->storeFile(FileType::Document, '/doc/file.pdf', 'document');
 
         $response = $this->getJson($this->getRoutePath($model));
 
@@ -69,7 +69,7 @@ class FileUploadTest extends TestCase
     {
         Sanctum::actingAs($this->user());
 
-        $model = FileUpload::factory()->createOne();
+        $model = File::factory()->createOne();
 
         $response = $this->putJson($this->getRoutePath($model), $model->toArray());
 
@@ -81,7 +81,7 @@ class FileUploadTest extends TestCase
     {
         Sanctum::actingAs($user = $this->user());
 
-        $model = $user->identity->storeFile(FileUploadType::Document, '/doc/file.pdf', 'document');
+        $model = $user->identity->storeFile(FileType::Document, '/doc/file.pdf', 'document');
 
         $response = $this->deleteJson($this->getRoutePath($model));
 

@@ -27,9 +27,9 @@ use Illuminate\Support\Str;
  * @property-read \Illuminate\Database\Eloquent\Collection<int, Personnel> $ownedByPersonnels
  *
  * @method static static store(string|UploadedFile $path, string $name, ?string $title = null, ?string $summary = null, ?string $disk = null)
- * @method static \Creasi\Base\Database\Factories\FileUploadFactory<FileUpload> factory()
+ * @method static \Creasi\Base\Database\Factories\FileFactory<File> factory()
  */
-class FileUpload extends Model
+class File extends Model
 {
     use HasUuids;
 
@@ -82,7 +82,7 @@ class FileUpload extends Model
 
     protected function attachable(string $owner)
     {
-        return $this->morphedByMany($owner, 'attachable', 'file_attached', 'file_upload_id')
+        return $this->morphedByMany($owner, 'attachable', 'file_attached', 'file_id')
             ->as('attachment');
     }
 

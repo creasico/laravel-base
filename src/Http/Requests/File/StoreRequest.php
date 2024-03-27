@@ -1,10 +1,10 @@
 <?php
 
-namespace Creasi\Base\Http\Requests\FileUpload;
+namespace Creasi\Base\Http\Requests\File;
 
 use Creasi\Base\Contracts\FormRequest as FormRequestContract;
-use Creasi\Base\Database\Models\Contracts\HasFileUploads;
-use Creasi\Base\Enums\FileUploadType;
+use Creasi\Base\Database\Models\Contracts\HasFiles;
+use Creasi\Base\Enums\FileType;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -18,15 +18,15 @@ class StoreRequest extends FormRequest implements FormRequestContract
         return [
             'title' => ['required', 'string'],
             'name' => ['required', 'string'],
-            'type' => ['required', Rule::enum(FileUploadType::class)],
+            'type' => ['required', Rule::enum(FileType::class)],
             'upload' => ['nullable', 'file'],
         ];
     }
 
-    public function fulfill(HasFileUploads $entity)
+    public function fulfill(HasFiles $entity)
     {
-        /** @var FileUploadType */
-        $type = $this->enum('type', FileUploadType::class);
+        /** @var FileType */
+        $type = $this->enum('type', FileType::class);
 
         return $entity->storeFile(
             $type,

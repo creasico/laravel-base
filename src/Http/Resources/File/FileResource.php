@@ -1,15 +1,15 @@
 <?php
 
-namespace Creasi\Base\Http\Resources\FileUpload;
+namespace Creasi\Base\Http\Resources\File;
 
 use Creasi\Base\Database\Models\FileAttached;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 /**
- * @property-read \Creasi\Base\Database\Models\FileUpload $resource
+ * @property-read \Creasi\Base\Database\Models\File $resource
  */
-class FileUploadResource extends JsonResource
+class FileResource extends JsonResource
 {
     public function __construct($resource)
     {

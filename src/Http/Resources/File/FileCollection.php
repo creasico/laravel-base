@@ -1,11 +1,11 @@
 <?php
 
-namespace Creasi\Base\Http\Resources\FileUpload;
+namespace Creasi\Base\Http\Resources\File;
 
 use Creasi\Base\Http\Resources\Collection;
 use Illuminate\Http\Request;
 
-class FileUploadCollection extends Collection
+class FileCollection extends Collection
 {
     /**
      * Transform the resource collection into an array.

@@ -2,15 +2,15 @@
 
 namespace Creasi\Base\Database\Models\Concerns;
 
-use Creasi\Base\Enums\FileUploadType;
+use Creasi\Base\Enums\FileType;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Http\UploadedFile;
 
 /**
- * @property-read null|\Creasi\Base\Database\Models\FileUpload $avatar
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \Creasi\Base\Database\Models\FileUpload> $avatarFile
+ * @property-read null|\Creasi\Base\Database\Models\File $avatar
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \Creasi\Base\Database\Models\File> $avatarFile
  *
- * @mixin \Creasi\Base\Database\Models\Contracts\HasFileUploads
+ * @mixin \Creasi\Base\Database\Models\Contracts\HasFiles
  */
 trait WithAvatar
 {
@@ -25,7 +25,7 @@ trait WithAvatar
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\MorphOne|\Creasi\Base\Database\Models\FileUpload
+     * @return \Illuminate\Database\Eloquent\Relations\MorphOne|\Creasi\Base\Database\Models\File
      */
     public function avatar(): Attribute
     {
@@ -36,13 +36,13 @@ trait WithAvatar
 
     public function setAvatar(string|UploadedFile $image)
     {
-        return $this->storeFile(FileUploadType::Avatar, $image, $this->getRouteKey(), 'Avatar Image');
+        return $this->storeFile(FileType::Avatar, $image, $this->getRouteKey(), 'Avatar Image');
     }
 
     public function avatarFile()
     {
         return $this->files()
-            ->wherePivot('type', '=', FileUploadType::Avatar)
+            ->wherePivot('type', '=', FileType::Avatar)
             ->latest();
     }
 }

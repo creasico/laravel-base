@@ -2,7 +2,7 @@
 
 namespace Creasi\Base\Policies;
 
-use Creasi\Base\Contracts\Employee;
+use Creasi\Base\Database\Models\Contracts\Employee;
 use Illuminate\Auth\Access\HandlesAuthorization;
 use Illuminate\Contracts\Auth\Authenticatable;
 

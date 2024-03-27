@@ -2,11 +2,11 @@
 
 namespace Creasi\Base\Policies;
 
-use Creasi\Base\Models\FileUpload;
+use Creasi\Base\Database\Models\File;
 use Illuminate\Auth\Access\HandlesAuthorization;
 use Illuminate\Contracts\Auth\Authenticatable;
 
-class FileUploadPolicy
+class FilePolicy
 {
     use HandlesAuthorization;
 
@@ -25,7 +25,7 @@ class FileUploadPolicy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function view(Authenticatable $user, FileUpload $model)
+    public function view(Authenticatable $user, File $model)
     {
         return true;
     }
@@ -45,7 +45,7 @@ class FileUploadPolicy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function update(Authenticatable $user, FileUpload $model)
+    public function update(Authenticatable $user, File $model)
     {
         return true;
     }
@@ -55,7 +55,7 @@ class FileUploadPolicy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function delete(Authenticatable $user, FileUpload $model)
+    public function delete(Authenticatable $user, File $model)
     {
         return true;
     }
@@ -65,7 +65,7 @@ class FileUploadPolicy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function restore(Authenticatable $user, FileUpload $model)
+    public function restore(Authenticatable $user, File $model)
     {
         return true;
     }
@@ -75,7 +75,7 @@ class FileUploadPolicy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function forceDelete(Authenticatable $user, FileUpload $model)
+    public function forceDelete(Authenticatable $user, File $model)
     {
         return true;
     }

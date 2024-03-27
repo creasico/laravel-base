@@ -3,9 +3,9 @@
 namespace Creasi\Tests\Unit\Models;
 
 use Creasi\Base\Database\Models\Business;
-use Creasi\Base\Database\Models\FileUpload;
+use Creasi\Base\Database\Models\File;
 use Creasi\Base\Database\Models\Personnel;
-use Creasi\Base\Enums\FileUploadType;
+use Creasi\Base\Enums\FileType;
 use Creasi\Tests\TestCase;
 use Illuminate\Http\UploadedFile;
 use PHPUnit\Framework\Attributes\Group;
@@ -20,7 +20,7 @@ class FileUploadTest extends TestCase
     {
         $file = UploadedFile::fake()->create('original.pdf');
 
-        $original = FileUpload::store($file, 'document');
+        $original = File::store($file, 'document');
 
         $revision = $original->createRevision(
             UploadedFile::fake()->create('revision.pdf')
@@ -42,7 +42,7 @@ class FileUploadTest extends TestCase
         ];
 
         foreach ($files as $name => $file) {
-            $person->storeFile(FileUploadType::Document, $file, $name);
+            $person->storeFile(FileType::Document, $file, $name);
         }
 
         $this->assertCount(2, $person->files);
@@ -59,7 +59,7 @@ class FileUploadTest extends TestCase
         $file = UploadedFile::fake()->create('document.pdf');
 
         foreach ($people as $person) {
-            $person->storeFile(FileUploadType::Document, $file, 'document');
+            $person->storeFile(FileType::Document, $file, 'document');
 
             $this->assertCount(1, $person->files);
         }
@@ -75,7 +75,7 @@ class FileUploadTest extends TestCase
         ];
 
         foreach ($files as $name => $file) {
-            $company->storeFile(FileUploadType::Document, $file, $name);
+            $company->storeFile(FileType::Document, $file, $name);
         }
 
         $this->assertCount(2, $company->files);
@@ -92,7 +92,7 @@ class FileUploadTest extends TestCase
         $file = UploadedFile::fake()->create('document.pdf');
 
         foreach ($companies as $company) {
-            $company->storeFile(FileUploadType::Document, $file, 'document');
+            $company->storeFile(FileType::Document, $file, 'document');
 
             $this->assertCount(1, $company->files);
         }

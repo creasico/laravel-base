@@ -2,31 +2,31 @@
 
 namespace Creasi\Base\Database\Models\Contracts;
 
-use Creasi\Base\Database\Models\FileUpload;
-use Creasi\Base\Enums\FileUploadType;
+use Creasi\Base\Database\Models\File;
+use Creasi\Base\Enums\FileType;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Http\UploadedFile;
 
 /**
- * @property-read \Illuminate\Database\Eloquent\Collection<int, FileUpload> $files
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, File> $files
  *
  * @mixin \Illuminate\Database\Eloquent\Model
  */
-interface HasFileUploads
+interface HasFiles
 {
     /**
-     * @return MorphToMany|FileUpload
+     * @return MorphToMany|File
      */
     public function files(): MorphToMany;
 
     public function storeFile(
-        FileUploadType $type,
+        FileType $type,
         string|UploadedFile $path,
         string $name,
         ?string $title = null,
         ?string $summary = null,
         ?string $disk = null,
-    ): FileUpload;
+    ): File;
 
     /**
      * Retrieve attachable key attribute value

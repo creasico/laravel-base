@@ -31,8 +31,8 @@ class StoreRequest extends FormRequest implements FormRequestContract
         return $entity->storeFile(
             $type,
             $this->file('upload'),
-            $this->name,
-            $this->title,
+            $this->input('name'),
+            $this->input('title'),
         );
     }
 }

@@ -9,6 +9,8 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 
 /**
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Company> $primaryEmployer
+ *
  * @mixin \Creasi\Base\Database\Models\Contracts\Employee
  */
 trait AsEmployee

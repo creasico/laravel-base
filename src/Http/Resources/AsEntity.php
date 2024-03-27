@@ -22,47 +22,35 @@ trait AsEntity
     /**
      * @param  \Creasi\Base\Database\Models\Personnel|null  $entity
      */
-    final protected function forPersonnel(?Employee $entity = null): array
+    final protected function forPersonnel(Employee $entity): array
     {
-        if (! $entity) {
-            return [];
-        }
-
         return [
             $entity->getKeyName() => $entity->getKey(),
             'avatar' => $entity->avatar?->only('url', 'title'),
-            'fullname' => $entity->name,
-            'nickname' => $entity->alias,
+            'name' => $entity->name,
+            'alias' => $entity->alias,
             'gender' => $entity->gender?->toArray(),
+            'nik' => $entity->nik,
             'email' => $entity->email,
             'phone' => $entity->phone,
-            'summary' => $entity->summary,
-            'nik' => $entity->nik,
             'prefix' => $entity->prefix,
             'suffix' => $entity->suffix,
             'birth_date' => $entity->birth_date,
             'birth_place' => $entity->birthPlace?->only('code', 'name'),
-            'education' => $entity->education?->value,
-            'religion' => $entity->religion?->toArray(),
-            'tax_status' => $entity->tax_status?->toArray(),
-            'tax_id' => $entity->tax_id,
+            'summary' => $entity->summary,
         ];
     }
 
     /**
      * @param  \Creasi\Base\Database\Models\Business|null  $entity
      */
-    final protected function forCompany(?Company $entity = null): array
+    final protected function forCompany(Company $entity): array
     {
-        if (! $entity) {
-            return [];
-        }
-
         return [
             $entity->getKeyName() => $entity->getKey(),
             'avatar' => $entity->avatar?->only('url', 'title'),
-            'legalname' => $entity->name,
-            'aliasname' => $entity->alias,
+            'name' => $entity->name,
+            'alias' => $entity->alias,
             'email' => $entity->email,
             'phone' => $entity->phone,
             'summary' => $entity->summary,
@@ -79,9 +67,7 @@ trait AsEntity
 
         $arr = $entity instanceof Company
             ? $this->forCompany($entity)
-            : $this->forPersonnel($entity, false);
-
-        // $arr['type'] = \class_basename($entity);
+            : $this->forPersonnel($entity);
 
         return $arr;
     }

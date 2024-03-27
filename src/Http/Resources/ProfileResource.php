@@ -20,8 +20,8 @@ class ProfileResource extends JsonResource
 
         $this->additional([
             'meta' => [
-                'educations' => Education::toOptions(),
-                'tax_statuses' => TaxStatus::toOptions(),
+                // 'educations' => Education::toOptions(),
+                // 'tax_statuses' => TaxStatus::toOptions(),
             ],
             'links' => $this->links(),
         ]);
@@ -34,9 +34,9 @@ class ProfileResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        $resource = $this->forPersonnel($this->identity);
+        $resource = $this->forPersonnel($this->resource->identity);
 
-        $resource[$this->getKeyName()] = $this->getKey();
+        $resource[$this->resource->getKeyName()] = $this->resource->getKey();
 
         return $resource;
     }

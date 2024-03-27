@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Relations\MorphToMany;
 /**
  * @property-read \Illuminate\Database\Eloquent\Collection<int, Employee> $employees
  * @property-read \Illuminate\Database\Eloquent\Collection<int, Personnel> $individualRelatives
- * @property-read \Illuminate\Database\Eloquent\Collection<int, static> $companyRelatives
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Company> $companyRelatives
  * @property-read \Illuminate\Database\Eloquent\Collection<int, BusinessRelative> $stakeholders
  */
 interface Company extends Stakeholder

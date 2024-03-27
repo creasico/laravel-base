@@ -18,6 +18,8 @@ abstract class StakeholderTestCase extends TestCase
     private array $dataStructure = [
         'id',
         'avatar',
+        'name',
+        'alias',
         'email',
         'phone',
         'summary',

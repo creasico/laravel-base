@@ -17,30 +17,18 @@ class ProfileTest extends TestCase
     private array $responseStructure = [
         'data' => [
             'avatar',
-            'fullname',
-            'nickname',
+            'name',
+            'alias',
             'email',
             'phone',
             'gender' => ['value', 'label'],
             'summary',
-            'nik',
             'prefix',
             'suffix',
             'birth_date',
             'birth_place' => ['name', 'code'],
-            'education',
-            'religion' => ['value', 'label'],
-            'tax_status' => ['value', 'label'],
-            'tax_id',
         ],
-        'meta' => [
-            'educations' => [
-                ['key', 'value'],
-            ],
-            'tax_statuses' => [
-                ['key', 'value', 'label'],
-            ],
-        ],
+        'meta' => [],
     ];
 
     #[Test]
@@ -61,15 +49,13 @@ class ProfileTest extends TestCase
         $user->load('identity');
 
         $response = $this->putJson($this->getRoutePath(), [
-            'fullname' => $user->identity->name,
-            'nickname' => $user->identity->alias,
+            'name' => $user->identity->name,
+            'alias' => $user->identity->alias,
+            'email' => $user->identity->email,
             'phone' => $user->identity->phone,
             'summary' => null,
             'prefix' => null,
             'suffix' => null,
-            'education' => $user->identity->education->value,
-            'tax_status' => $user->identity->tax_status->value,
-            'tax_id' => $user->identity->tax_id,
         ]);
 
         $response->assertOk()->assertJsonStructure($this->responseStructure);

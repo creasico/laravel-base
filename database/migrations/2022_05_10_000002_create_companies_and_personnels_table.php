@@ -18,8 +18,6 @@ return new class extends Migration
             $table->string('alias', 50)->nullable();
             $table->string('email')->unique()->nullable();
             $table->string('phone', 20)->nullable();
-            $table->unsignedSmallInteger('tax_status')->nullable();
-            $table->string('tax_id', 16)->nullable();
             $table->string('summary', 200)->nullable();
 
             $table->timestamps();
@@ -54,10 +52,6 @@ return new class extends Migration
             $table->date('birth_date')->nullable();
             $table->char('birth_place_code', 4)->nullable();
             $table->char('gender', 1);
-            $table->string('education', 3)->nullable();
-            $table->unsignedTinyInteger('religion')->nullable();
-            $table->unsignedSmallInteger('tax_status')->nullable();
-            $table->string('tax_id', 16)->nullable();
             $table->string('summary', 200)->nullable();
 
             $table->timestamps();

@@ -4,14 +4,10 @@ namespace Creasi\Base\Database\Models;
 
 use Creasi\Base\Database\Models\Concerns\AsEmployee;
 use Creasi\Base\Database\Models\Concerns\WithCredential;
-use Creasi\Base\Database\Models\Concerns\WithTaxInfo;
 use Creasi\Base\Database\Models\Contracts\Employee;
 use Creasi\Base\Database\Models\Contracts\HasCredential;
-use Creasi\Base\Database\Models\Contracts\HasTaxInfo;
-use Creasi\Base\Enums\Education;
 use Creasi\Base\Enums\Gender;
 use Creasi\Base\Enums\PersonnelRelativeStatus;
-use Creasi\Base\Enums\Religion;
 use Creasi\Nusa\Models\Concerns\WithRegency;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
@@ -21,8 +17,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @property null|string $suffix
  * @property null|\Carbon\CarbonImmutable $birth_date
  * @property null|int $birth_place_code
- * @property null|Education $education
- * @property null|Religion $religion
  * @property null|string $summary
  * @property-read null|Regency $birthPlace
  * @property-read ?PersonnelRelative $relative
@@ -31,32 +25,27 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  *
  * @method static \Creasi\Base\Database\Factories\PersonnelFactory<Personnel> factory()
  */
-class Personnel extends Entity implements Employee, HasCredential, HasTaxInfo
+class Personnel extends Entity implements Employee, HasCredential
 {
     use AsEmployee;
     use WithCredential;
     use WithRegency {
         regency as birthPlace;
     }
-    use WithTaxInfo;
 
     protected $fillable = [
-        'nik',
+        // 'nik',
         'prefix',
         'suffix',
         'birth_date',
         'birth_place_code',
-        'education',
-        'religion',
         'gender',
     ];
 
     protected $casts = [
         'birth_date' => 'immutable_date',
         'birth_place_code' => 'int',
-        'education' => Education::class,
         'gender' => Gender::class,
-        'religion' => Religion::class,
     ];
 
     protected $regencyKey = 'birth_place_code';

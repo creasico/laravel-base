@@ -22,8 +22,8 @@ class EmployeeTest extends TestCase
     private array $dataStructure = [
         'id',
         'avatar',
-        'fullname',
-        'nickname',
+        'name',
+        'alias',
         'email',
         'phone',
         'summary',

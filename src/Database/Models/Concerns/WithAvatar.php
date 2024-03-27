@@ -8,6 +8,7 @@ use Illuminate\Http\UploadedFile;
 
 /**
  * @property-read null|\Creasi\Base\Database\Models\FileUpload $avatar
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \Creasi\Base\Database\Models\FileUpload> $avatarFile
  *
  * @mixin \Creasi\Base\Database\Models\Contracts\HasFileUploads
  */

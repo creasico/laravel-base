@@ -23,8 +23,8 @@ class CompanyTest extends TestCase
     private array $dataStructure = [
         'id',
         'avatar',
-        'legalname',
-        'aliasname',
+        'name',
+        'alias',
         'email',
         'phone',
         'summary',

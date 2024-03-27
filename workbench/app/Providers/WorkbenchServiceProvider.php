@@ -30,7 +30,7 @@ class WorkbenchServiceProvider extends ServiceProvider
             $config->set('database.default', $conn);
 
             if ($conn === 'sqlite') {
-                if (! file_exists($database = \realpath(__DIR__.'/../../database').'/test.sqlite')) {
+                if (! file_exists($database = \database_path('/test.sqlite'))) {
                     touch($database);
                 }
 

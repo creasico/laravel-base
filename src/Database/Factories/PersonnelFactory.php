@@ -4,13 +4,10 @@ namespace Creasi\Base\Database\Factories;
 
 use Creasi\Base\Database\Models\Business;
 use Creasi\Base\Database\Models\Personnel;
-use Creasi\Base\Enums\Education;
 use Creasi\Base\Enums\EmploymentStatus;
 use Creasi\Base\Enums\Gender;
-use Creasi\Base\Enums\Religion;
 use Creasi\Base\Enums\StakeholderStatus;
 use Creasi\Base\Enums\StakeholderType;
-use Creasi\Base\Enums\TaxStatus;
 use Creasi\Nusa\Models\Regency;
 use DateTimeInterface;
 use Illuminate\Database\Eloquent\Builder;
@@ -45,13 +42,9 @@ class PersonnelFactory extends Factory
             'email' => $this->faker->safeEmail(),
             'phone' => '08'.$this->faker->numerify('##########'),
             'gender' => $gender,
-            'nik' => $nik = $this->faker->nik(null, $birthDate = $this->faker->dateTime()),
+            'nik' => $this->faker->nik($gender->toFaker(), $birthDate = $this->faker->dateTime()),
             'birth_date' => $birthDate->format('Y-m-d'),
             'birth_place_code' => $birthPlace->code,
-            'education' => $this->faker->randomElement(Education::cases()),
-            'religion' => $this->faker->randomElement(Religion::cases()),
-            'tax_status' => $this->faker->randomElement(TaxStatus::cases()),
-            'tax_id' => $nik,
             'summary' => $this->faker->sentence(4),
         ];
     }

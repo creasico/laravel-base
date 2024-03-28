@@ -3,6 +3,7 @@
 namespace Workbench\App\Providers;
 
 use Illuminate\Config\Repository;
+use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 use Workbench\App\Models\User;
 
@@ -25,24 +26,10 @@ class WorkbenchServiceProvider extends ServiceProvider
                 'user_model' => User::class,
             ]);
 
-            $conn = env('DB_CONNECTION', 'sqlite');
-
-            $config->set('database.default', $conn);
-
-            if ($conn === 'sqlite') {
-                if (! file_exists($database = \database_path('/test.sqlite'))) {
-                    touch($database);
-                }
-
+            if (env('DB_CONNECTION', 'sqlite') === 'sqlite') {
                 $this->mergeConfig($config, 'database.connections.sqlite', [
-                    'database' => $database,
+                    'database' => ':memory:',
                     'foreign_key_constraints' => true,
-                ]);
-            } else {
-                $this->mergeConfig($config, 'database.connections.'.$conn, [
-                    'database' => env('DB_DATABASE', 'creasi_test'),
-                    'username' => env('DB_USERNAME', 'creasico'),
-                    'password' => env('DB_PASSWORD', 'secret'),
                 ]);
             }
         });
@@ -53,7 +40,7 @@ class WorkbenchServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        View::addLocation(__DIR__.'/../../resources/views');
     }
 
     private function mergeConfig(Repository $config, string $key, array $value)

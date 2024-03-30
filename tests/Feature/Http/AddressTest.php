@@ -9,7 +9,7 @@ use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Test;
 
 #[Group('api')]
-#[Group('address')]
+#[Group('addresses')]
 class AddressTest extends TestCase
 {
     protected string $apiPath = 'addresses';
@@ -44,7 +44,7 @@ class AddressTest extends TestCase
         Sanctum::actingAs($user = $this->user());
 
         $model = Address::factory()->createOne();
-        $user->identity->addresses()->save($model);
+        $user->profile->addresses()->save($model);
 
         $response = $this->getJson($this->getRoutePath());
 
@@ -76,7 +76,7 @@ class AddressTest extends TestCase
         Sanctum::actingAs($user = $this->user());
 
         $model = Address::factory()->createOne();
-        $user->identity->addresses()->save($model);
+        $user->profile->addresses()->save($model);
 
         $response = $this->getJson($this->getRoutePath($model));
 
@@ -107,7 +107,7 @@ class AddressTest extends TestCase
         Sanctum::actingAs($user = $this->user());
 
         $model = Address::factory()->createOne();
-        $user->identity->addresses()->save($model);
+        $user->profile->addresses()->save($model);
 
         $response = $this->deleteJson($this->getRoutePath($model));
 
@@ -120,7 +120,7 @@ class AddressTest extends TestCase
         Sanctum::actingAs($user = $this->user());
 
         $model = Address::factory()->createOne();
-        $user->identity->addresses()->save($model);
+        $user->profile->addresses()->save($model);
 
         $deleted = clone $model;
         $model->delete();

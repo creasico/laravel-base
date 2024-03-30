@@ -11,6 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
+        Schema::create('user_devices', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
+            $table->string('token');
+        });
+
         Schema::create('addresses', function (Blueprint $table) {
             $table->id();
             $table->nullableMorphs('addressable');
@@ -63,5 +69,6 @@ return new class extends Migration
         Schema::dropIfExists('file_attached');
         Schema::dropIfExists('files');
         Schema::dropIfExists('addresses');
+        Schema::dropIfExists('user_devices');
     }
 };

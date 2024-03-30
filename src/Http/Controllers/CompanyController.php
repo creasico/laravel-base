@@ -7,8 +7,8 @@ use Creasi\Base\Http\Requests\Company\DeleteRequest;
 use Creasi\Base\Http\Requests\Company\IndexRequest;
 use Creasi\Base\Http\Requests\Company\StoreRequest;
 use Creasi\Base\Http\Requests\Company\UpdateRequest;
-use Creasi\Base\Http\Resources\Company\CompanyCollection;
-use Creasi\Base\Http\Resources\Company\CompanyResource;
+use Creasi\Base\Http\Resources\Organization\OrganizationCollection;
+use Creasi\Base\Http\Resources\Organization\OrganizationResource;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
 
@@ -22,47 +22,47 @@ class CompanyController extends Controller
     /**
      * Index endpoint for companies.
      */
-    public function index(Company $company, IndexRequest $request): CompanyCollection
+    public function index(Company $org, IndexRequest $request): OrganizationCollection
     {
-        return new CompanyCollection(
-            $request->fulfill($company)->paginate()
+        return new OrganizationCollection(
+            $request->fulfill($org)->paginate()
         );
     }
 
     /**
      * Create endpoint for company.
      */
-    public function store(Company $company, StoreRequest $request): JsonResponse
+    public function store(Company $org, StoreRequest $request): JsonResponse
     {
-        $company = $request->fulfill($company);
+        $org = $request->fulfill($org);
 
-        return $this->show($company)->toResponse($request)->setStatusCode(201);
+        return $this->show($org)->toResponse($request)->setStatusCode(201);
     }
 
     /**
      * Show endpoint for a single company.
      */
-    public function show(Company $company): CompanyResource
+    public function show(Company $org): OrganizationResource
     {
-        return new CompanyResource($company);
+        return new OrganizationResource($org);
     }
 
     /**
      * Update endpoint for a single company.
      */
-    public function update(Company $company, UpdateRequest $request): CompanyResource
+    public function update(Company $org, UpdateRequest $request): OrganizationResource
     {
-        $request->fulfill($company);
+        $request->fulfill($org);
 
-        return $this->show($company);
+        return $this->show($org);
     }
 
     /**
      * Delete endpoint for a single company.
      */
-    public function destroy(Company $company, DeleteRequest $request): Response
+    public function destroy(Company $org, DeleteRequest $request): Response
     {
-        $request->fulfill($company);
+        $request->fulfill($org);
 
         return response()->noContent();
     }
@@ -70,10 +70,10 @@ class CompanyController extends Controller
     /**
      * Restore endpoint for a single company.
      */
-    public function restore(Company $company): CompanyResource
+    public function restore(Company $org): OrganizationResource
     {
-        $company->restore();
+        $org->restore();
 
-        return $this->show($company);
+        return $this->show($org);
     }
 }

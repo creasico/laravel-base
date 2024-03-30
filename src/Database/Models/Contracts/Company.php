@@ -8,30 +8,30 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 
 /**
- * @property-read \Illuminate\Database\Eloquent\Collection<int, Employee> $employees
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Personnel> $employees
  * @property-read \Illuminate\Database\Eloquent\Collection<int, Personnel> $individualRelatives
  * @property-read \Illuminate\Database\Eloquent\Collection<int, Company> $companyRelatives
- * @property-read \Illuminate\Database\Eloquent\Collection<int, BusinessRelative> $stakeholders
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, OrganizationRelative> $stakeholders
  */
 interface Company extends Stakeholder
 {
     /**
-     * @return MorphToMany|Employee
+     * @return MorphToMany|Personnel
      */
     public function employees(): MorphToMany;
 
     /**
-     * @return MorphToMany|BusinessRelative
+     * @return MorphToMany|OrganizationRelative
      */
     public function companyRelatives(): MorphToMany;
 
     /**
-     * @return MorphToMany|BusinessRelative
+     * @return MorphToMany|OrganizationRelative
      */
     public function individualRelatives(): MorphToMany;
 
     /**
-     * @return HasMany|BusinessRelative
+     * @return HasMany|OrganizationRelative
      */
     public function stakeholders(): HasMany;
 

@@ -3,8 +3,8 @@
 namespace Creasi\Base\Http\Requests\Company;
 
 use Creasi\Base\Contracts\FormRequest as FormRequestContract;
-use Creasi\Base\Database\Models\Business;
 use Creasi\Base\Database\Models\Contracts\Company;
+use Creasi\Base\Database\Models\Organization;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -17,8 +17,8 @@ class StoreRequest extends FormRequest implements FormRequestContract
     {
         return [
             'name' => ['required', 'string', 'max:150'],
-            'alias' => ['nullable', 'string', 'max:50', Rule::unique(Business::class, 'alias')],
-            'email' => ['required', 'email', 'max:150', Rule::unique(Business::class, 'email')],
+            'alias' => ['nullable', 'string', 'max:50', Rule::unique(Organization::class, 'alias')],
+            'email' => ['required', 'email', 'max:150', Rule::unique(Organization::class, 'email')],
             'phone' => ['nullable', 'numeric', 'max_digits:20'],
             'summary' => ['nullable', 'string', 'max:200'],
         ];

@@ -46,13 +46,13 @@ class ProfileTest extends TestCase
     {
         Sanctum::actingAs($user = $this->user());
 
-        $user->load('identity');
+        $user->load('profile');
 
         $response = $this->putJson($this->getRoutePath(), [
-            'name' => $user->identity->name,
-            'alias' => $user->identity->alias,
-            'email' => $user->identity->email,
-            'phone' => $user->identity->phone,
+            'name' => $user->profile->name,
+            'alias' => $user->profile->alias,
+            'email' => $user->profile->email,
+            'phone' => $user->profile->phone,
             'summary' => null,
             'prefix' => null,
             'suffix' => null,

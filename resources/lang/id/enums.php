@@ -11,24 +11,14 @@ return [
         'legal' => 'Legal',
     ],
 
-    'religion' => [
-        'other' => 'Kepercaan Lainnya',
-        'islam' => 'Islam',
-        'christian' => 'Kristen',
-        'catholic' => 'Katolik',
-        'hinduism' => 'Hindu',
-        'buddhism' => 'Buddha',
-        'confucianism' => 'Konghuchu',
-    ],
-
-    'file-upload-type' => [
+    'file-type' => [
         'avatar' => 'Avatar',
         'logo' => 'Logo',
         'image' => 'Image',
         'document' => 'Document',
     ],
 
-    'employment-status' => [
+    'personnel-status' => [
         'unemployeed' => 'Tidak Dipekerjakan',
         'fulltime' => 'Full-time',
         'parttime' => 'Part-time',
@@ -37,22 +27,7 @@ return [
         'freelance' => 'Freelance',
     ],
 
-    'tax-status' => [
-        't-k0' => 'TK/0',
-        't-k1' => 'TK/1',
-        't-k2' => 'TK/2',
-        't-k3' => 'TK/3',
-        'k0' => 'K/0',
-        'k1' => 'K/1',
-        'k2' => 'K/2',
-        'k3' => 'K/3',
-        'k-i0' => 'K/I/0',
-        'k-i1' => 'K/I/1',
-        'k-i2' => 'K/I/2',
-        'k-i3' => 'K/I/3',
-    ],
-
-    'personnel-relative-status' => [
+    'person-relative-status' => [
         'child' => 'Anak',
         'spouse' => 'Pasangan',
         'sibling' => 'Saudara Kandung',
@@ -77,5 +52,30 @@ return [
         'customer' => 'Pelanggan',
         'supplier' => 'Pemasok',
         'vendor' => 'Vendor',
+    ],
+
+    'religion' => [
+        'other' => 'Kepercaan Lainnya',
+        'islam' => 'Islam',
+        'christian' => 'Kristen',
+        'catholic' => 'Katolik',
+        'hinduism' => 'Hindu',
+        'buddhism' => 'Buddha',
+        'confucianism' => 'Konghuchu',
+    ],
+
+    'tax-status' => [
+        't-k0' => 'TK/0',
+        't-k1' => 'TK/1',
+        't-k2' => 'TK/2',
+        't-k3' => 'TK/3',
+        'k0' => 'K/0',
+        'k1' => 'K/1',
+        'k2' => 'K/2',
+        'k3' => 'K/3',
+        'k-i0' => 'K/I/0',
+        'k-i1' => 'K/I/1',
+        'k-i2' => 'K/I/2',
+        'k-i3' => 'K/I/3',
     ],
 ];

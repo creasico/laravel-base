@@ -122,7 +122,7 @@ jobs:
         uses: actions/upload-artifact@v4
         if: ${{ steps.reports.outputs.has-reports == '1' }}
         with:
-          name: test-reports-${{ matrix.php }}-L${{ matrix.laravel }}
+          name: cc-reports-${{ matrix.php }}-L${{ matrix.laravel }}
           path: tests/reports/codeclimate-${{ matrix.php }}-L${{ matrix.laravel }}.json
 
   reports:

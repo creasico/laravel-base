@@ -2,8 +2,8 @@
 
 namespace Creasi\Tests\Feature\Http;
 
-use Creasi\Base\Database\Models\Business;
-use Creasi\Base\Database\Models\Personnel;
+use Creasi\Base\Database\Models\Organization;
+use Creasi\Base\Database\Models\Person;
 use Creasi\Base\Enums\StakeholderType;
 use Creasi\Tests\Feature\TestCase;
 use Illuminate\Contracts\Routing\UrlRoutable;
@@ -12,7 +12,7 @@ use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Test;
 
 #[Group('api')]
-#[Group('stakeholder')]
+#[Group('stakeholders')]
 abstract class StakeholderTestCase extends TestCase
 {
     private array $dataStructure = [
@@ -49,11 +49,11 @@ abstract class StakeholderTestCase extends TestCase
     {
         Sanctum::actingAs($user = $this->user());
 
-        $company = Business::factory()->createOne(['name' => 'External Company']);
-        $personal = Personnel::factory()->createOne(['name' => 'External Personal']);
+        $company = Organization::factory()->createOne(['name' => 'External Company']);
+        $personal = Person::factory()->createOne(['name' => 'External Personal']);
 
-        $user->identity->employer->addStakeholder($this->getRelativeType(), $company);
-        $user->identity->employer->addStakeholder($this->getRelativeType(), $personal);
+        $user->profile->employer->addStakeholder($this->getRelativeType(), $company);
+        $user->profile->employer->addStakeholder($this->getRelativeType(), $personal);
 
         $response = $this->getJson($this->getRoutePath());
 
@@ -69,7 +69,7 @@ abstract class StakeholderTestCase extends TestCase
     {
         Sanctum::actingAs($this->user());
 
-        $data = Business::factory()->raw();
+        $data = Organization::factory()->raw();
 
         $response = $this->postJson($this->getRoutePath(), $data);
 
@@ -84,9 +84,9 @@ abstract class StakeholderTestCase extends TestCase
     {
         Sanctum::actingAs($user = $this->user());
 
-        $model = Business::factory()->createOne();
+        $model = Organization::factory()->createOne();
 
-        $user->identity->employer->addStakeholder($this->getRelativeType(), $model);
+        $user->profile->employer->addStakeholder($this->getRelativeType(), $model);
 
         $response = $this->getJson($this->getRoutePath($model));
 
@@ -101,9 +101,9 @@ abstract class StakeholderTestCase extends TestCase
     {
         Sanctum::actingAs($user = $this->user());
 
-        $model = Business::factory()->createOne();
+        $model = Organization::factory()->createOne();
 
-        $user->identity->employer->addStakeholder($this->getRelativeType(), $model);
+        $user->profile->employer->addStakeholder($this->getRelativeType(), $model);
 
         $response = $this->putJson($this->getRoutePath($model), $model->toArray());
 
@@ -118,9 +118,9 @@ abstract class StakeholderTestCase extends TestCase
     {
         Sanctum::actingAs($user = $this->user());
 
-        $model = Business::factory()->createOne();
+        $model = Organization::factory()->createOne();
 
-        $user->identity->employer->addStakeholder($this->getRelativeType(), $model);
+        $user->profile->employer->addStakeholder($this->getRelativeType(), $model);
 
         $response = $this->deleteJson($this->getRoutePath($model));
 
@@ -134,9 +134,9 @@ abstract class StakeholderTestCase extends TestCase
 
         Sanctum::actingAs($user = $this->user());
 
-        $model = Business::factory()->createOne();
+        $model = Organization::factory()->createOne();
 
-        $user->identity->employer->addStakeholder($this->getRelativeType(), $model);
+        $user->profile->employer->addStakeholder($this->getRelativeType(), $model);
 
         $model->delete();
 

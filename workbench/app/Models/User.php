@@ -5,9 +5,9 @@ namespace Workbench\App\Models;
 use Creasi\Base\Contracts\HasCredentialTokens;
 use Creasi\Base\Database\Models\Concerns\WithCredentialTokens;
 use Creasi\Base\Database\Models\Concerns\WithDevices;
-use Creasi\Base\Database\Models\Concerns\WithIdentity;
+use Creasi\Base\Database\Models\Concerns\WithProfile;
 use Creasi\Base\Database\Models\Contracts\HasDevices;
-use Creasi\Base\Database\Models\Contracts\HasIdentity;
+use Creasi\Base\Database\Models\Contracts\HasProfile;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -22,13 +22,13 @@ use Workbench\Database\Factories\UserFactory;
  *
  * @method static UserFactory<static> factory()
  */
-class User extends Authenticatable implements HasCredentialTokens, HasDevices, HasIdentity
+class User extends Authenticatable implements HasCredentialTokens, HasDevices, HasProfile
 {
     use HasFactory;
     use Notifiable;
     use WithCredentialTokens;
     use WithDevices;
-    use WithIdentity;
+    use WithProfile;
 
     protected $fillable = ['name', 'email', 'password'];
 
@@ -41,10 +41,5 @@ class User extends Authenticatable implements HasCredentialTokens, HasDevices, H
     protected static function newFactory()
     {
         return UserFactory::new();
-    }
-
-    public function password(): Attribute
-    {
-        return Attribute::set(fn (string $value) => \bcrypt($value));
     }
 }

@@ -2,7 +2,7 @@
 
 namespace Creasi\Tests\Unit\Models;
 
-use Creasi\Base\Database\Models\Personnel;
+use Creasi\Base\Database\Models\Person;
 use Creasi\Tests\TestCase;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Test;
@@ -17,11 +17,11 @@ class UserTest extends TestCase
     {
         /** @var User */
         $user = User::factory()->createOne();
-        /** @var Personnel */
-        $identity = Personnel::factory()->createOne();
+        /** @var Person */
+        $profile = Person::factory()->createOne();
 
-        $user->identity()->save($identity);
+        $user->profile()->save($profile);
 
-        $this->assertTrue($identity->user->is($user));
+        $this->assertTrue($profile->user->is($user));
     }
 }

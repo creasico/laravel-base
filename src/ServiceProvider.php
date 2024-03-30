@@ -8,7 +8,6 @@ use Creasi\Base\Enums\StakeholderType;
 use Illuminate\Auth\Events\Login;
 use Illuminate\Auth\Notifications\ResetPassword;
 use Illuminate\Auth\Notifications\VerifyEmail;
-use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Event;
@@ -28,8 +27,8 @@ class ServiceProvider extends IlluminateServiceProvider
      * @var array<class-string, class-string>
      */
     protected $policies = [
-        Contracts\Company::class => Policies\CompanyPolicy::class,
-        Contracts\Employee::class => Policies\EmployeePolicy::class,
+        Contracts\Company::class => Policies\OrganizationPolicy::class,
+        Contracts\Personnel::class => Policies\PersonPolicy::class,
         Contracts\Stakeholder::class => Policies\StakeholderPolicy::class,
         Models\Address::class => Policies\AddressPolicy::class,
         Models\File::class => Policies\FilePolicy::class,
@@ -67,18 +66,12 @@ class ServiceProvider extends IlluminateServiceProvider
     {
         if (! app()->configurationIsCached()) {
             config([
-                'creasi.nusa' => array_merge([
+                'creasi.nusa' => array_merge(config('creasi.nusa', []), [
                     'addressable' => Models\Address::class,
-                ], config('creasi.nusa', [])),
+                ]),
             ]);
 
             $this->mergeConfigFrom(self::LIB_PATH.'/config/creasico.php', 'creasi.base');
-        }
-
-        if (app()->environment('testing')) {
-            Factory::guessFactoryNamesUsing(function (string $modelName) {
-                return Factory::$namespace.\class_basename($modelName).'Factory';
-            });
         }
 
         $this->registerBindings();
@@ -155,8 +148,8 @@ class ServiceProvider extends IlluminateServiceProvider
             return app(Contracts\Company::class)->resolveRouteBinding($value);
         });
 
-        Route::bind('employee', function (string $value) {
-            return app(Contracts\Employee::class)->resolveRouteBinding($value);
+        Route::bind('personnel', function (string $value) {
+            return app(Contracts\Personnel::class)->resolveRouteBinding($value);
         });
 
         Route::bind('stakeholder', function (string $value) {
@@ -195,13 +188,13 @@ class ServiceProvider extends IlluminateServiceProvider
         $this->app->bind(Contracts\Company::class, function ($app) {
             $repo = $app->make(Repository::class);
 
-            return $app->call([$repo, 'resolveEmployer']);
+            return $app->call([$repo, 'resolveOrganization']);
         });
 
-        $this->app->bind(Contracts\Employee::class, function ($app) {
+        $this->app->bind(Contracts\Personnel::class, function ($app) {
             $repo = $app->make(Repository::class);
 
-            return $app->call([$repo, 'resolveEmployee']);
+            return $app->call([$repo, 'resolvePerson']);
         });
 
         $this->app->bind(Contracts\Stakeholder::class, function ($app) {
@@ -213,7 +206,7 @@ class ServiceProvider extends IlluminateServiceProvider
         $this->app->bind(StakeholderType::class, function ($app) {
             $repo = $app->make(Repository::class);
 
-            return $app->call([$repo, 'resolveBusinessRelativeType']);
+            return $app->call([$repo, 'resolveOrganizationRelativeType']);
         });
     }
 
@@ -238,7 +231,7 @@ class ServiceProvider extends IlluminateServiceProvider
             'creasi.base.route_home',
             StakeholderType::class,
             Contracts\Company::class,
-            Contracts\Employee::class,
+            Contracts\Personnel::class,
             Contracts\Stakeholder::class,
             Models\Entity::class,
         ];

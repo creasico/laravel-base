@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 /**
- * @property-read \Creasi\Base\Database\Models\BusinessRelative $resource
+ * @property-read \Creasi\Base\Database\Models\OrganizationRelative $resource
  */
 class StakeholderResource extends JsonResource
 {

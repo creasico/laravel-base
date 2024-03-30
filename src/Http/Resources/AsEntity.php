@@ -2,10 +2,10 @@
 
 namespace Creasi\Base\Http\Resources;
 
-use Creasi\Base\Database\Models\BusinessRelative;
 use Creasi\Base\Database\Models\Contracts\Company;
-use Creasi\Base\Database\Models\Contracts\Employee;
+use Creasi\Base\Database\Models\Contracts\Personnel;
 use Creasi\Base\Database\Models\Contracts\Stakeholder;
+use Creasi\Base\Database\Models\OrganizationRelative;
 
 trait AsEntity
 {
@@ -20,9 +20,9 @@ trait AsEntity
     }
 
     /**
-     * @param  \Creasi\Base\Database\Models\Personnel|null  $entity
+     * @param  \Creasi\Base\Database\Models\Person|null  $entity
      */
-    final protected function forPersonnel(Employee $entity): array
+    final protected function forPerson(Personnel $entity): array
     {
         return [
             $entity->getKeyName() => $entity->getKey(),
@@ -42,7 +42,7 @@ trait AsEntity
     }
 
     /**
-     * @param  \Creasi\Base\Database\Models\Business|null  $entity
+     * @param  \Creasi\Base\Database\Models\Organization|null  $entity
      */
     final protected function forCompany(Company $entity): array
     {
@@ -57,9 +57,9 @@ trait AsEntity
         ];
     }
 
-    final protected function forStakeholder(BusinessRelative|Stakeholder $entity): array
+    final protected function forStakeholder(OrganizationRelative|Stakeholder $entity): array
     {
-        if ($entity instanceof BusinessRelative) {
+        if ($entity instanceof OrganizationRelative) {
             return \array_merge([
                 'type' => $entity->type?->toArray(),
             ], $this->forStakeholder($entity->stakeholder));
@@ -67,7 +67,7 @@ trait AsEntity
 
         $arr = $entity instanceof Company
             ? $this->forCompany($entity)
-            : $this->forPersonnel($entity);
+            : $this->forPerson($entity);
 
         return $arr;
     }

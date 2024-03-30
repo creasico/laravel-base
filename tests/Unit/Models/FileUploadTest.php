@@ -2,9 +2,9 @@
 
 namespace Creasi\Tests\Unit\Models;
 
-use Creasi\Base\Database\Models\Business;
 use Creasi\Base\Database\Models\File;
-use Creasi\Base\Database\Models\Personnel;
+use Creasi\Base\Database\Models\Organization;
+use Creasi\Base\Database\Models\Person;
 use Creasi\Base\Enums\FileType;
 use Creasi\Tests\TestCase;
 use Illuminate\Http\UploadedFile;
@@ -35,7 +35,7 @@ class FileUploadTest extends TestCase
     #[Test]
     public function could_attached_to_personnel()
     {
-        $person = Personnel::factory()->createOne();
+        $person = Person::factory()->createOne();
         $files = [
             'first' => UploadedFile::fake()->create('first.pdf'),
             'second' => UploadedFile::fake()->create('second.pdf'),
@@ -48,14 +48,14 @@ class FileUploadTest extends TestCase
         $this->assertCount(2, $person->files);
 
         foreach ($person->files as $file) {
-            $this->assertCount($file->attaches()->count(), $file->ownedByPersonnels);
+            $this->assertCount($file->attaches()->count(), $file->ownedByPersons);
         }
     }
 
     #[Test]
-    public function could_attached_to_many_personnels()
+    public function could_attached_to_many_people()
     {
-        $people = Personnel::factory(2)->create();
+        $people = Person::factory(2)->create();
         $file = UploadedFile::fake()->create('document.pdf');
 
         foreach ($people as $person) {
@@ -68,7 +68,7 @@ class FileUploadTest extends TestCase
     #[Test]
     public function could_attached_to_company()
     {
-        $company = Business::factory()->createOne();
+        $company = Organization::factory()->createOne();
         $files = [
             'first' => UploadedFile::fake()->create('first.pdf'),
             'second' => UploadedFile::fake()->create('second.pdf'),
@@ -88,7 +88,7 @@ class FileUploadTest extends TestCase
     #[Test]
     public function could_attached_to_many_companies()
     {
-        $companies = Business::factory(2)->create();
+        $companies = Organization::factory(2)->create();
         $file = UploadedFile::fake()->create('document.pdf');
 
         foreach ($companies as $company) {

@@ -2,7 +2,7 @@
 
 namespace Workbench\Database\Factories;
 
-use Creasi\Base\Database\Factories\Concerns\WithIdentity;
+use Creasi\Base\Database\Factories\Concerns\WithProfile;
 use Orchestra\Testbench\Factories\UserFactory as Factory;
 use Workbench\App\Models\User;
 
@@ -11,7 +11,7 @@ use Workbench\App\Models\User;
  */
 class UserFactory extends Factory
 {
-    use WithIdentity;
+    use WithProfile;
 
     public function modelName()
     {

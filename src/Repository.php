@@ -3,8 +3,8 @@
 namespace Creasi\Base;
 
 use Creasi\Base\Database\Models\Contracts\Company;
-use Creasi\Base\Database\Models\Contracts\Employee;
-use Creasi\Base\Database\Models\Contracts\HasIdentity;
+use Creasi\Base\Database\Models\Contracts\HasProfile;
+use Creasi\Base\Database\Models\Contracts\Personnel;
 use Creasi\Base\Database\Models\Contracts\Stakeholder;
 use Creasi\Base\Database\Models\Entity;
 use Creasi\Base\Enums\StakeholderType;
@@ -12,7 +12,7 @@ use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Routing\Router;
 
 /**
- * @property \Illuminate\Foundation\Auth\User|HasIdentity $user
+ * @property \Illuminate\Foundation\Auth\User|HasProfile $user
  */
 class Repository
 {
@@ -26,51 +26,51 @@ class Repository
     }
 
     /**
-     * @param  Authenticatable|\Illuminate\Foundation\Auth\User|HasIdentity  $user
+     * @param  Authenticatable|\Illuminate\Foundation\Auth\User|HasProfile  $user
      */
-    public function resolveEmployee(Authenticatable $user): Employee
+    public function resolvePerson(Authenticatable $user): Personnel
     {
-        $user->loadMissing('identity');
+        $user->loadMissing('profile');
 
-        $key = $this->router->input('employee');
+        $key = $this->router->input('personnel');
 
-        return $key ? $user->identity->resolveRouteBinding($key) : $user->identity;
+        return $key ? $user->profile->resolveRouteBinding($key) : $user->profile;
     }
 
     /**
-     * @param  Authenticatable|\Illuminate\Foundation\Auth\User|HasIdentity  $user
+     * @param  Authenticatable|\Illuminate\Foundation\Auth\User|HasProfile  $user
      */
-    public function resolveEmployer(Authenticatable $user): Company
+    public function resolveOrganization(Authenticatable $user): Company
     {
-        $user->loadMissing('identity');
+        $user->loadMissing('profile');
 
         $key = $this->router->input('company');
 
-        return $key ? $user->identity->employer->resolveRouteBinding($key) : $user->identity->employer;
+        return $key ? $user->profile->employer->resolveRouteBinding($key) : $user->profile->employer;
     }
 
-    public function resolveEntity(Company $company, Employee $employee): Entity
+    public function resolveEntity(Company $org, Personnel $person): Entity
     {
-        $entity = $this->currentRoutePrefix('companies') ? $company : $employee;
+        $entity = $this->currentRoutePrefix('companies') ? $org : $person;
         $key = $this->router->input('entity');
 
         // For some reason we do need to resolve the binding ourselves
         // see: https://stackoverflow.com/a/76717314/881743
-        return $entity->resolveRouteBinding($key) ?: $entity;
+        return $key ? $entity->resolveRouteBinding($key) : $entity;
     }
 
-    public function resolveStakeholder(Company $company, StakeholderType $type): Stakeholder
+    public function resolveStakeholder(Company $org, StakeholderType $type): Stakeholder
     {
-        /** @var \Creasi\Base\Database\Models\BusinessRelative */
-        $relative = $company->stakeholders()->newQuery()->with('stakeholder')->where([
+        /** @var \Creasi\Base\Database\Models\OrganizationRelative */
+        $relative = $org->stakeholders()->newQuery()->with('stakeholder')->where([
             'type' => $type,
             'stakeholder_id' => (int) $this->router->input('stakeholder'),
         ])->first();
 
-        return $relative?->stakeholder ?: $company->newInstance();
+        return $relative?->stakeholder ?: $org->newInstance();
     }
 
-    public function resolveBusinessRelativeType(): StakeholderType
+    public function resolveOrganizationRelativeType(): StakeholderType
     {
         return $this->stakeholders[$this->currentRoutePrefix()];
     }

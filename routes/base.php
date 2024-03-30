@@ -25,9 +25,9 @@ Route::middleware(['api', 'auth:sanctum'])->group(function () {
     //     Route::put('{company}/restore', 'restore')->name('companies.restore')->withTrashed();
     // });
 
-    Route::apiResource('employees', Controllers\EmployeeController::class);
-    // Route::prefix('employees')->controller(Controllers\EmployeeController::class)->group(function () {
-    //     Route::put('{employee}/restore', 'restore')->name('employees.restore')->withTrashed();
+    Route::apiResource('personnels', Controllers\PersonnelController::class);
+    // Route::prefix('personnels')->controller(Controllers\EmployeeController::class)->group(function () {
+    //     Route::put('{employee}/restore', 'restore')->name('personnels.restore')->withTrashed();
     // });
 
     Route::apiResource('addresses', Controllers\AddressController::class);
@@ -43,7 +43,7 @@ Route::middleware(['api', 'auth:sanctum'])->group(function () {
     Route::apiSingleton('profile', Controllers\ProfileController::class);
     Route::apiSingleton('setting', Controllers\SettingController::class);
 
-    foreach (['companies', 'employees'] as $entity) {
+    foreach (['companies', 'personnels'] as $entity) {
         Route::apiResources([
             "{$entity}.addresses" => Controllers\AddressController::class,
             "{$entity}.files" => Controllers\FileController::class,

@@ -15,7 +15,7 @@ class ProfileController extends Controller
     {
         $user = $request->user();
 
-        $user->load('identity');
+        $user->load('profile');
 
         return ProfileResource::make($user);
     }

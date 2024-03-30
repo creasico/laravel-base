@@ -3,6 +3,7 @@
 namespace Workbench\App\Providers;
 
 use Illuminate\Config\Repository;
+use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 use Workbench\App\Models\User;
@@ -32,6 +33,10 @@ class WorkbenchServiceProvider extends ServiceProvider
                     'foreign_key_constraints' => true,
                 ]);
             }
+        });
+
+        Factory::guessFactoryNamesUsing(function (string $modelName) {
+            return Factory::$namespace.\class_basename($modelName).'Factory';
         });
     }
 

@@ -11,8 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('businesses', function (Blueprint $table) {
+        Schema::create('organizations', function (Blueprint $table) {
             $table->id();
+            $table->uuid('uuid')->unique();
 
             $table->string('name', 150);
             $table->string('alias', 50)->nullable();
@@ -24,22 +25,23 @@ return new class extends Migration
             $table->softDeletes();
         });
 
-        Schema::create('business_relatives', function (Blueprint $table) {
+        Schema::create('organizations_relatives', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('business_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('organization_id')->constrained()->cascadeOnDelete();
             $table->nullableMorphs('stakeholder');
 
             $table->string('code')->unique()->nullable();
             $table->boolean('is_primary')->nullable();
             $table->unsignedSmallInteger('type')->nullable();
             $table->unsignedSmallInteger('status')->nullable();
-            $table->unsignedSmallInteger('employment_status')->default(0);
+            $table->unsignedSmallInteger('personnel_status')->default(0);
             $table->date('start_date')->nullable();
             $table->date('finish_date')->nullable();
         });
 
-        Schema::create('personnels', function (Blueprint $table) {
+        Schema::create('people', function (Blueprint $table) {
             $table->id();
+            $table->uuid('uuid')->unique();
             $table->foreignId('user_id')->nullable()->constrained()->nullOnDelete();
 
             $table->string('name', 150);
@@ -58,9 +60,9 @@ return new class extends Migration
             $table->softDeletes();
         });
 
-        Schema::create('personnel_relatives', function (Blueprint $table) {
-            $table->foreignId('personnel_id')->constrained()->cascadeOnDelete();
-            $table->foreignId('relative_id')->constrained('personnels')->cascadeOnDelete();
+        Schema::create('people_relatives', function (Blueprint $table) {
+            $table->foreignId('person_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('relative_id')->constrained('people')->cascadeOnDelete();
 
             $table->unsignedSmallInteger('status')->nullable();
         });
@@ -71,9 +73,9 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('personnel_relatives');
-        Schema::dropIfExists('personnels');
-        Schema::dropIfExists('business_relatives');
-        Schema::dropIfExists('businesses');
+        Schema::dropIfExists('people_relatives');
+        Schema::dropIfExists('people');
+        Schema::dropIfExists('organizations_relatives');
+        Schema::dropIfExists('organizations');
     }
 };

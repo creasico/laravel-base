@@ -34,7 +34,7 @@ class ProfileResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        $resource = $this->forPersonnel($this->resource->identity);
+        $resource = $this->forPerson($this->resource->profile);
 
         $resource[$this->resource->getKeyName()] = $this->resource->getKey();
 

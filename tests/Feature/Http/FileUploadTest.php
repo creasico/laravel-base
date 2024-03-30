@@ -11,7 +11,7 @@ use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Test;
 
 #[Group('api')]
-#[Group('fileUpload')]
+#[Group('files')]
 class FileUploadTest extends TestCase
 {
     protected string $apiPath = 'files';
@@ -31,7 +31,7 @@ class FileUploadTest extends TestCase
     {
         Sanctum::actingAs($user = $this->user());
 
-        $user->identity->storeFile(FileType::Document, '/doc/file.pdf', 'document');
+        $user->profile->storeFile(FileType::Document, '/doc/file.pdf', 'document');
 
         $response = $this->getJson($this->getRoutePath());
 
@@ -57,7 +57,7 @@ class FileUploadTest extends TestCase
     {
         Sanctum::actingAs($user = $this->user());
 
-        $model = $user->identity->storeFile(FileType::Document, '/doc/file.pdf', 'document');
+        $model = $user->profile->storeFile(FileType::Document, '/doc/file.pdf', 'document');
 
         $response = $this->getJson($this->getRoutePath($model));
 
@@ -81,7 +81,7 @@ class FileUploadTest extends TestCase
     {
         Sanctum::actingAs($user = $this->user());
 
-        $model = $user->identity->storeFile(FileType::Document, '/doc/file.pdf', 'document');
+        $model = $user->profile->storeFile(FileType::Document, '/doc/file.pdf', 'document');
 
         $response = $this->deleteJson($this->getRoutePath($model));
 
@@ -93,7 +93,7 @@ class FileUploadTest extends TestCase
     {
         Sanctum::actingAs($user = $this->user());
 
-        $model = $user->identity->storeFile(FileType::Document, '/doc/file.pdf', 'document');
+        $model = $user->profile->storeFile(FileType::Document, '/doc/file.pdf', 'document');
 
         $model->delete();
 

@@ -3,8 +3,8 @@
 namespace Creasi\Tests;
 
 use Closure;
-use Creasi\Base\Database\Factories\PersonnelFactory;
-use Creasi\Base\Enums\EmploymentStatus;
+use Creasi\Base\Database\Models\Person;
+use Creasi\Base\Enums\PersonnelStatus;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Orchestra\Testbench\Concerns\WithWorkbench;
 use Orchestra\Testbench\TestCase as Orchestra;
@@ -19,12 +19,12 @@ abstract class TestCase extends Orchestra
 
     final protected function user(
         array|Closure $attrs = [],
-        ?EmploymentStatus $status = null,
+        ?PersonnelStatus $status = null,
         bool $isPrimary = true
     ): User {
         if (! $this->currentUser?->exists) {
             $this->currentUser = User::factory()
-                ->withIdentity(fn (PersonnelFactory $f) => $f->asEmployee($status, $isPrimary))
+                ->withProfile(Person::factory()->asEmployee($status, $isPrimary))
                 ->createOne($attrs);
         }
 

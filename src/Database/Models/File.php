@@ -23,8 +23,8 @@ use Illuminate\Support\Str;
  * @property-read \Illuminate\Database\Eloquent\Collection<int, static> $revisions
  * @property-read null|static $revisionOf
  * @property-read FileAttached $attachment
- * @property-read \Illuminate\Database\Eloquent\Collection<int, Business> $ownedByCompanies
- * @property-read \Illuminate\Database\Eloquent\Collection<int, Personnel> $ownedByPersonnels
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Organization> $ownedByCompanies
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Person> $ownedByPersons
  *
  * @method static static store(string|UploadedFile $path, string $name, ?string $title = null, ?string $summary = null, ?string $disk = null)
  * @method static \Creasi\Base\Database\Factories\FileFactory<File> factory()
@@ -88,12 +88,12 @@ class File extends Model
 
     public function ownedByCompanies()
     {
-        return $this->attachable(Business::class);
+        return $this->attachable(Organization::class);
     }
 
-    public function ownedByPersonnels()
+    public function ownedByPersons()
     {
-        return $this->attachable(Personnel::class);
+        return $this->attachable(Person::class);
     }
 
     /**

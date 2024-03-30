@@ -118,12 +118,12 @@ jobs:
             echo "has-reports=1" >> $GITHUB_OUTPUT
           fi
 
-      - name: Upload tests reports
+      - name: Upload reports for CodeClimate
         uses: actions/upload-artifact@v4
         if: ${{ steps.reports.outputs.has-reports == '1' }}
         with:
           name: test-reports-${{ matrix.php }}-L${{ matrix.laravel }}
-          path: tests/reports
+          path: tests/reports/codeclimate-${{ matrix.php }}-L${{ matrix.laravel }}.json
 
   reports:
     name: Report Test Coverages
@@ -141,4 +141,4 @@ jobs:
       - name: Report to CodeClimate
         run: |
           curl -LSs $CC_TEST_REPORTER_URL > ./cc-test-reporter && chmod +x ./cc-test-reporter
-          ./cc-test-reporter sum-coverage -o - codeclimate.*.json | ./cc-test-reporter upload-coverage --input -
+          ./cc-test-reporter sum-coverage -o - codeclimate-*.json | ./cc-test-reporter upload-coverage --input -

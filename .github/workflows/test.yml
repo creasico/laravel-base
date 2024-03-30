@@ -107,10 +107,10 @@ jobs:
 
       - name: Generate reports for CodeClimate
         id: reports
-        if: ${{ matrix.laravel == '10.x' && ( github.actor != 'dependabot[bot]' || needs.configs.outputs.should-reports == '1' ) }}
+        if: ${{ matrix.db == 'pgsql' && ( github.actor != 'dependabot[bot]' || needs.configs.outputs.should-reports == '1' ) }}
         env:
           COVERAGE_FILE: tests/reports/clover.xml
-          CODECLIMATE_REPORT: tests/reports/codeclimate.${{ matrix.php }}.json
+          CODECLIMATE_REPORT: tests/reports/codeclimate-${{ matrix.php }}-L${{ matrix.laravel }}.json
         run: |
           if [[ -n \"$CC_TEST_REPORTER_URL\" ]]; then
             curl -LSs $CC_TEST_REPORTER_URL > ./cc-test-reporter && chmod +x ./cc-test-reporter
@@ -120,9 +120,9 @@ jobs:
 
       - name: Upload tests reports
         uses: actions/upload-artifact@v4
-        if: ${{ matrix.laravel == '10.x' && ( github.actor != 'dependabot[bot]' || needs.configs.outputs.should-reports == '1' ) }}
+        if: ${{ steps.reports.outputs.has-reports == '1' }}
         with:
-          name: test-reports-${{ matrix.php }}-${{ matrix.db }}
+          name: test-reports-${{ matrix.php }}-L${{ matrix.laravel }}
           path: tests/reports
 
   reports:

@@ -2,19 +2,18 @@
 
 namespace Creasi\Base\Database\Factories\Concerns;
 
-use Creasi\Base\Database\Models\Person;
+use Creasi\Base\Database\Factories\PersonFactory;
 
 /**
  * @mixin \Illuminate\Database\Eloquent\Factories\Factory
  */
 trait WithProfile
 {
-    public function withIdentity(?\Closure $cb = null): static
+    public function withProfile(PersonFactory $profile): static
     {
-        if ($cb === null) {
-            $cb = fn ($profile) => $profile;
-        }
-
-        return $this->has($cb(Person::factory()), 'profile');
+        return $this->has($profile->state(fn ($_, $user) => [
+            'name' => $user->name,
+            'email' => $user->email,
+        ]), 'profile');
     }
 }

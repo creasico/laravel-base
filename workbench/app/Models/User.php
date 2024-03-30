@@ -42,9 +42,4 @@ class User extends Authenticatable implements HasCredentialTokens, HasDevices, H
     {
         return UserFactory::new();
     }
-
-    public function password(): Attribute
-    {
-        return Attribute::set(fn (string $value) => \bcrypt($value));
-    }
 }

@@ -61,11 +61,11 @@ class AuthenticationTest extends TestCase
             UserDeviceRegistered::class,
         ]);
 
-        $user = $this->user(['password' => $password = 'secret']);
+        $user = $this->user();
 
         $response = $this->postJson('auth/login', [
             'credential' => $user->email,
-            'password' => $password,
+            'password' => 'password',
         ]);
 
         Event::assertDispatched(CredentialTokenCreated::class);
@@ -82,12 +82,12 @@ class AuthenticationTest extends TestCase
             UserDeviceRegistered::class,
         ]);
 
-        $user = $this->user(['password' => $password = 'secret']);
+        $user = $this->user();
         $token = Str::random();
 
         $response = $this->postJson('auth/login', [
             'credential' => $user->email,
-            'password' => $password,
+            'password' => 'password',
             'device_token' => $token,
         ]);
 

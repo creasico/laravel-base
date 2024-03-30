@@ -8,7 +8,6 @@ use Creasi\Base\Enums\StakeholderType;
 use Illuminate\Auth\Events\Login;
 use Illuminate\Auth\Notifications\ResetPassword;
 use Illuminate\Auth\Notifications\VerifyEmail;
-use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Event;
@@ -73,12 +72,6 @@ class ServiceProvider extends IlluminateServiceProvider
             ]);
 
             $this->mergeConfigFrom(self::LIB_PATH.'/config/creasico.php', 'creasi.base');
-        }
-
-        if (app()->environment('testing')) {
-            Factory::guessFactoryNamesUsing(function (string $modelName) {
-                return Factory::$namespace.\class_basename($modelName).'Factory';
-            });
         }
 
         $this->registerBindings();

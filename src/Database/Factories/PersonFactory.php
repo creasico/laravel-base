@@ -39,6 +39,7 @@ class PersonFactory extends Factory
         $gender = \fake()->randomElement(Gender::cases());
 
         return [
+            'user_id' => null,
             'name' => \fake()->firstName($gender->toFaker()),
             'email' => \fake()->safeEmail(),
             'phone' => '08'.\fake()->numerify('##########'),
@@ -50,7 +51,7 @@ class PersonFactory extends Factory
         ];
     }
 
-    public function withoutUser(): static
+    public function withCredental(): static
     {
         return $this->state([
             'user_id' => null,
@@ -98,19 +99,16 @@ class PersonFactory extends Factory
         ?StakeholderType $type = null,
         ?StakeholderStatus $status = null,
         ?PersonnelStatus $employmentStatus = null,
-        false|DateTimeInterface|null $startDate = null,
+        ?DateTimeInterface $startDate = null,
+        ?DateTimeInterface $finishDate = null,
     ): static {
-        if ($startDate === null) {
-            $startDate = \fake()->dateTime();
-        }
-
         return $this->hasAttached(Organization::factory(), [
             'is_primary' => $primary,
             'type' => $type ?? \fake()->randomElement(StakeholderType::cases()),
             'status' => $status ?? \fake()->randomElement(StakeholderStatus::cases()),
             'personnel_status' => $employmentStatus ?? \fake()->randomElement(PersonnelStatus::cases()),
-            'start_date' => $startDate?->format('Y-m-d'),
-            'finish_date' => null,
+            'start_date' => ($startDate ?: \fake()->dateTimeBetween('-2 years', '-5 months'))->format('Y-m-d'),
+            'finish_date' => $finishDate,
         ], 'employers');
     }
 

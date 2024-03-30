@@ -67,9 +67,9 @@ class ServiceProvider extends IlluminateServiceProvider
     {
         if (! app()->configurationIsCached()) {
             config([
-                'creasi.nusa' => array_merge([
+                'creasi.nusa' => array_merge(config('creasi.nusa', []), [
                     'addressable' => Models\Address::class,
-                ], config('creasi.nusa', [])),
+                ]),
             ]);
 
             $this->mergeConfigFrom(self::LIB_PATH.'/config/creasico.php', 'creasi.base');

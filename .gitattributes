@@ -10,6 +10,8 @@
 .gitignore       export-ignore
 .gitmodules      export-ignore
 .vscode          export-ignore
+*.config.ts      export-ignore
+*.config.js      export-ignore
 CHANGELOG.md     export-ignore
 composer.lock    export-ignore
 package.json     export-ignore
@@ -18,4 +20,6 @@ pnpm-lock.yaml   export-ignore
 scripts          export-ignore
 submodules       export-ignore
 tests            export-ignore
+testbench.yaml   export-ignore
+tsconfig.json    export-ignore
 workbench        export-ignore

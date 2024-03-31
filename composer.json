@@ -44,7 +44,10 @@
             "@prepare"
         ],
         "clear": "@php vendor/bin/testbench package:purge-skeleton --ansi",
-        "prepare": "@php vendor/bin/testbench package:discover --ansi",
+        "prepare": [
+            "@php vendor/bin/testbench package:discover --ansi",
+            "@php -r \"copy('public/favicon.ico', 'vendor/orchestra/testbench-core/laravel/public/favicon.ico');\""
+        ],
         "build": [
             "@clear",
             "@prepare",
@@ -86,7 +89,8 @@
         "laravel/pint": "^1.1",
         "laravel/sanctum": "^3.2|^4.0",
         "nunomaduro/collision": "^7.4|^8.0",
-        "orchestra/testbench": "^8.5|^9.0"
+        "orchestra/testbench": "^8.5|^9.0",
+        "tightenco/ziggy": "^2.1"
     },
     "config": {
         "preferred-install": "dist",

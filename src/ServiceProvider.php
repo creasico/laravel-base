@@ -77,14 +77,14 @@ class ServiceProvider extends IlluminateServiceProvider
     {
         $this->publishes([
             self::LIB_PATH.'/config/creasico.php' => \config_path('creasi/base.php'),
-        ], ['creasi-config', 'creasi-base-config']);
+        ], ['creasi-config']);
 
         $this->publishes([
-            self::LIB_PATH.'/resources/assets' => \public_path('vendor/creasico'),
-        ], ['creasi-assets', 'creasi-base-assets', 'laravel-assets']);
+            self::LIB_PATH.'/resources/assets' => \public_path('vendor/creasi'),
+        ], ['creasi-assets', 'creasi-base-assets']);
 
         $this->publishes([
-            self::LIB_PATH.'/resources/lang' => \resource_path('lang/vendor/creasico'),
+            self::LIB_PATH.'/resources/lang' => \resource_path('lang/vendor/creasi'),
         ], ['creasi-lang']);
     }
 

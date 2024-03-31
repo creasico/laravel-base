@@ -9,5 +9,10 @@ seeders:
 
 workbench:
   install: true
+  sync:
+    - from: ./public/build
+      to: public/build
+    - from: ./resources/assets
+      to: public/vendor/creasi
   build:
     - migrate:fresh

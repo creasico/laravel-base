@@ -36,35 +36,35 @@ class PersonnelController extends Controller
     public function store(Company $company, StoreRequest $request): JsonResponse
     {
         /** @var Personnel */
-        $person = $request->fulfill($company);
+        $personnel = $request->fulfill($company);
 
-        return $this->show($person)->toResponse($request)->setStatusCode(201);
+        return $this->show($personnel)->toResponse($request)->setStatusCode(201);
     }
 
     /**
      * Show endpoint for a single employee.
      */
-    public function show(Personnel $person): PersonResource
+    public function show(Personnel $personnel): PersonResource
     {
-        return new PersonResource($person);
+        return new PersonResource($personnel);
     }
 
     /**
      * Update endpoint for a single employee.
      */
-    public function update(Personnel $person, UpdateRequest $request): PersonResource
+    public function update(Personnel $personnel, UpdateRequest $request): PersonResource
     {
-        $request->fulfill($person);
+        $request->fulfill($personnel);
 
-        return $this->show($person);
+        return $this->show($personnel);
     }
 
     /**
      * Delete endpoint for a single employee.
      */
-    public function destroy(Personnel $person, DeleteRequest $request): Response
+    public function destroy(Personnel $personnel, DeleteRequest $request): Response
     {
-        $request->fulfill($person);
+        $request->fulfill($personnel);
 
         return response()->noContent();
     }
@@ -72,10 +72,10 @@ class PersonnelController extends Controller
     /**
      * Restore endpoint for a single employee.
      */
-    public function restore(Personnel $person): PersonResource
+    public function restore(Personnel $personnel): PersonResource
     {
-        $person->restore();
+        $personnel->restore();
 
-        return $this->show($person);
+        return $this->show($personnel);
     }
 }

@@ -22,47 +22,47 @@ class CompanyController extends Controller
     /**
      * Index endpoint for companies.
      */
-    public function index(Company $org, IndexRequest $request): OrganizationCollection
+    public function index(Company $company, IndexRequest $request): OrganizationCollection
     {
         return new OrganizationCollection(
-            $request->fulfill($org)->paginate()
+            $request->fulfill($company)->paginate()
         );
     }
 
     /**
      * Create endpoint for company.
      */
-    public function store(Company $org, StoreRequest $request): JsonResponse
+    public function store(Company $company, StoreRequest $request): JsonResponse
     {
-        $org = $request->fulfill($org);
+        $company = $request->fulfill($company);
 
-        return $this->show($org)->toResponse($request)->setStatusCode(201);
+        return $this->show($company)->toResponse($request)->setStatusCode(201);
     }
 
     /**
      * Show endpoint for a single company.
      */
-    public function show(Company $org): OrganizationResource
+    public function show(Company $company): OrganizationResource
     {
-        return new OrganizationResource($org);
+        return new OrganizationResource($company);
     }
 
     /**
      * Update endpoint for a single company.
      */
-    public function update(Company $org, UpdateRequest $request): OrganizationResource
+    public function update(Company $company, UpdateRequest $request): OrganizationResource
     {
-        $request->fulfill($org);
+        $request->fulfill($company);
 
-        return $this->show($org);
+        return $this->show($company);
     }
 
     /**
      * Delete endpoint for a single company.
      */
-    public function destroy(Company $org, DeleteRequest $request): Response
+    public function destroy(Company $company, DeleteRequest $request): Response
     {
-        $request->fulfill($org);
+        $request->fulfill($company);
 
         return response()->noContent();
     }
@@ -70,10 +70,10 @@ class CompanyController extends Controller
     /**
      * Restore endpoint for a single company.
      */
-    public function restore(Company $org): OrganizationResource
+    public function restore(Company $company): OrganizationResource
     {
-        $org->restore();
+        $company->restore();
 
-        return $this->show($org);
+        return $this->show($company->refresh());
     }
 }

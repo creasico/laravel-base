@@ -77,7 +77,7 @@ class FileUploadTest extends TestCase
     }
 
     #[Test]
-    public function should_able_to_delete_existing_data(): void
+    public function should_able_to_delete_and_restore_data(): void
     {
         Sanctum::actingAs($user = $this->user());
 
@@ -86,19 +86,19 @@ class FileUploadTest extends TestCase
         $response = $this->deleteJson($this->getRoutePath($model));
 
         $response->assertNoContent();
-    }
 
-    #[Test]
-    public function should_able_to_restore_deleted_data(): void
-    {
-        Sanctum::actingAs($user = $this->user());
-
-        $model = $user->profile->storeFile(FileType::Document, '/doc/file.pdf', 'document');
-
-        $model->delete();
+        $this->assertSoftDeleted($model);
 
         $response = $this->putJson($this->getRoutePath($model, 'restore'));
 
         $response->assertOk();
+
+        $response = $this->deleteJson($this->getRoutePath($model), ['force' => true]);
+
+        $response->assertNoContent();
+
+        $this->assertDatabaseMissing($model, [
+            $model->getRouteKeyName() => $model->getRouteKey(),
+        ]);
     }
 }

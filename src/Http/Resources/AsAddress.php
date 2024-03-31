@@ -16,10 +16,6 @@ trait AsAddress
 
     final protected function forAddress(Address $address): array
     {
-        if (! $address->exists) {
-            return [];
-        }
-
         return [
             $address->getKeyName() => $address->getKey(),
             'type' => $address->type ? [

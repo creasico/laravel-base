@@ -29,7 +29,7 @@ class ServiceProvider extends IlluminateServiceProvider
     protected $policies = [
         Contracts\Company::class => Policies\OrganizationPolicy::class,
         Contracts\Personnel::class => Policies\PersonPolicy::class,
-        Contracts\Stakeholder::class => Policies\StakeholderPolicy::class,
+        // Contracts\Stakeholder::class => Policies\StakeholderPolicy::class,
         Models\Address::class => Policies\AddressPolicy::class,
         Models\File::class => Policies\FilePolicy::class,
     ];
@@ -144,17 +144,9 @@ class ServiceProvider extends IlluminateServiceProvider
             return $request->isMethodCacheable() ? $request->query('api_token') : null;
         });
 
-        Route::bind('company', function (string $value) {
-            return app(Contracts\Company::class)->resolveRouteBinding($value);
-        });
-
-        Route::bind('personnel', function (string $value) {
-            return app(Contracts\Personnel::class)->resolveRouteBinding($value);
-        });
-
-        Route::bind('stakeholder', function (string $value) {
-            return app(Contracts\Stakeholder::class)->resolveRouteBinding($value);
-        });
+        Route::bind('company', fn () => app(Contracts\Company::class));
+        Route::bind('personnel', fn () => app(Contracts\Personnel::class));
+        Route::bind('stakeholder', fn () => app(Contracts\Stakeholder::class));
 
         if (app()->routesAreCached() || config('creasi.base.routes_enable') === false) {
             return;

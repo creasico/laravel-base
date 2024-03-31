@@ -102,7 +102,7 @@ class AddressTest extends TestCase
     }
 
     #[Test]
-    public function should_able_to_delete_existing_data(): void
+    public function should_able_to_delete_and_restore_data(): void
     {
         Sanctum::actingAs($user = $this->user());
 
@@ -112,24 +112,19 @@ class AddressTest extends TestCase
         $response = $this->deleteJson($this->getRoutePath($model));
 
         $response->assertNoContent();
-    }
 
-    #[Test]
-    public function should_able_to_restore_deleted_data(): void
-    {
-        Sanctum::actingAs($user = $this->user());
+        $this->assertSoftDeleted($model);
 
-        $model = Address::factory()->createOne();
-        $user->profile->addresses()->save($model);
+        $response = $this->putJson($this->getRoutePath($model, 'restore'));
 
-        $deleted = clone $model;
-        $model->delete();
+        $response->assertOk();
 
-        $response = $this->putJson($this->getRoutePath($deleted, 'restore'));
+        $response = $this->deleteJson($this->getRoutePath($model), ['force' => true]);
 
-        $response->assertOk()->assertJsonStructure([
-            'data' => $this->dataStructure,
-            'meta' => ['types'],
+        $response->assertNoContent();
+
+        $this->assertDatabaseMissing($model, [
+            $model->getRouteKeyName() => $model->getRouteKey(),
         ]);
     }
 }

@@ -21,14 +21,14 @@ Route::middleware(['web', 'auth:sanctum'])->group(function () {
 
 Route::middleware(['api', 'auth:sanctum'])->group(function () {
     Route::apiResource('companies', Controllers\CompanyController::class);
-    // Route::prefix('companies')->controller(Controllers\CompanyController::class)->group(function () {
-    //     Route::put('{company}/restore', 'restore')->name('companies.restore')->withTrashed();
-    // });
+    Route::prefix('companies')->controller(Controllers\CompanyController::class)->group(function () {
+        Route::put('{company}/restore', 'restore')->name('companies.restore')->withTrashed();
+    });
 
     Route::apiResource('personnels', Controllers\PersonnelController::class);
-    // Route::prefix('personnels')->controller(Controllers\EmployeeController::class)->group(function () {
-    //     Route::put('{employee}/restore', 'restore')->name('personnels.restore')->withTrashed();
-    // });
+    Route::prefix('personnels')->controller(Controllers\PersonnelController::class)->group(function () {
+        Route::put('{personnel}/restore', 'restore')->name('personnels.restore')->withTrashed();
+    });
 
     Route::apiResource('addresses', Controllers\AddressController::class);
     Route::prefix('addresses')->controller(Controllers\AddressController::class)->group(function () {
@@ -63,8 +63,8 @@ Route::middleware(['api', 'auth:sanctum'])->group(function () {
         Route::apiResource($route, Controllers\StakeholderController::class)
             ->parameter((string) $route, 'stakeholder');
 
-        // Route::prefix($route)->controller(Controllers\StakeholderController::class)->group(function () use ($route) {
-        //     Route::put('{stakeholder}/restore', 'restore')->name($route.'.restore')->withTrashed();
-        // });
+        Route::prefix($route)->controller(Controllers\StakeholderController::class)->group(function () use ($route) {
+            Route::put('{stakeholder}/restore', 'restore')->name($route.'.restore')->withTrashed();
+        });
     }
 });

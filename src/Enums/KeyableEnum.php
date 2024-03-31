@@ -28,6 +28,6 @@ trait KeyableEnum
     {
         $self = str(static::class)->classBasename()->snake('-');
 
-        return trans("creasico::enums.{$self}.{$this->key()}");
+        return trans("creasi::enums.{$self}.{$this->key()}");
     }
 }

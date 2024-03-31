@@ -5,33 +5,18 @@ namespace Creasi\Base;
 use Creasi\Base\Database\Models;
 use Creasi\Base\Database\Models\Contracts;
 use Creasi\Base\Enums\StakeholderType;
-use Illuminate\Auth\Events\Login;
-use Illuminate\Auth\Notifications\ResetPassword;
-use Illuminate\Auth\Notifications\VerifyEmail;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Blade;
-use Illuminate\Support\Facades\Event;
-use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider as IlluminateServiceProvider;
-use Laravel\Sanctum\Sanctum;
 
 class ServiceProvider extends IlluminateServiceProvider
 {
     /**
-     * The policy mappings for the application.
-     *
-     * @var array<class-string, class-string>
+     * @var class-string[]
      */
-    protected $policies = [
-        Contracts\Company::class => Policies\OrganizationPolicy::class,
-        Contracts\Personnel::class => Policies\PersonPolicy::class,
-        // Contracts\Stakeholder::class => Policies\StakeholderPolicy::class,
-        Models\Address::class => Policies\AddressPolicy::class,
-        Models\File::class => Policies\FilePolicy::class,
+    protected $providers = [
+        Providers\RouteServiceProvider::class,
     ];
 
     private const LIB_PATH = __DIR__.'/..';
@@ -55,15 +40,17 @@ class ServiceProvider extends IlluminateServiceProvider
             $this->loadMigrationsFrom(self::LIB_PATH.'/database/migrations');
         }
 
-        $this->loadTranslationsFrom(self::LIB_PATH.'/resources/lang', 'creasico');
+        $this->loadTranslationsFrom(self::LIB_PATH.'/resources/lang', 'creasi');
 
-        $this->registerViews();
-
-        $this->defineRoutes();
+        $this->defineViews();
     }
 
     public function register(): void
     {
+        foreach ($this->providers as $provider) {
+            $this->app->register($provider);
+        }
+
         if (! app()->configurationIsCached()) {
             config([
                 'creasi.nusa' => array_merge(config('creasi.nusa', []), [
@@ -75,12 +62,15 @@ class ServiceProvider extends IlluminateServiceProvider
         }
 
         $this->registerBindings();
+    }
 
-        $this->booting(function (): void {
-            Event::listen(Login::class, Listeners\RegisterUserDevice::class);
+    private function defineViews(): void
+    {
+        // View::composer('*', TranslationsComposer::class);
 
-            $this->registerPolicies();
-        });
+        Blade::componentNamespace('Creasi\\Base\\Views\\Components', 'creasi');
+
+        $this->loadViewsFrom(\realpath(self::LIB_PATH.'/resources/views'), 'creasi');
     }
 
     protected function registerPublishables(): void
@@ -103,62 +93,6 @@ class ServiceProvider extends IlluminateServiceProvider
         $this->commands([
             // .
         ]);
-    }
-
-    /**
-     * Register the application's policies.
-     */
-    protected function registerPolicies(): void
-    {
-        foreach ($this->policies as $model => $policy) {
-            Gate::policy($model, $policy);
-        }
-    }
-
-    protected function defineRoutes(): void
-    {
-        ResetPassword::createUrlUsing(function ($user, string $token) {
-            return \route('base.password.reset', [
-                'token' => $token,
-                'email' => $user->getEmailForPasswordReset(),
-            ]);
-        });
-
-        VerifyEmail::createUrlUsing(function ($user) {
-            $expiration = \now()->addMinutes(\config('auth.verification.expire', 60));
-
-            return URL::temporarySignedRoute('base.verification.verify', $expiration, [
-                'id' => $user->getKey(),
-                'hash' => sha1($user->getEmailForVerification()),
-            ]);
-        });
-
-        // Customize the way sanctum retrieves the access token.
-        Sanctum::getAccessTokenFromRequestUsing(function (Request $request): ?string {
-            // We'll check for the `Authorization` header first.
-            if ($token = $request->bearerToken()) {
-                return $token;
-            }
-
-            // If the header is not present, we'll check for the `api_token` query string.
-            return $request->isMethodCacheable() ? $request->query('api_token') : null;
-        });
-
-        Route::bind('company', fn () => app(Contracts\Company::class));
-        Route::bind('personnel', fn () => app(Contracts\Personnel::class));
-        Route::bind('stakeholder', fn () => app(Contracts\Stakeholder::class));
-
-        if (app()->routesAreCached() || config('creasi.base.routes_enable') === false) {
-            return;
-        }
-
-        Route::name('base.')->group(function (): void {
-            $prefix = config('creasi.base.routes_prefix', 'base');
-
-            Route::prefix('auth')->group(self::LIB_PATH.'/routes/auth.php');
-
-            Route::prefix($prefix)->group(self::LIB_PATH.'/routes/base.php');
-        });
     }
 
     protected function registerBindings()
@@ -200,15 +134,6 @@ class ServiceProvider extends IlluminateServiceProvider
 
             return $app->call([$repo, 'resolveOrganizationRelativeType']);
         });
-    }
-
-    private function registerViews(): void
-    {
-        // View::composer('*', TranslationsComposer::class);
-
-        // Blade::componentNamespace('Creasi\\Base\\Views\\Components', 'creasi');
-
-        $this->loadViewsFrom(self::LIB_PATH.'/resources/views', 'creasi');
     }
 
     /**

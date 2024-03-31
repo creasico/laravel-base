@@ -21,6 +21,11 @@ class AuthenticatedSessionController extends Controller
         return UserResource::make($request->user());
     }
 
+    public function create()
+    {
+        return view('creasi::pages.auth.login');
+    }
+
     /**
      * Handle an incoming authentication request.
      *

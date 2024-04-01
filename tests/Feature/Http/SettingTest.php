@@ -3,6 +3,7 @@
 namespace Creasi\Tests\Feature\Http;
 
 use Creasi\Tests\Feature\TestCase;
+use Illuminate\Routing\Middleware\ThrottleRequests;
 use Laravel\Sanctum\Sanctum;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Test;
@@ -17,6 +18,8 @@ class SettingTest extends TestCase
     #[Test]
     public function should_able_to_retrieve_setting_data(): void
     {
+        $this->withoutMiddleware(ThrottleRequests::class);
+
         Sanctum::actingAs($this->user());
 
         $response = $this->getJson($this->getRoutePath());
@@ -27,6 +30,8 @@ class SettingTest extends TestCase
     #[Test]
     public function should_able_to_update_setting_data(): void
     {
+        $this->withoutMiddleware(ThrottleRequests::class);
+
         Sanctum::actingAs($this->user());
 
         $response = $this->putJson($this->getRoutePath());

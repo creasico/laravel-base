@@ -9,6 +9,7 @@ use Creasi\Base\Enums\FileType;
 use Creasi\Base\Enums\StakeholderType;
 use Creasi\Tests\Feature\TestCase;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Routing\Middleware\ThrottleRequests;
 use Illuminate\Support\Facades\Storage;
 use Laravel\Sanctum\Sanctum;
 use PHPUnit\Framework\Attributes\Group;
@@ -33,6 +34,8 @@ class CompanyTest extends TestCase
     #[Test]
     public function should_receive_404_when_no_data_available(): void
     {
+        $this->withoutMiddleware(ThrottleRequests::class);
+
         Sanctum::actingAs($this->user());
 
         $response = $this->getJson($this->getRoutePath());
@@ -43,6 +46,8 @@ class CompanyTest extends TestCase
     #[Test]
     public function should_able_to_retrieve_all_data(): void
     {
+        $this->withoutMiddleware(ThrottleRequests::class);
+
         Sanctum::actingAs($user = $this->user());
 
         $external = Organization::factory()->createOne(['name' => 'Internal Company']);
@@ -61,6 +66,8 @@ class CompanyTest extends TestCase
     #[Test]
     public function should_able_to_store_new_data(): void
     {
+        $this->withoutMiddleware(ThrottleRequests::class);
+
         Sanctum::actingAs($this->user());
 
         $data = Organization::factory()->raw();
@@ -76,6 +83,8 @@ class CompanyTest extends TestCase
     #[Test]
     public function should_able_to_show_existing_data(): void
     {
+        $this->withoutMiddleware(ThrottleRequests::class);
+
         Sanctum::actingAs($this->user());
 
         $model = Organization::factory()->createOne();
@@ -91,6 +100,8 @@ class CompanyTest extends TestCase
     #[Test]
     public function should_receive_404_when_no_addresses_available(): void
     {
+        $this->withoutMiddleware(ThrottleRequests::class);
+
         Sanctum::actingAs($this->user());
 
         $model = Organization::factory()->createOne();
@@ -103,6 +114,8 @@ class CompanyTest extends TestCase
     #[Test]
     public function should_able_to_create_new_address(): void
     {
+        $this->withoutMiddleware(ThrottleRequests::class);
+
         Sanctum::actingAs($this->user());
 
         $data = Address::factory()->raw();
@@ -116,6 +129,8 @@ class CompanyTest extends TestCase
     #[Test]
     public function should_able_to_retrieve_all_addresses(): void
     {
+        $this->withoutMiddleware(ThrottleRequests::class);
+
         Sanctum::actingAs($this->user());
 
         $model = Organization::factory()->withAddress()->createOne();
@@ -128,6 +143,8 @@ class CompanyTest extends TestCase
     #[Test]
     public function should_receive_404_when_no_files_available(): void
     {
+        $this->withoutMiddleware(ThrottleRequests::class);
+
         Sanctum::actingAs($this->user());
 
         $model = Organization::factory()->createOne();
@@ -140,6 +157,8 @@ class CompanyTest extends TestCase
     #[Test]
     public function should_able_to_upload_and_store_new_file(): void
     {
+        $this->withoutMiddleware(ThrottleRequests::class);
+
         Storage::fake();
         Sanctum::actingAs($this->user());
 
@@ -156,6 +175,8 @@ class CompanyTest extends TestCase
     #[Test]
     public function should_able_to_retrieve_all_uploaded_files(): void
     {
+        $this->withoutMiddleware(ThrottleRequests::class);
+
         Sanctum::actingAs($this->user());
 
         $model = Organization::factory()->withFileUpload(FileType::Document)->createOne();
@@ -168,6 +189,8 @@ class CompanyTest extends TestCase
     #[Test]
     public function should_able_to_update_existing_data(): void
     {
+        $this->withoutMiddleware(ThrottleRequests::class);
+
         Sanctum::actingAs($this->user());
 
         $model = Organization::factory()->createOne();
@@ -183,6 +206,8 @@ class CompanyTest extends TestCase
     #[Test]
     public function should_able_to_delete_and_restore_data(): void
     {
+        $this->withoutMiddleware(ThrottleRequests::class);
+
         Sanctum::actingAs($this->user());
 
         $model = Organization::factory()->createOne();

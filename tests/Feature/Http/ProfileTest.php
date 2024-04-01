@@ -3,6 +3,7 @@
 namespace Creasi\Tests\Feature\Http;
 
 use Creasi\Tests\Feature\TestCase;
+use Illuminate\Routing\Middleware\ThrottleRequests;
 use Laravel\Sanctum\Sanctum;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Test;
@@ -34,6 +35,8 @@ class ProfileTest extends TestCase
     #[Test]
     public function should_able_to_retrieve_profile_data(): void
     {
+        $this->withoutMiddleware(ThrottleRequests::class);
+
         Sanctum::actingAs($this->user());
 
         $response = $this->getJson($this->getRoutePath());
@@ -44,6 +47,8 @@ class ProfileTest extends TestCase
     #[Test]
     public function should_able_to_update_profile_data(): void
     {
+        $this->withoutMiddleware(ThrottleRequests::class);
+
         Sanctum::actingAs($user = $this->user());
 
         $user->load('profile');

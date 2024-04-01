@@ -6,6 +6,7 @@ use Creasi\Base\Database\Models\File;
 use Creasi\Base\Enums\FileType;
 use Creasi\Tests\Feature\TestCase;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Routing\Middleware\ThrottleRequests;
 use Laravel\Sanctum\Sanctum;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Test;
@@ -19,6 +20,8 @@ class FileUploadTest extends TestCase
     #[Test]
     public function should_receive_404_when_no_data_available(): void
     {
+        $this->withoutMiddleware(ThrottleRequests::class);
+
         Sanctum::actingAs($this->user());
 
         $response = $this->getJson($this->getRoutePath());
@@ -29,6 +32,8 @@ class FileUploadTest extends TestCase
     #[Test]
     public function should_able_to_retrieve_all_data(): void
     {
+        $this->withoutMiddleware(ThrottleRequests::class);
+
         Sanctum::actingAs($user = $this->user());
 
         $user->profile->storeFile(FileType::Document, '/doc/file.pdf', 'document');
@@ -41,6 +46,8 @@ class FileUploadTest extends TestCase
     #[Test]
     public function should_able_to_store_new_data(): void
     {
+        $this->withoutMiddleware(ThrottleRequests::class);
+
         Sanctum::actingAs($this->user());
 
         $data = File::factory()->raw();
@@ -55,6 +62,8 @@ class FileUploadTest extends TestCase
     #[Test]
     public function should_able_to_show_existing_data(): void
     {
+        $this->withoutMiddleware(ThrottleRequests::class);
+
         Sanctum::actingAs($user = $this->user());
 
         $model = $user->profile->storeFile(FileType::Document, '/doc/file.pdf', 'document');
@@ -67,6 +76,8 @@ class FileUploadTest extends TestCase
     #[Test]
     public function should_able_to_update_existing_data(): void
     {
+        $this->withoutMiddleware(ThrottleRequests::class);
+
         Sanctum::actingAs($this->user());
 
         $model = File::factory()->createOne();
@@ -79,6 +90,8 @@ class FileUploadTest extends TestCase
     #[Test]
     public function should_able_to_delete_and_restore_data(): void
     {
+        $this->withoutMiddleware(ThrottleRequests::class);
+
         Sanctum::actingAs($user = $this->user());
 
         $model = $user->profile->storeFile(FileType::Document, '/doc/file.pdf', 'document');

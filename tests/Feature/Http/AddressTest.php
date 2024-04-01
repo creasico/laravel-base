@@ -4,6 +4,7 @@ namespace Creasi\Tests\Feature\Http;
 
 use Creasi\Base\Database\Models\Address;
 use Creasi\Tests\Feature\TestCase;
+use Illuminate\Routing\Middleware\ThrottleRequests;
 use Laravel\Sanctum\Sanctum;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Test;
@@ -31,6 +32,8 @@ class AddressTest extends TestCase
     #[Test]
     public function should_receive_404_when_no_data_available(): void
     {
+        $this->withoutMiddleware(ThrottleRequests::class);
+
         Sanctum::actingAs($this->user());
 
         $response = $this->getJson($this->getRoutePath());
@@ -41,6 +44,8 @@ class AddressTest extends TestCase
     #[Test]
     public function should_able_to_retrieve_all_data(): void
     {
+        $this->withoutMiddleware(ThrottleRequests::class);
+
         Sanctum::actingAs($user = $this->user());
 
         $model = Address::factory()->createOne();
@@ -58,6 +63,8 @@ class AddressTest extends TestCase
     #[Test]
     public function should_able_to_store_new_data(): void
     {
+        $this->withoutMiddleware(ThrottleRequests::class);
+
         Sanctum::actingAs($this->user());
 
         $data = Address::factory()->raw();
@@ -73,6 +80,8 @@ class AddressTest extends TestCase
     #[Test]
     public function should_able_to_show_existing_data(): void
     {
+        $this->withoutMiddleware(ThrottleRequests::class);
+
         Sanctum::actingAs($user = $this->user());
 
         $model = Address::factory()->createOne();
@@ -89,6 +98,8 @@ class AddressTest extends TestCase
     #[Test]
     public function should_able_to_update_existing_data(): void
     {
+        $this->withoutMiddleware(ThrottleRequests::class);
+
         Sanctum::actingAs($this->user());
 
         $model = Address::factory()->createOne();
@@ -104,6 +115,8 @@ class AddressTest extends TestCase
     #[Test]
     public function should_able_to_delete_and_restore_data(): void
     {
+        $this->withoutMiddleware(ThrottleRequests::class);
+
         Sanctum::actingAs($user = $this->user());
 
         $model = Address::factory()->createOne();

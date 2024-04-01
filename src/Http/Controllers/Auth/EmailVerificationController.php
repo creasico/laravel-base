@@ -34,7 +34,7 @@ class EmailVerificationController extends Controller
         $request->fulfill();
 
         return $request->expectsJson()
-            ? response()->json(['message' => __('creasico::auth.email-verified')])
+            ? response()->json(['message' => __('creasi::auth.email-verified')])
             : redirect()->intended(app('creasi.base.route_home').'?verified=1');
     }
 
@@ -52,7 +52,7 @@ class EmailVerificationController extends Controller
         $request->user()->sendEmailVerificationNotification();
 
         return $request->expectsJson()
-            ? response()->json(['message' => __('creasico::auth.email-verification-sent')])
-            : back()->with('message', __('creasico::auth.email-verification-sent'));
+            ? response()->json(['message' => __('creasi::auth.email-verification-sent')])
+            : back()->with('message', __('creasi::auth.email-verification-sent'));
     }
 }

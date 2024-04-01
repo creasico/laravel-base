@@ -11,16 +11,13 @@ use Illuminate\Support\Facades\Password;
 class ResetPasswordController extends Controller
 {
     /**
-     * Display the password reset view.
+     * Display the forgot password view.
      *
      * @return \Illuminate\View\View
      */
-    public function create(Request $request)
+    public function create()
     {
-        // return view('creasi::auth.reset-password', ['request' => $request]);
-        return \response()->json([
-            'token' => $request->token,
-        ]);
+        return view('creasi::pages.auth.forgot-password');
     }
 
     /**
@@ -48,6 +45,18 @@ class ResetPasswordController extends Controller
             ? back()->with('message', __($status))
             : back()->withInput($request->only('email'))
                 ->withErrors(['email' => __($status)]);
+    }
+
+    /**
+     * Display the password reset view.
+     *
+     * @return \Illuminate\View\View
+     */
+    public function verify(Request $request)
+    {
+        return view('creasi::pages.auth.reset-password', [
+            'token' => $request->token,
+        ]);
     }
 
     /**

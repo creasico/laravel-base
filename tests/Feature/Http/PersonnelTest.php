@@ -8,6 +8,7 @@ use Creasi\Base\Database\Models\Person;
 use Creasi\Base\Enums\FileType;
 use Creasi\Tests\Feature\TestCase;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Routing\Middleware\ThrottleRequests;
 use Illuminate\Support\Facades\Storage;
 use Laravel\Sanctum\Sanctum;
 use PHPUnit\Framework\Attributes\Group;
@@ -32,6 +33,8 @@ class PersonnelTest extends TestCase
     #[Test]
     public function should_able_to_retrieve_all_data(): void
     {
+        $this->withoutMiddleware(ThrottleRequests::class);
+
         Sanctum::actingAs($this->user());
         Person::factory(2)->create();
 
@@ -47,6 +50,8 @@ class PersonnelTest extends TestCase
     #[Test]
     public function should_able_to_store_new_data(): void
     {
+        $this->withoutMiddleware(ThrottleRequests::class);
+
         Sanctum::actingAs($this->user());
         $data = Person::factory()->raw();
 
@@ -61,6 +66,8 @@ class PersonnelTest extends TestCase
     #[Test]
     public function should_able_to_show_existing_data(): void
     {
+        $this->withoutMiddleware(ThrottleRequests::class);
+
         Sanctum::actingAs($this->user());
 
         $model = Person::factory()->createOne();
@@ -76,6 +83,8 @@ class PersonnelTest extends TestCase
     #[Test]
     public function should_receive_404_when_no_addresses_available(): void
     {
+        $this->withoutMiddleware(ThrottleRequests::class);
+
         Sanctum::actingAs($this->user());
 
         $model = Person::factory()->createOne();
@@ -88,6 +97,8 @@ class PersonnelTest extends TestCase
     #[Test]
     public function should_able_to_create_new_address(): void
     {
+        $this->withoutMiddleware(ThrottleRequests::class);
+
         Sanctum::actingAs($this->user());
 
         $model = Person::factory()->createOne();
@@ -101,6 +112,8 @@ class PersonnelTest extends TestCase
     #[Test]
     public function should_able_to_retrieve_all_addresses(): void
     {
+        $this->withoutMiddleware(ThrottleRequests::class);
+
         Sanctum::actingAs($this->user());
 
         $model = Person::factory()->createOne();
@@ -115,6 +128,8 @@ class PersonnelTest extends TestCase
     #[Test]
     public function should_receive_404_when_no_files_available(): void
     {
+        $this->withoutMiddleware(ThrottleRequests::class);
+
         Sanctum::actingAs($this->user());
 
         $model = Person::factory()->createOne();
@@ -127,6 +142,8 @@ class PersonnelTest extends TestCase
     #[Test]
     public function should_able_to_upload_and_store_new_file(): void
     {
+        $this->withoutMiddleware(ThrottleRequests::class);
+
         Storage::fake();
         Sanctum::actingAs($this->user());
 
@@ -143,6 +160,8 @@ class PersonnelTest extends TestCase
     #[Test]
     public function should_able_to_retrieve_all_uploaded_files(): void
     {
+        $this->withoutMiddleware(ThrottleRequests::class);
+
         Sanctum::actingAs($this->user());
 
         $model = Person::factory()->withFileUpload(FileType::Document)->createOne();
@@ -155,6 +174,8 @@ class PersonnelTest extends TestCase
     #[Test]
     public function should_able_to_update_existing_data(): void
     {
+        $this->withoutMiddleware(ThrottleRequests::class);
+
         Sanctum::actingAs($this->user());
 
         $model = Person::factory()->createOne();
@@ -170,6 +191,8 @@ class PersonnelTest extends TestCase
     #[Test]
     public function should_able_to_delete_and_restore_data(): void
     {
+        $this->withoutMiddleware(ThrottleRequests::class);
+
         Sanctum::actingAs($this->user());
 
         $model = Person::factory()->createOne();

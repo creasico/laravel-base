@@ -1,26 +1,50 @@
 {
     "version": "0.0.0",
+    "type": "module",
     "private": true,
     "packageManager": "pnpm@8.5.0",
     "author": "Creasi Developers <developers@creasi.co>",
     "repository": "github:creasico/laravel-base",
     "scripts": {
+        "build": "vite build",
+        "dev": "vite",
+        "lint": "eslint --ext .ts,.json resources",
         "postinstall": "simple-git-hooks",
         "release": "standard-version -s"
     },
-    "devDependencies": {
-        "@commitlint/cli": "^18.2.0",
-        "@commitlint/config-conventional": "^18.1.0",
-        "lint-staged": "^15.0.2",
-        "simple-git-hooks": "^2.9.0",
-        "standard-version": "^9.5.0"
+    "dependencies": {
+        "alpinejs": "^3.13.7"
     },
+    "devDependencies": {
+        "@commitlint/cli": "^18.6.1",
+        "@commitlint/config-conventional": "^18.6.3",
+        "@creasico/eslint-config": "^0.0.1",
+        "@fontsource-variable/open-sans": "^5.0.28",
+        "@tailwindcss/vite": "4.0.0-alpha.11",
+        "@types/alpinejs": "^3.13.10",
+        "@types/node": "^20.12.2",
+        "eslint": "^8.57.0",
+        "laravel-vite-plugin": "^1.0.2",
+        "lint-staged": "^15.2.2",
+        "simple-git-hooks": "^2.11.1",
+        "standard-version": "^9.5.0",
+        "tailwindcss": "4.0.0-alpha.11",
+        "typescript": "^5.4.3",
+        "vite": "^5.2.7",
+        "ziggy-js": "^2.1.0"
+    },
+    "browserslist": [
+        "> 20%"
+    ],
     "commitlint": {
         "extends": [
             "@commitlint/config-conventional"
         ]
     },
     "lint-staged": {
+        "resources/**/*.{json,ts}": [
+            "eslint --fix"
+        ],
         "{config,database,src,scripts,tests}/**/*.php": [
             "php vendor/bin/pint --preset laravel"
         ]
@@ -29,5 +53,17 @@
         "commit-msg": "pnpm exec commitlint --edit $1",
         "pre-commit": "pnpm exec lint-staged --allow-empty"
     },
-    "standard-version": {}
+    "standard-version": {},
+    "eslintConfig": {
+        "root": true,
+        "env": {
+            "node": true,
+            "browser": true
+        },
+        "extends": "@creasico/eslint-config/ts",
+        "parserOptions": {
+            "tsconfigRootDir": ".",
+            "project": "./tsconfig.json"
+        }
+    }
 }

@@ -41,14 +41,24 @@ enum StakeholderType: int
      */
     case Vendor = 6;
 
+    public static function internals(): array
+    {
+        return [self::Owner, self::Subsidiary, self::Employee];
+    }
+
+    public static function externals(): array
+    {
+        return [self::Customer, self::Supplier, self::Vendor];
+    }
+
     public function isInternal(): bool
     {
-        return \in_array($this, [self::Owner, self::Subsidiary, self::Employee], true);
+        return \in_array($this, self::internals(), true);
     }
 
     public function isExternal(): bool
     {
-        return \in_array($this, [self::Customer, self::Supplier, self::Vendor], true);
+        return \in_array($this, self::externals(), true);
     }
 
     public function isOwner(): bool

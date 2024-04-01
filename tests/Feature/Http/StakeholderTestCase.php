@@ -7,6 +7,7 @@ use Creasi\Base\Database\Models\Person;
 use Creasi\Base\Enums\StakeholderType;
 use Creasi\Tests\Feature\TestCase;
 use Illuminate\Contracts\Routing\UrlRoutable;
+use Illuminate\Routing\Middleware\ThrottleRequests;
 use Laravel\Sanctum\Sanctum;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Test;
@@ -37,6 +38,8 @@ abstract class StakeholderTestCase extends TestCase
     #[Test]
     public function should_receive_404_when_no_data_available(): void
     {
+        $this->withoutMiddleware(ThrottleRequests::class);
+
         Sanctum::actingAs($this->user());
 
         $response = $this->getJson($this->getRoutePath());
@@ -47,6 +50,8 @@ abstract class StakeholderTestCase extends TestCase
     #[Test]
     public function should_able_to_retrieve_all_data(): void
     {
+        $this->withoutMiddleware(ThrottleRequests::class);
+
         Sanctum::actingAs($user = $this->user());
 
         $company = Organization::factory()->createOne(['name' => 'External Company']);
@@ -67,6 +72,8 @@ abstract class StakeholderTestCase extends TestCase
     #[Test]
     public function should_able_to_store_new_data(): void
     {
+        $this->withoutMiddleware(ThrottleRequests::class);
+
         Sanctum::actingAs($this->user());
 
         $data = Organization::factory()->raw();
@@ -82,6 +89,8 @@ abstract class StakeholderTestCase extends TestCase
     #[Test]
     public function should_able_to_show_existing_data(): void
     {
+        $this->withoutMiddleware(ThrottleRequests::class);
+
         Sanctum::actingAs($user = $this->user());
 
         $model = Organization::factory()->createOne();
@@ -99,6 +108,8 @@ abstract class StakeholderTestCase extends TestCase
     #[Test]
     public function should_able_to_update_existing_data(): void
     {
+        $this->withoutMiddleware(ThrottleRequests::class);
+
         Sanctum::actingAs($user = $this->user());
 
         $model = Organization::factory()->createOne();
@@ -116,6 +127,8 @@ abstract class StakeholderTestCase extends TestCase
     #[Test]
     public function should_able_to_delete_and_restore_data(): void
     {
+        $this->withoutMiddleware(ThrottleRequests::class);
+
         Sanctum::actingAs($user = $this->user());
 
         $model = Organization::factory()->createOne();

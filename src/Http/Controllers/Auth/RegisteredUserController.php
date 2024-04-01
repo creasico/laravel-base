@@ -16,7 +16,7 @@ class RegisteredUserController extends Controller
      */
     public function create()
     {
-        return view('creasi::auth.register');
+        return view('creasi::pages.auth.register');
     }
 
     /**
@@ -29,8 +29,8 @@ class RegisteredUserController extends Controller
         $user = $request->fulfill();
 
         $message = $user instanceof MustVerifyEmail
-            ? __('creasico::auth.registered-needs-verify')
-            : __('creasico::auth.registered-no-verify');
+            ? __('creasi::auth.registered-needs-verify')
+            : __('creasi::auth.registered-no-verify');
 
         if ($request->expectsJson()) {
             return response()->json(['message' => $message], 201);

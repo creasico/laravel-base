@@ -19,6 +19,7 @@
         "@commitlint/cli": "^18.6.1",
         "@commitlint/config-conventional": "^18.6.3",
         "@creasico/eslint-config": "^0.0.1",
+        "@fontsource-variable/open-sans": "^5.0.28",
         "@tailwindcss/vite": "4.0.0-alpha.11",
         "@types/alpinejs": "^3.13.10",
         "@types/node": "^20.12.2",

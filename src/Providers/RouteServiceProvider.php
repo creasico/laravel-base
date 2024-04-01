@@ -4,10 +4,10 @@ namespace Creasi\Base\Providers;
 
 use Creasi\Base\Database\Models;
 use Creasi\Base\Database\Models\Contracts;
+use Creasi\Base\Http\Middleware\Authenticate;
 use Creasi\Base\Listeners\RegisterUserDevice;
 use Creasi\Base\Policies;
 use Illuminate\Auth\Events\Login;
-use Illuminate\Auth\Middleware\Authenticate;
 use Illuminate\Auth\Notifications\ResetPassword;
 use Illuminate\Auth\Notifications\VerifyEmail;
 use Illuminate\Http\Request;
@@ -90,7 +90,7 @@ class RouteServiceProvider extends IlluminateServiceProvider
             return $request->isMethodCacheable() ? $request->query('api_token') : null;
         });
 
-        Authenticate::redirectUsing(fn () => \route('base.login'));
+        Route::aliasMiddleware('auth', Authenticate::class);
 
         Route::bind('company', fn () => app(Contracts\Company::class));
         Route::bind('personnel', fn () => app(Contracts\Personnel::class));
